@@ -1,0 +1,38 @@
+name: CubeShackles CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  repository-compliance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required interoperability files
+        run: |
+          test -f README.md || (echo "MISSING README.md" && exit 1)
+          test -f contracts/CONTRACTS.md || (echo "MISSING contracts/CONTRACTS.md" && exit 1)
+          test -f docs/dependencies.md || (echo "MISSING docs/dependencies.md" && exit 1)
+
+      - name: Check forbidden production claims
+        run: |
+          if grep -rniE "production ready|fully operational|guaranteed uptime|unbreakable" \
+            --include="*.md" --include="*.py" --include="*.ts" --include="*.js" \
+            --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.venv . 2>/dev/null | grep -v "ci.yml"; then
+            echo "Forbidden production claim found" && exit 1
+          fi
+          echo "No forbidden claims found."
+
+      - name: Check no private secrets committed
+        run: |
+          if find . -name ".env" -not -path "./.git/*" | grep .; then
+            echo "Committed .env file detected" && exit 1
+          fi
+          if find . \( -name "*.pem" -o -name "*.key" -o -name "*.p12" \) -not -path "./.git/*" | grep .; then
+            echo "Potential key file detected" && exit 1
+          fi
+          echo "No committed secrets detected."
+
