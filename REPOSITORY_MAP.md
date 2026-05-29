@@ -3,8 +3,11 @@
 **Canonical inventory of CubeShackles repositories, their roles, and visibility.**
 
 This map is authoritative. If a repository's purpose is unclear, this document
-settles it. Status and visibility are stated honestly: "active" means it exists and
-is worked on; "planned" means committed but not yet created or not yet functional.
+settles it. Status is stated honestly:
+
+- **active** — implemented behavior exists and is worked on.
+- **scaffolded** — repository exists with structure, README, and boundaries; not integrated.
+- **planned** — committed direction; repository does not yet exist on disk.
 
 ---
 
@@ -26,19 +29,41 @@ without exposing their implementation.
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
-| `cubeshackles` | Canonical source of truth: doctrine, architecture, repo map, standards. Contains no protocol code. | active | public |
+| `cubeshackles` | Canonical source of truth: doctrine, architecture, repo map, governance, policies. Contains no protocol code. | active | public |
 
-## 2. Protocol & execution (protocol-facing)
+## 2. Contracts layer
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
-| `cubeshackles-core` | Protocol logic. Cube/Shackle primitives, deterministic execution rules, settlement semantics, contract definitions consumed by other repos. | active | public |
+| `cubeshackles-contracts` | Canonical interoperability contracts: versioned schemas, events, OpenAPI, versioning and interoperability standards. Does not run production traffic. | active (v0.1 draft schemas) | public |
+
+## 3. Protocol layer (protocol-facing)
+
+Consensus-critical and coordination repositories. They must remain deterministic,
+replayable, and independent of sovereign AI/compute for correctness.
+
+| Repository | Role | Status | Visibility |
+|---|---|---|---|
+| `cubeshackles-core` | Protocol logic. Cube/Shackle primitives, deterministic execution rules, settlement semantics; implements contracts consumed by sibling repos. | active | public |
 | `cubeshackles-validator-node` | Validator execution. Runs the validator lifecycle, applies Shackle rules, participates in deterministic DAG ordering. | active | public |
 | `cubeshackles-node-api` | API layer. External-facing interface for submitting transactions and querying state (runtime API, dev port 8090). | active | public |
 | `cubeshackles-network-orchestrator` | Network coordination. Membership, peer gossip, DAG frontier coordination, validator join/sync. | active | public |
 | `cubeshackles-integration` | Cross-repo integration and production-gate suite. Validates contracts and interoperability across sibling repos; does not run production traffic. | active | public |
+| `cubeshackles-runtime` | Deterministic execution kernel: execution engine, memory management, DAG scheduling, validator execution lifecycle, orchestration kernel, validator hook interfaces for **recorded advisory inputs only**. | scaffolded | public |
 
-## 3. Access layer (products / wedges)
+## 4. Sovereign infrastructure layer
+
+Private (or mixed) infrastructure for advisory AI, compute orchestration, hardware
+abstraction, and credit intelligence. **Not** in the consensus-critical path.
+
+| Repository | Role | Status | Visibility |
+|---|---|---|---|
+| `cubeshackles-ai-runtime` | Advisory AI execution: fraud/risk/economic models, inference infrastructure (CUDA/ROCm/Triton/TensorRT). Strictly outside consensus. | scaffolded | private |
+| `cubeshackles-compute` | Distributed sovereign compute orchestration: GPU scheduling, edge compute, node balancing, AI workload placement (future CubeCompute). | scaffolded | private |
+| `cubeshackles-hardware` | Hardware abstraction and silicon roadmap: validator specs, edge/thermal, ARM, RISC-V, FPGA, ASIC research, Cube Silicon / Shackle Silicon. | scaffolded | private |
+| `kulifikila` | Credit intelligence. Advisory credit scoring; outputs consumed as recorded signals only. | active | private |
+
+## 5. Access layer (products / wedges)
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
@@ -48,24 +73,21 @@ without exposing their implementation.
 | `BualaBuitu` [^name] | Terminal / data intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | National transit application built on CubeShackles rails. | active | public |
 
-## 4. Intelligence layer (advisory, isolated)
+## 6. Intelligence layer (advisory, isolated)
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
 | `cubeshackles-adviser` | Advisory service (dev port 8080). Surfaces advisory financial guidance and signals; runs outside the consensus-critical path. | active | mixed |
-| `kulifikila` | Credit intelligence. Advisory credit scoring; outputs consumed as recorded signals only. | active | private |
-| `cubeshackles-ai-runtime` | AI execution infrastructure: CUDA/ROCm/TensorRT/Triton support, fraud/risk/economic models, model registry, distributed inference. Strictly outside consensus. | planned | private |
 
-## 5. New core infrastructure layer
+> `cubeshackles-ai-runtime` and `kulifikila` are listed under **Sovereign infrastructure**; they are intelligence producers, not protocol dependencies.
+
+## 7. Observability (cross-cutting, scaffolded)
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
-| `cubeshackles-runtime` | Core runtime / "operating system" kernel: execution engine, memory management, AI runtime hooks, DAG scheduling, validator execution lifecycle, orchestration kernel. | planned | public |
-| `cubeshackles-compute` | Distributed sovereign compute orchestration: GPU scheduling, edge compute, node compute balancing, AI compute federation, datacenter orchestration (future CubeCompute). | planned | private |
-| `cubeshackles-hardware` | Hardware abstraction and silicon roadmap: validator hardware specs, edge/thermal, ARM, RISC-V, FPGA, ASIC research, Cube Silicon / Shackle Silicon. | planned | private |
-| `cubeshackles-observability` | Production telemetry: metrics, tracing, audit logs, anomaly detection, AI node health, validator monitoring, sovereign compliance telemetry. | planned | partial public |
+| `cubeshackles-observability` | Intended home for audit-grade telemetry contracts, metrics, tracing, and validator monitoring integrations. Repository is **scaffolded** — module boundaries and docs only; no production telemetry stack is shipped. | scaffolded | partial public |
 
-## 6. Platform operations
+## 8. Platform operations
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
@@ -75,27 +97,33 @@ without exposing their implementation.
 > a "role to confirm" status rather than omitted. New repositories must be classified
 > per [`docs/repo-governance.md`](docs/repo-governance.md) before reaching "active".
 
-## 7. Dependency relationships
+## 9. Dependency relationships
 
-- `cubeshackles-core` is the foundational dependency; protocol-facing repos consume
-  its contracts.
+- `cubeshackles-contracts` is the **schema authority**; protocol and access repos
+  consume versioned contracts rather than defining shared shapes locally.
+- `cubeshackles-core` is the foundational protocol implementation; protocol-facing
+  repos consume its logic and published contracts.
 - `cubeshackles-validator-node` depends on `core` and coordinates via
   `network-orchestrator`.
 - `cubeshackles-node-api` fronts `validator-node`.
 - Access-layer apps depend on `node-api`.
-- Intelligence repos (`kulifikila`, `ai-runtime`) are consumed **one-way** as
-  advisory signals; nothing in the protocol path depends on them for correctness.
-- `cubeshackles-integration` depends on the public contracts of all of the above to
+- Sovereign repos (`ai-runtime`, `compute`, `hardware`, `kulifikila`) are consumed
+  **one-way** as advisory signals or operational sidecars; nothing in the protocol
+  path depends on them for correctness.
+- `cubeshackles-integration` depends on the public contracts of participating repos to
   run cross-repo gates.
+- `cubeshackles-runtime` (when integrated) executes under `core` rules; it does not
+  host AI models or define advisory inference.
 
-## 8. Local layout convention
+## 10. Local layout convention
 
 For full local development, repositories are checked out as siblings:
 
 ```
 parent/
 ├── cubeshackles/                      # umbrella (this repo)
-├── cubeshackles-core/                 # REQUIRED — provides cubeshackles.contracts
+├── cubeshackles-contracts/            # REQUIRED for contract discipline
+├── cubeshackles-core/                 # REQUIRED — protocol logic
 ├── cubeshackles-node-api/             # REQUIRED — runtime API (port 8090)
 ├── cubeshackles-validator-node/
 ├── cubeshackles-network-orchestrator/
@@ -103,16 +131,16 @@ parent/
 ├── cubeshackles-integration/
 ├── cubeshackles-web/
 ├── cubeshackles-adviser/              # advisory service (dev port 8080)
-├── cubeshackles-infra/               # operations (role to confirm)
+├── cubeshackles-infra/                # operations (role to confirm)
 ├── CubeWallet/
-├── kulifikila/                        # private
+├── kulifikila/                        # private — sovereign
 ├── BualaBuitu/                        # on disk currently as "BuilaBuitu" — see note
 ├── national-transit-app-cubeshackles/
-├── cubeshackles-runtime/              # scaffolded, not yet integrated
-├── cubeshackles-ai-runtime/           # scaffolded, not yet integrated, private
-├── cubeshackles-compute/              # scaffolded, not yet integrated, private
-├── cubeshackles-hardware/             # scaffolded, not yet integrated, private
-└── cubeshackles-observability/        # scaffolded, not yet integrated, partial public
+├── cubeshackles-runtime/              # scaffolded — not integrated
+├── cubeshackles-ai-runtime/           # scaffolded — private — not integrated
+├── cubeshackles-compute/              # scaffolded — private — not integrated
+├── cubeshackles-hardware/             # scaffolded — private — not integrated
+└── cubeshackles-observability/        # scaffolded — partial public — not integrated
 ```
 
 Tests and tooling that span repositories assume this sibling layout. Repos that are

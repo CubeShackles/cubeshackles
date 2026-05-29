@@ -16,6 +16,8 @@ Read, in order:
 2. [`SYSTEM_ARCHITECTURE.md`](SYSTEM_ARCHITECTURE.md) — how it fits together.
 3. [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) — the engineering bar.
 4. [`SECURITY_MODEL.md`](SECURITY_MODEL.md) — trust boundaries.
+5. [`governance/policies/`](governance/policies/) — repository, security, visibility, interoperability policies.
+6. [`cubeshackles-contracts`](../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md) — contract rules (sibling repo).
 
 Contributions that violate the architecture or principles will not be merged, even
 if they are well written.
@@ -24,7 +26,8 @@ if they are well written.
 
 | Change type | Repository |
 |---|---|
-| Doctrine, architecture, repo map, standards | `cubeshackles` (this repo) |
+| Doctrine, architecture, repo map, standards, policies | `cubeshackles` (this repo) |
+| Interoperability contracts (schemas, events) | `cubeshackles-contracts` |
 | Protocol logic | `cubeshackles-core` |
 | Validator execution | `cubeshackles-validator-node` |
 | API surface | `cubeshackles-node-api` |
@@ -33,8 +36,12 @@ if they are well written.
 | Access apps | `CubeWallet`, `cubeshackles-web`, `phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
 | Advisory services | `cubeshackles-adviser` (advisory only; never consensus-critical) |
 
-Intelligence, compute, and hardware repositories are private; contribution happens
-through controlled channels.
+Sovereign infrastructure repositories (`ai-runtime`, `compute`, `hardware`) and
+`kulifikila` are private or mixed; contribution happens through controlled channels.
+Scaffolded repos must not be described as production-ready in PRs or docs.
+
+When changing shared message shapes, update `cubeshackles-contracts` first, then
+consumer declarations (`contracts/CONTRACTS.md`, `docs/dependencies.md`) in each repo.
 
 ## Non-negotiable rules
 
@@ -63,6 +70,7 @@ Do not describe planned capability as if it ships today.
 - Keep documents consistent with each other. If you change a repository's role,
   update [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) **and** the relevant section of
   [`SYSTEM_ARCHITECTURE.md`](SYSTEM_ARCHITECTURE.md).
+- For structural remediations, note them in [`docs/architecture-consistency-audit.md`](docs/architecture-consistency-audit.md).
 - Preserve the institutional, precise, no-hype tone.
 - Prefer tables and explicit status markers over prose where it aids clarity.
 

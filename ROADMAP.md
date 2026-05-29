@@ -3,10 +3,10 @@
 **Sequencing and milestones for the CubeShackles platform.**
 
 This roadmap describes direction and ordering, not dates. It separates what exists
-from what is planned, and it deliberately sequences the **wedge** (real Angola
-transaction utility) ahead of the long-horizon **infrastructure and semiconductor**
-ambitions. Building the silicon thesis first would be a mistake; earning the right
-to it through working infrastructure is the plan.
+from what is planned or scaffolded, and it deliberately sequences the **wedge**
+(real Angola transaction utility) ahead of the long-horizon **infrastructure and
+semiconductor** ambitions. Building the silicon thesis first would be a mistake;
+earning the right to it through working infrastructure is the plan.
 
 ---
 
@@ -28,7 +28,10 @@ to it through working infrastructure is the plan.
       `national-transit-app-cubeshackles`, `BualaBuitu`).
 - [x] Cross-repo integration and production-gate suite.
 - [x] Canonical umbrella repository (this repo): architecture, principles, repo map,
-      security model, contribution rules.
+      security model, contribution rules, governance policies.
+- [x] Establish `cubeshackles-contracts` (v0.1 draft schemas and interoperability standard).
+- [x] Scaffold sovereign and runtime repos (`runtime`, `ai-runtime`, `compute`,
+      `hardware`, `observability`) with honest READMEs and module boundaries.
 
 ## Phase 1 — Protocol hardening
 
@@ -38,16 +41,18 @@ to it through working infrastructure is the plan.
 - [ ] Author `FAILURE_MODELS.md` (Byzantine, partition, regional collapse, replay,
       regulator override).
 - [ ] Offline-first reconciliation for the Angola phone wedge.
+- [ ] Align active repos with `cubeshackles-contracts` v0.1 declarations and gates.
 
-## Phase 2 — Runtime kernel
+## Phase 2 — Runtime kernel (scaffold → integrate)
 
-- [ ] Create `cubeshackles-runtime`: execution engine, memory management, DAG
+- [ ] Harden `cubeshackles-runtime` scaffold: execution engine, memory management, DAG
       scheduling, validator execution lifecycle, orchestration kernel.
-- [ ] Define canonical AI runtime *hooks* (interfaces only; advisory, isolated).
+- [ ] Define validator hook interfaces for **recorded advisory inputs** (not AI execution).
+- [ ] Integrate runtime with `validator-node` and integration gates when behavior is tested.
 
-## Phase 3 — AI runtime (advisory, isolated)
+## Phase 3 — AI runtime (scaffold → advisory, isolated)
 
-- [ ] Create `cubeshackles-ai-runtime`.
+- [ ] Harden `cubeshackles-ai-runtime` scaffold.
 - [ ] First service surface (advisory only):
   - [ ] `POST /ai/risk-score`
   - [ ] `POST /ai/fraud-check`
@@ -58,21 +63,23 @@ to it through working infrastructure is the plan.
 - [ ] Inference receipts (model, version, inputs logged for every output).
 - [ ] Wire advisory signals into `validator-node` as recorded inputs only.
 
-## Phase 4 — Compute orchestration
+## Phase 4 — Compute orchestration (scaffold → private ops)
 
-- [ ] Create `cubeshackles-compute` (private): GPU scheduling, edge compute, node
+- [ ] Harden `cubeshackles-compute` scaffold: GPU scheduling, edge compute, node
       balancing, AI compute federation, datacenter orchestration (CubeCompute).
 - [ ] DAG optimization (compaction, indexing, frontier pruning) — performance only,
       never altering settlement semantics.
 
-## Phase 5 — Observability
+## Phase 5 — Observability (scaffold → audit-grade)
 
-- [ ] Create `cubeshackles-observability`: metrics, tracing, audit logs, anomaly
-      detection, AI node health, validator monitoring, compliance telemetry.
+- [ ] Harden `cubeshackles-observability` scaffold: telemetry contracts, metrics,
+      tracing hooks, audit log shapes, validator monitoring integrations.
+- [ ] Align observability contracts with `cubeshackles-contracts`; no claim of
+      production telemetry until integration gates pass.
 
-## Phase 6 — Hardware abstraction
+## Phase 6 — Hardware abstraction (scaffold → R&D track)
 
-- [ ] Create `cubeshackles-hardware` (private): validator hardware specs, edge /
+- [ ] Harden `cubeshackles-hardware` scaffold: validator hardware specs, edge /
       thermal systems, ARM integration, RISC-V experimentation, FPGA support, ASIC
       research.
 - [ ] Author `COMPUTE_ROADMAP.md`: Nvidia/AMD/RISC-V/FPGA interoperability and the
@@ -80,7 +87,7 @@ to it through working infrastructure is the plan.
 
 ## Phase 7 — SmartShackles (GPU-aware contracts)
 
-- [ ] Programmable Shackles with AI hooks, model-execution triggers, GPU compute
+- [ ] Programmable Shackles with advisory hooks, model-execution triggers, compute
       references, and inference receipts — all advisory.
 - [ ] Path to **zk-verifiable AI outputs** so intelligence is verifiable without
       trusting the executor.
@@ -102,3 +109,4 @@ being proven. They are not commitments of near-term delivery.
 - We will not architect dependence on a single hardware vendor or supply chain.
 - We will not let intelligence components into the consensus-critical path.
 - We will not let the long-term silicon thesis distract from the working wedge.
+- We will not describe scaffolded repositories as if they already run production workloads.

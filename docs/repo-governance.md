@@ -32,20 +32,59 @@ repository is prohibited.
 | Layer | Purpose | Examples |
 |---|---|---|
 | **Canonical** | Doctrine and source of truth (no protocol code) | `cubeshackles` |
+| **Contracts** | Versioned schemas, events, OpenAPI; no runtime traffic | `cubeshackles-contracts` |
 | **Protocol & execution** | Consensus-critical logic and validator execution | `cubeshackles-core`, `cubeshackles-validator-node`, `cubeshackles-runtime` |
 | **API & coordination** | External interface and network coordination | `cubeshackles-node-api`, `cubeshackles-network-orchestrator` |
-| **Access** | User/product surfaces | `CubeWallet`, `cubeshackles-web`, `cubeshackles-phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
+| **Access** | User/product surfaces (Angola-first wedges) | `CubeWallet`, `cubeshackles-web`, `cubeshackles-phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
 | **Intelligence (advisory)** | AI/analytics, isolated from consensus | `cubeshackles-adviser`, `kulifikila`, `cubeshackles-ai-runtime` |
-| **Compute** | Distributed/GPU/edge orchestration | `cubeshackles-compute` |
-| **Hardware** | Hardware specs and silicon roadmap | `cubeshackles-hardware` |
-| **Observability** | Telemetry, audit, anomaly detection | `cubeshackles-observability` |
+| **Sovereign infrastructure** | Private compute, hardware, and AI execution (non-consensus) | `cubeshackles-compute`, `cubeshackles-hardware`, `cubeshackles-ai-runtime` |
+| **Observability** | Telemetry contracts and audit instrumentation (scaffolded) | `cubeshackles-observability` |
 | **Platform operations** | Deployment/environment tooling | `cubeshackles-infra` |
 | **Integration** | Cross-repo tests and gates | `cubeshackles-integration` |
 
-**Hard rule:** Intelligence, compute, and hardware layers are **isolated** from
-protocol-facing repositories. Their outputs may only enter the protocol as recorded
-advisory signals — never as direct state mutation. See
-[`../SECURITY_MODEL.md`](../SECURITY_MODEL.md).
+**Hard rule:** Intelligence, sovereign infrastructure, and observability (until
+integrated) are **isolated** from protocol-facing repositories. Their outputs may
+only enter the protocol as recorded advisory signals or append-only audit records —
+never as direct state mutation. See [`../SECURITY_MODEL.md`](../SECURITY_MODEL.md)
+and [`../governance/policies/security-boundaries.md`](../governance/policies/security-boundaries.md).
+
+### Contracts layer
+
+`cubeshackles-contracts` is the **only** owner of shared message shapes. Other
+repositories:
+
+- declare what they consume and emit in `contracts/CONTRACTS.md` and
+  `docs/dependencies.md`;
+- reference schemas by version;
+- never copy canonical schemas into local trees as alternate sources of truth.
+
+See [`../governance/policies/interoperability-policy.md`](../governance/policies/interoperability-policy.md).
+
+### Unequal maturity
+
+Repositories are not equally mature, and that is intentional.
+
+| Maturity | Meaning |
+|---|---|
+| **active** | Implemented behavior under development or test |
+| **scaffolded** | Repo exists; boundaries and docs; not integrated |
+| **planned** | Committed but not yet on disk |
+
+A scaffolded repo (e.g. `cubeshackles-runtime`) is **not** "planned to be created."
+It exists; it must be labeled **scaffolded** in the map and roadmap until integrated.
+
+### Angola-first posture
+
+Platform defaults assume:
+
+- **AOA** as native settlement currency in contracts unless a product contract
+  specifies otherwise;
+- **offline-first** and intermittent connectivity for access wedges (especially
+  `cubeshackles-phone-wedge`);
+- **on-soil sovereign deployment** as a design constraint, not a marketing claim.
+
+Product repos may target national programs (e.g. transit) while protocol repos remain
+currency- and region-aware through contracts, not ad-hoc per-repo schemas.
 
 ## 3. Naming conventions
 
@@ -68,7 +107,10 @@ Every new infrastructure repository is initialized with at least:
 ```
 <repo>/
 ├── README.md            # what it is, status, boundaries, what it is NOT
-├── docs/                # architecture, lifecycle, failure models
+├── contracts/CONTRACTS.md   # own / consume / emit (required for message producers)
+├── docs/
+│   ├── dependencies.md  # repo and contract dependencies
+│   └── ...              # architecture, lifecycle, failure models
 ├── src/                 # source (module boundaries first; no fake implementations)
 ├── tests/               # unit/ and integration/
 ├── configs/             # configuration (no secrets)

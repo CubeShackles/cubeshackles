@@ -11,7 +11,10 @@
 
 ## What CubeShackles is
 
-CubeShackles is **Angola-native sovereign financial infrastructure**.
+CubeShackles is **Angola-native sovereign financial infrastructure**. Settlement
+design is **AOA-native** (Angolan Kwanza as the default native currency in contracts
+and protocol semantics), with regional currency support where product contracts
+require it.
 
 It is not a blockchain clone, a token project, or a payments app. It is a
 deterministic settlement and coordination platform built around two primitives:
@@ -76,6 +79,9 @@ The full inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md).
 |---|---|
 | Understand the whole system | [`SYSTEM_ARCHITECTURE.md`](SYSTEM_ARCHITECTURE.md) |
 | Know which repo does what | [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) |
+| Interoperability contracts | [`cubeshackles-contracts`](../cubeshackles-contracts/README.md) (sibling repo) · umbrella [`contracts/CONTRACTS.md`](contracts/CONTRACTS.md) |
+| Architecture audit (2026-05) | [`docs/architecture-consistency-audit.md`](docs/architecture-consistency-audit.md) |
+| Governance policies | [`governance/policies/`](governance/policies/) |
 | Understand our engineering bar | [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) |
 | Understand the trust model | [`SECURITY_MODEL.md`](SECURITY_MODEL.md) |
 | See where this is going | [`ROADMAP.md`](ROADMAP.md) |

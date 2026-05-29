@@ -5,8 +5,8 @@
 This document is the reference description of how CubeShackles is structured: its
 layers, its repositories, its communication paths, the validator lifecycle, the
 DAG settlement flow, where AI is permitted to operate, and how the system is
-intended to fail safely. It describes both what exists today and what is planned;
-status is stated explicitly per component.
+intended to fail safely. It describes both what exists today and what is planned or
+scaffolded; status is stated explicitly per component.
 
 ---
 
@@ -21,12 +21,13 @@ is shaped by a small number of non-negotiable goals:
 4. **Isolation** — AI, analytics, and experimental compute are physically and logically separated from settlement.
 5. **Hardware agnosticism** — the compute layer targets an abstraction, not a vendor.
 6. **Offline-first** — the system assumes intermittent connectivity, not continuous broadband.
+7. **AOA-native settlement** — Angolan Kwanza is the default native settlement currency in contracts and protocol design.
 
 ## 2. Layered model
 
 CubeShackles is organized into horizontal layers. Each layer has a defined
 responsibility and communicates with adjacent layers through explicit, versioned
-interfaces.
+interfaces defined in `cubeshackles-contracts`.
 
 ```
 +--------------------------------------------------------------+
@@ -34,31 +35,38 @@ interfaces.
 |  CubeWallet · web · phone-wedge · national-transit · BualaBuitu|
 +--------------------------------------------------------------+
 |  Intelligence Layer (advisory, isolated)                     |
-|  adviser · kulifikila (credit) · ai-runtime (fraud/risk/econ) |
+|  adviser · kulifikila (credit) · ai-runtime (scaffolded)     |
 +--------------------------------------------------------------+
 |  API & Coordination Layer                                    |
 |  node-api · network-orchestrator                             |
 +--------------------------------------------------------------+
 |  Protocol & Execution Layer                                  |
-|  core (protocol logic) · validator-node · runtime (kernel)   |
+|  core · validator-node · runtime (scaffolded)                |
 +--------------------------------------------------------------+
-|  Compute Layer                                               |
-|  compute (GPU/edge orchestration)                            |
+|  Contracts Layer (cross-cutting schema authority)            |
+|  cubeshackles-contracts (schemas · events · versioning)      |
 +--------------------------------------------------------------+
-|  Hardware Layer                                              |
-|  hardware (specs · ARM/RISC-V/FPGA · Cube/Shackle Silicon)   |
+|  Sovereign Infrastructure Layer (private, non-consensus)     |
+|  compute (scaffolded) · hardware (scaffolded)                |
 +--------------------------------------------------------------+
-|  Observability (cross-cutting)                               |
-|  observability (metrics · tracing · audit · anomaly)         |
+|  Observability (cross-cutting, scaffolded)                   |
+|  observability — intended audit-grade telemetry contracts    |
 +--------------------------------------------------------------+
 ```
 
 The single most important rule across layers: **intelligence is advisory.** No
-output from the Intelligence Layer may directly mutate consensus-critical state.
-Its outputs are consumed as signals, scored, recorded, and acted upon only
+output from the Intelligence or Sovereign layers may directly mutate consensus-critical
+state. Its outputs are consumed as signals, scored, recorded, and acted upon only
 through deterministic protocol rules.
 
-## 3. Core data primitives
+## 3. Contracts layer
+
+`cubeshackles-contracts` owns versioned message shapes (JSON Schema, OpenAPI, event
+taxonomy). Protocol, access, and sovereign repos **consume** contracts; they do not
+redefine shared schemas locally. See [`cubeshackles-contracts`](../cubeshackles-contracts/README.md)
+(sibling repository) and [`governance/policies/interoperability-policy.md`](governance/policies/interoperability-policy.md).
+
+## 4. Core data primitives
 
 - **Cube** — the canonical unit of state. A Cube is a deterministic, hash-addressed
   record describing an economic and/or identity-aware event. Cubes are immutable
@@ -68,12 +76,12 @@ through deterministic protocol rules.
   validator obligations, and policy hooks. Shackles are deterministic;
   AI-assisted policy is referenced through hooks whose *decisions are recorded as
   inputs*, never executed inside consensus.
-- **SmartShackle** *(planned)* — programmable Shackles that may reference AI hooks,
-  model-execution triggers, GPU compute references, and inference receipts. These
+- **SmartShackle** *(planned)* — programmable Shackles that may reference advisory
+  hooks, model-execution triggers, compute references, and inference receipts. These
   remain advisory and verifiable; the long-term intent is zk-verifiable AI outputs
   so that intelligence can be trusted without trusting the executor.
 
-## 4. The settlement DAG
+## 5. The settlement DAG
 
 CubeShackles settlement is modeled as a **directed acyclic graph (DAG)** of Cubes,
 not a linear chain.
@@ -87,7 +95,7 @@ not a linear chain.
 DAG optimization (compaction, indexing, frontier pruning) is a compute-layer
 concern and must never alter settlement semantics — only performance.
 
-## 5. Validator lifecycle
+## 6. Validator lifecycle
 
 A validator moves through a defined lifecycle. Each transition is observable and
 auditable.
@@ -100,12 +108,12 @@ auditable.
 5. **Advisory consumption** — validator may *read* signals from the Intelligence
    Layer (fraud/risk scores) and attach them as recorded inputs; it never delegates
    consensus decisions to them.
-6. **Degraded** — on resource exhaustion (e.g. GPU exhaustion) or partial fault,
-   validator sheds non-critical work and continues settlement.
+6. **Degraded** — on resource exhaustion or partial fault, validator sheds
+   non-critical work and continues settlement.
 7. **Eviction / exit** — on misbehavior or voluntary exit, validator is removed;
    its actions remain in the audit record.
 
-## 6. Communication paths
+## 7. Communication paths
 
 | From | To | Purpose | Property |
 |---|---|---|---|
@@ -114,13 +122,14 @@ auditable.
 | `validator-node` | `core` | apply protocol/Shackle logic | in-process / library |
 | `validator-node` | `network-orchestrator` | membership, gossip, ordering | authenticated peer protocol |
 | `validator-node` | `ai-runtime` | request advisory signals | one-way, advisory, recorded |
-| all components | `observability` | metrics, traces, audit logs | append-only, tamper-evident |
-| `runtime`/`validator-node` | `compute` | schedule GPU/edge workloads | isolated, non-consensus |
+| all components | `observability` | metrics, traces, audit logs (target) | append-only, tamper-evident |
+| `runtime` / `validator-node` | `compute` | schedule GPU/edge workloads (target) | isolated, non-consensus |
+| all producers | `contracts` | schema conformance | versioned, integration-tested |
 
 Trust boundaries are crossed only through explicit interfaces. Crossing a boundary
 always implies authentication, validation, and audit logging.
 
-## 7. AI execution boundary
+## 8. AI execution boundary
 
 This is the architecturally load-bearing constraint.
 
@@ -135,59 +144,63 @@ This is the architecturally load-bearing constraint.
 See [`SECURITY_MODEL.md`](SECURITY_MODEL.md) and `FAILURE_MODELS.md` (planned) for the
 full treatment.
 
-## 8. Compute & hardware layers
+## 9. Sovereign infrastructure layers
 
-- **`cubeshackles-compute`** *(planned)* — distributed sovereign compute
-  orchestration: GPU scheduling, edge compute, node compute balancing, AI compute
-  federation, datacenter orchestration. This is the home of future *CubeCompute*.
-- **`cubeshackles-hardware`** *(planned)* — hardware abstraction and silicon
-  roadmap: validator hardware specs, edge/thermal systems, ARM integration,
-  RISC-V experimentation, FPGA support, ASIC research, and the *Cube Silicon* /
+- **`cubeshackles-compute`** *(scaffolded, private)* — intended distributed sovereign
+  compute orchestration: GPU scheduling, edge compute, node balancing, AI workload
+  federation. Future home of *CubeCompute*.
+- **`cubeshackles-hardware`** *(scaffolded, private)* — hardware abstraction and
+  silicon roadmap: validator hardware specs, edge/thermal systems, ARM integration,
+  RISC-V experimentation, FPGA support, ASIC research, and *Cube Silicon* /
   *Shackle Silicon* pathways.
+- **`cubeshackles-ai-runtime`** *(scaffolded, private)* — advisory inference;
+  not part of consensus.
 
 The compute layer targets a **hardware abstraction layer** so workloads remain
-portable across Nvidia, AMD, ARM, RISC-V, FPGA, and future in-house silicon. The
-platform must never architect dependence on a single vendor or geopolitical supply
-chain.
+portable across Nvidia, AMD, ARM, RISC-V, FPGA, and future in-house silicon.
 
-## 9. Observability (cross-cutting)
+## 10. Observability (cross-cutting, scaffolded)
 
-`cubeshackles-observability` *(planned/partial)* provides metrics, distributed
-tracing, append-only audit logs, anomaly detection, AI node health, validator
-monitoring, and sovereign compliance telemetry. Auditability is a first-class
-architectural property, not an add-on: if an action is not observable, it is not
-permitted in a consensus-critical path.
+`cubeshackles-observability` is **scaffolded**. It is intended to host
+audit-grade telemetry contracts, metrics and tracing integrations, validator
+monitoring hooks, and compliance-oriented log shapes — aligned with
+`cubeshackles-contracts`. It does **not** currently ship a production observability
+stack. Auditability remains an architectural requirement for consensus paths as they
+are implemented in active repos.
 
-## 10. Repository roles (summary)
+## 11. Repository roles (summary)
 
 | Repository | Layer | Status |
 |---|---|---|
 | `cubeshackles` (this repo) | umbrella / doctrine | active |
+| `cubeshackles-contracts` | contracts | active (v0.1 draft) |
 | `cubeshackles-core` | protocol & execution | active |
 | `cubeshackles-validator-node` | protocol & execution | active |
 | `cubeshackles-node-api` | API & coordination | active |
 | `cubeshackles-network-orchestrator` | API & coordination | active |
+| `cubeshackles-runtime` | protocol & execution | scaffolded |
 | `cubeshackles-phone-wedge` | access (Angola phone wedge) | active |
 | `cubeshackles-integration` | cross-repo testing / gates | active |
 | `cubeshackles-web` | access (web client) | active |
 | `CubeWallet` | access (wallet) | active |
 | `cubeshackles-adviser` | intelligence (advisory service, port 8080) | active |
-| `kulifikila` | intelligence (credit) | active |
+| `kulifikila` | sovereign / intelligence (credit) | active |
+| `cubeshackles-ai-runtime` | sovereign / intelligence (AI execution) | scaffolded |
+| `cubeshackles-compute` | sovereign / compute | scaffolded |
+| `cubeshackles-hardware` | sovereign / hardware | scaffolded |
 | `BualaBuitu` | access (terminal/data intelligence) | active |
 | `national-transit-app-cubeshackles` | access (transit) | active |
-| `cubeshackles-runtime` | execution kernel | planned |
-| `cubeshackles-ai-runtime` | intelligence (AI execution) | planned |
-| `cubeshackles-compute` | compute orchestration | planned (private) |
-| `cubeshackles-hardware` | hardware / silicon | planned (private) |
-| `cubeshackles-observability` | observability | planned (partial public) |
+| `cubeshackles-observability` | observability | scaffolded |
 
 Full detail and visibility classification: [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md).
 
-## 11. Companion documents
+## 12. Companion documents
 
 - [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) — the engineering bar.
 - [`SECURITY_MODEL.md`](SECURITY_MODEL.md) — trust boundaries and threat posture.
-- [`docs/repo-governance.md`](docs/repo-governance.md) — how repositories are created, named, and classified.
+- [`docs/repo-governance.md`](docs/repo-governance.md) — repository creation and classification.
+- [`docs/architecture-consistency-audit.md`](docs/architecture-consistency-audit.md) — audit findings and remediations.
+- [`governance/policies/`](governance/policies/) — formal policies.
 - `FAILURE_MODELS.md` *(planned)* — Byzantine, partition, AI-corruption, regulator override.
 - `COMPUTE_ROADMAP.md` *(planned)* — Nvidia/AMD/RISC-V/FPGA and Cube Silicon path.
 - [`ROADMAP.md`](ROADMAP.md) — sequencing and milestones.

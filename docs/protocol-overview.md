@@ -100,17 +100,20 @@ advisory; the *rules* applying them are deterministic.
 
 ## 7. Currency and offline support
 
-- **African currency compatibility** is a first-class requirement (Kwanza and
-  regional currencies).
+- **AOA-native settlement** — Angolan Kwanza (AOA) is the default native settlement
+  currency in interoperability contracts and protocol semantics. Regional currencies
+  appear only where explicit product contracts require them.
 - **Offline-first**: transactions can be captured without connectivity (e.g. via the
   phone wedge) and settled deterministically when the DAG reconciles.
 
 ## 8. Relationship to other layers
 
+- **Contracts** — shared schemas and events are defined in `cubeshackles-contracts`;
+  `cubeshackles-core` implements protocol logic against those contracts.
 - The protocol does **not** contain AI. Intelligence is consumed as advisory signals
-  from `kulifikila` / `ai-runtime` (planned), strictly outside consensus.
+  from `kulifikila` / `cubeshackles-ai-runtime` (scaffolded), strictly outside consensus.
 - The protocol does **not** assume specific hardware. Acceleration is provided by the
-  compute/hardware layers behind an abstraction.
+  sovereign compute/hardware layers (scaffolded) behind an abstraction.
 
 ## 9. Status
 
