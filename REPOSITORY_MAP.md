@@ -44,13 +44,15 @@ without exposing their implementation.
 |---|---|---|---|
 | `cubeshackles-phone-wedge` | Angola phone transaction wedge. Offline-first, low-connectivity entry point for phone-based transactions. | active | public |
 | `CubeWallet` | Wallet. User custody and transaction UX. | active | public |
-| `BualaBuitu` | Terminal / data intelligence access surface. | active | mixed |
+| `cubeshackles-web` | Web access surface. Browser-based client for transactions and account views over `node-api`. | active | public |
+| `BualaBuitu` [^name] | Terminal / data intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | National transit application built on CubeShackles rails. | active | public |
 
 ## 4. Intelligence layer (advisory, isolated)
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
+| `cubeshackles-adviser` | Advisory service (dev port 8080). Surfaces advisory financial guidance and signals; runs outside the consensus-critical path. | active | mixed |
 | `kulifikila` | Credit intelligence. Advisory credit scoring; outputs consumed as recorded signals only. | active | private |
 | `cubeshackles-ai-runtime` | AI execution infrastructure: CUDA/ROCm/TensorRT/Triton support, fraud/risk/economic models, model registry, distributed inference. Strictly outside consensus. | planned | private |
 
@@ -63,7 +65,17 @@ without exposing their implementation.
 | `cubeshackles-hardware` | Hardware abstraction and silicon roadmap: validator hardware specs, edge/thermal, ARM, RISC-V, FPGA, ASIC research, Cube Silicon / Shackle Silicon. | planned | private |
 | `cubeshackles-observability` | Production telemetry: metrics, tracing, audit logs, anomaly detection, AI node health, validator monitoring, sovereign compliance telemetry. | planned | partial public |
 
-## 6. Dependency relationships
+## 6. Platform operations
+
+| Repository | Role | Status | Visibility |
+|---|---|---|---|
+| `cubeshackles-infra` | Deployment / environment / operations tooling for the platform. Exact scope to be confirmed and reconciled with `cubeshackles-observability`. | active (role to confirm) | mixed |
+
+> Repositories whose role is not yet fully classified are listed here honestly with
+> a "role to confirm" status rather than omitted. New repositories must be classified
+> per [`docs/repo-governance.md`](docs/repo-governance.md) before reaching "active".
+
+## 7. Dependency relationships
 
 - `cubeshackles-core` is the foundational dependency; protocol-facing repos consume
   its contracts.
@@ -76,7 +88,7 @@ without exposing their implementation.
 - `cubeshackles-integration` depends on the public contracts of all of the above to
   run cross-repo gates.
 
-## 7. Local layout convention
+## 8. Local layout convention
 
 For full local development, repositories are checked out as siblings:
 
@@ -89,16 +101,25 @@ parent/
 ├── cubeshackles-network-orchestrator/
 ├── cubeshackles-phone-wedge/
 ├── cubeshackles-integration/
+├── cubeshackles-web/
+├── cubeshackles-adviser/              # advisory service (dev port 8080)
+├── cubeshackles-infra/               # operations (role to confirm)
 ├── CubeWallet/
 ├── kulifikila/                        # private
-├── BualaBuitu/
+├── BualaBuitu/                        # on disk currently as "BuilaBuitu" — see note
 ├── national-transit-app-cubeshackles/
-├── cubeshackles-runtime/              # planned
-├── cubeshackles-ai-runtime/           # planned, private
-├── cubeshackles-compute/              # planned, private
-├── cubeshackles-hardware/             # planned, private
-└── cubeshackles-observability/        # planned, partial public
+├── cubeshackles-runtime/              # scaffolded, not yet integrated
+├── cubeshackles-ai-runtime/           # scaffolded, not yet integrated, private
+├── cubeshackles-compute/              # scaffolded, not yet integrated, private
+├── cubeshackles-hardware/             # scaffolded, not yet integrated, private
+└── cubeshackles-observability/        # scaffolded, not yet integrated, partial public
 ```
 
 Tests and tooling that span repositories assume this sibling layout. Repos that are
 absent are expected to skip gracefully where possible.
+
+[^name]: **Canonical name: `BualaBuitu`.** The on-disk directory is currently
+`BuilaBuitu`. This is a tracked naming discrepancy: the repository should be renamed
+to the canonical `BualaBuitu` so that documentation, tooling, and the filesystem
+agree. Until reconciled, treat `BualaBuitu` as authoritative and `BuilaBuitu` as the
+legacy folder name.

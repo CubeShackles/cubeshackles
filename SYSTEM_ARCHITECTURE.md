@@ -31,10 +31,10 @@ interfaces.
 ```
 +--------------------------------------------------------------+
 |  Application / Access Layer                                   |
-|  CubeWallet · phone-wedge · national-transit · BualaBuitu    |
+|  CubeWallet · web · phone-wedge · national-transit · BualaBuitu|
 +--------------------------------------------------------------+
 |  Intelligence Layer (advisory, isolated)                     |
-|  kulifikila (credit) · ai-runtime (fraud/risk/economic)      |
+|  adviser · kulifikila (credit) · ai-runtime (fraud/risk/econ) |
 +--------------------------------------------------------------+
 |  API & Coordination Layer                                    |
 |  node-api · network-orchestrator                             |
@@ -169,7 +169,9 @@ permitted in a consensus-critical path.
 | `cubeshackles-network-orchestrator` | API & coordination | active |
 | `cubeshackles-phone-wedge` | access (Angola phone wedge) | active |
 | `cubeshackles-integration` | cross-repo testing / gates | active |
+| `cubeshackles-web` | access (web client) | active |
 | `CubeWallet` | access (wallet) | active |
+| `cubeshackles-adviser` | intelligence (advisory service, port 8080) | active |
 | `kulifikila` | intelligence (credit) | active |
 | `BualaBuitu` | access (terminal/data intelligence) | active |
 | `national-transit-app-cubeshackles` | access (transit) | active |
@@ -185,6 +187,7 @@ Full detail and visibility classification: [`REPOSITORY_MAP.md`](REPOSITORY_MAP.
 
 - [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) — the engineering bar.
 - [`SECURITY_MODEL.md`](SECURITY_MODEL.md) — trust boundaries and threat posture.
+- [`docs/repo-governance.md`](docs/repo-governance.md) — how repositories are created, named, and classified.
 - `FAILURE_MODELS.md` *(planned)* — Byzantine, partition, AI-corruption, regulator override.
 - `COMPUTE_ROADMAP.md` *(planned)* — Nvidia/AMD/RISC-V/FPGA and Cube Silicon path.
 - [`ROADMAP.md`](ROADMAP.md) — sequencing and milestones.

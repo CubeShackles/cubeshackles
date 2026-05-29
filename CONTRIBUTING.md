@@ -30,7 +30,8 @@ if they are well written.
 | API surface | `cubeshackles-node-api` |
 | Network coordination | `cubeshackles-network-orchestrator` |
 | Cross-repo tests / gates | `cubeshackles-integration` |
-| Access apps | `CubeWallet`, `phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
+| Access apps | `CubeWallet`, `cubeshackles-web`, `phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
+| Advisory services | `cubeshackles-adviser` (advisory only; never consensus-critical) |
 
 Intelligence, compute, and hardware repositories are private; contribution happens
 through controlled channels.

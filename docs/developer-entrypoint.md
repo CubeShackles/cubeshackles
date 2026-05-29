@@ -37,9 +37,11 @@ parent/
 ├── cubeshackles-network-orchestrator/
 ├── cubeshackles-phone-wedge/
 ├── cubeshackles-integration/          # cross-repo tests / gates
+├── cubeshackles-web/                  # web access client
+├── cubeshackles-adviser/              # advisory service (dev port 8080)
 ├── CubeWallet/
 ├── kulifikila/                        # private
-├── BualaBuitu/
+├── BualaBuitu/                        # on disk as "BuilaBuitu" (rename pending)
 └── national-transit-app-cubeshackles/
 ```
 

@@ -80,6 +80,7 @@ The full inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md).
 | Understand the trust model | [`SECURITY_MODEL.md`](SECURITY_MODEL.md) |
 | See where this is going | [`ROADMAP.md`](ROADMAP.md) |
 | Contribute | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+| Create/classify a new repo | [`docs/repo-governance.md`](docs/repo-governance.md) |
 | Get hands-on as a developer | [`docs/developer-entrypoint.md`](docs/developer-entrypoint.md) |
 | Understand the protocol | [`docs/protocol-overview.md`](docs/protocol-overview.md) |
 | Understand the strategic thesis | [`docs/sovereign-infrastructure-thesis.md`](docs/sovereign-infrastructure-thesis.md) |
