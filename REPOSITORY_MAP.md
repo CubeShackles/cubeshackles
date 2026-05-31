@@ -45,11 +45,12 @@ replayable, and independent of sovereign AI/compute for correctness.
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
 | `cubeshackles-core` | Protocol logic. Cube/Shackle primitives, deterministic execution rules, settlement semantics; implements contracts consumed by sibling repos. | active | public |
-| `cubeshackles-validator-node` | Validator execution. Runs the validator lifecycle, applies Shackle rules, participates in deterministic DAG ordering. | active | public |
-| `cubeshackles-node-api` | API layer. External-facing interface for submitting transactions and querying state (runtime API, dev port 8090). | active | public |
+| `cubeshackles-validator-node` | Validator execution. Runs the validator lifecycle, applies Shackle rules, participates in deterministic DAG ordering. **Validation authority only** — does not settle. | active | public |
+| `cubeshackles-settlement-engine` | Settlement engine. **Internal ledger finality authority** in v0.1; consumes validated transactions, emits settlement and finality records. Does not mutate wallet or external bank balances. | scaffolded | public |
+| `cubeshackles-node-api` | API layer. **Public contract gateway** (ingress authority). External-facing interface for submitting transactions and querying state (runtime API, dev port 8090). | active | public |
 | `cubeshackles-network-orchestrator` | Network coordination. Membership, peer gossip, DAG frontier coordination, validator join/sync. | active | public |
 | `cubeshackles-integration` | Cross-repo integration and production-gate suite. Validates contracts and interoperability across sibling repos; does not run production traffic. | active | public |
-| `cubeshackles-runtime` | Deterministic execution kernel: execution engine, memory management, DAG scheduling, validator execution lifecycle, orchestration kernel, validator hook interfaces for **recorded advisory inputs only**. | scaffolded | public |
+| `cubeshackles-runtime` | Deterministic execution kernel: execution engine, memory management, DAG scheduling, validator execution lifecycle, **settlement handoff orchestration**. Orchestration authority — does not create finality. | scaffolded | public |
 
 ## 4. Sovereign infrastructure layer
 
@@ -58,17 +59,17 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
-| `cubeshackles-ai-runtime` | Advisory AI execution: fraud/risk/economic models, inference infrastructure (CUDA/ROCm/Triton/TensorRT). Strictly outside consensus. | scaffolded | private |
-| `cubeshackles-compute` | Distributed sovereign compute orchestration: GPU scheduling, edge compute, node balancing, AI workload placement (future CubeCompute). | scaffolded | private |
-| `cubeshackles-hardware` | Hardware abstraction and silicon roadmap: validator specs, edge/thermal, ARM, RISC-V, FPGA, ASIC research, Cube Silicon / Shackle Silicon. | scaffolded | private |
+| `cubeshackles-ai-runtime` | Advisory AI execution: fraud/risk/economic models, inference infrastructure (CUDA/ROCm/Triton/TensorRT). Strictly outside consensus. **Infrastructure only.** | scaffolded | private |
+| `cubeshackles-compute` | Distributed sovereign compute orchestration: GPU scheduling, edge compute, node balancing, AI workload placement (future CubeCompute). **Infrastructure only.** | scaffolded | private |
+| `cubeshackles-hardware` | Hardware abstraction and silicon roadmap: validator specs, edge/thermal, ARM, RISC-V, FPGA, ASIC research, Cube Silicon / Shackle Silicon. **Infrastructure only.** | scaffolded | private |
 | `kulifikila` | Credit intelligence. Advisory credit scoring; outputs consumed as recorded signals only. | active | private |
 
 ## 5. Access layer (products / wedges)
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
-| `cubeshackles-phone-wedge` | Angola phone transaction wedge. Offline-first, low-connectivity entry point for phone-based transactions. | active | public |
-| `CubeWallet` | Wallet. User custody and transaction UX. | active | public |
+| `cubeshackles-phone-wedge` | Angola phone transaction wedge. **Device initiation authority.** Offline-first, low-connectivity entry point for phone-based transactions. | active | public |
+| `CubeWallet` | Wallet. **User initiation authority.** User custody and transaction UX. | active | public |
 | `cubeshackles-web` | Web access surface. Browser-based client for transactions and account views over `node-api`. | active | public |
 | `BualaBuitu` [^name] | Terminal / data intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | National transit application built on CubeShackles rails. | active | public |
@@ -85,7 +86,7 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
-| `cubeshackles-observability` | Intended home for audit-grade telemetry contracts, metrics, tracing, and validator monitoring integrations. Repository is **scaffolded** — module boundaries and docs only; no production telemetry stack is shipped. | scaffolded | partial public |
+| `cubeshackles-observability` | **Audit visibility authority.** Intended home for audit-grade telemetry contracts, metrics, tracing, and validator monitoring integrations. Repository is **scaffolded** — module boundaries and docs only; no production telemetry stack is shipped. | scaffolded | partial public |
 
 ## 8. Platform operations
 
@@ -104,8 +105,13 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 - `cubeshackles-core` is the foundational protocol implementation; protocol-facing
   repos consume its logic and published contracts.
 - `cubeshackles-validator-node` depends on `core` and coordinates via
-  `network-orchestrator`.
-- `cubeshackles-node-api` fronts `validator-node`.
+  `network-orchestrator`. Emits validation decisions only.
+- `cubeshackles-settlement-engine` consumes `transaction.validated` from the validator
+  path; it is the **sole v0.1 internal ledger finality authority**. It does not mutate
+  wallet state or external bank balances; no production bank/regulator integration.
+- `cubeshackles-node-api` fronts `validator-node` as the **public contract gateway**.
+- `cubeshackles-runtime` orchestrates validator and settlement handoffs; it does not
+  create finality.
 - Access-layer apps depend on `node-api`.
 - Sovereign repos (`ai-runtime`, `compute`, `hardware`, `kulifikila`) are consumed
   **one-way** as advisory signals or operational sidecars; nothing in the protocol
@@ -113,9 +119,27 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 - `cubeshackles-integration` depends on the public contracts of participating repos to
   run cross-repo gates.
 - `cubeshackles-runtime` (when integrated) executes under `core` rules; it does not
-  host AI models or define advisory inference.
+  host AI models, define advisory inference, or create settlement finality.
+- `cubeshackles-observability` provides audit visibility; it is not a finality authority.
 
-## 10. Local layout convention
+## 10. v0.1 authority model (Phase C gate)
+
+| Layer | Authority |
+|---|---|
+| Node API | Ingress / public contract gateway |
+| Runtime | Orchestration |
+| Validator | Validation |
+| Settlement engine | Internal ledger finality |
+| Observability | Audit visibility |
+| Wallet | User initiation |
+| Phone Wedge | Device initiation |
+| AI / Compute / Hardware / Network | Infrastructure only |
+
+Settlement engine finality is **internal ledger finality only** in v0.1. Wallet state
+mutation and external bank balance mutation are not v0.1 settlement engine authority.
+No production bank, BNA, telecom, or regulator integration claims.
+
+## 11. Local layout convention
 
 For full local development, repositories are checked out as siblings:
 
@@ -126,6 +150,7 @@ parent/
 ├── cubeshackles-core/                 # REQUIRED — protocol logic
 ├── cubeshackles-node-api/             # REQUIRED — runtime API (port 8090)
 ├── cubeshackles-validator-node/
+├── cubeshackles-settlement-engine/    # scaffolded — internal ledger finality authority
 ├── cubeshackles-network-orchestrator/
 ├── cubeshackles-phone-wedge/
 ├── cubeshackles-integration/
