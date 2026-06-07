@@ -47,7 +47,8 @@ replayable, and independent of sovereign AI/compute for correctness.
 | `cubeshackles-core` | Protocol logic. Cube/Shackle primitives, deterministic execution rules, settlement semantics; implements contracts consumed by sibling repos. | active | public |
 | `cubeshackles-validator-node` | Validator execution. Runs the validator lifecycle, applies Shackle rules, participates in deterministic DAG ordering. **Validation authority only** — does not settle. | active | public |
 | `cubeshackles-settlement-engine` | Settlement engine. **Internal ledger finality authority** in v0.1; consumes validated transactions, emits settlement and finality records. Does not mutate wallet or external bank balances. | scaffolded | public |
-| `cubeshackles-node-api` | API layer. **Public contract gateway** (ingress authority). External-facing interface for submitting transactions and querying state (runtime API, dev port 8090). | active | public |
+| `cubeshackles-offline-infrastructure` | Offline transaction infrastructure. **Queueing, delayed sync, conflict classification, and replay preservation authority** under weak connectivity. Does not validate, settle, or mutate wallet/ledger state. | scaffolded | public |
+| `cubeshackles-node-api` | API layer. **Public contract gateway** (online ingress authority). External-facing interface for submitting transactions and querying state (runtime API, dev port 8090). | active | public |
 | `cubeshackles-network-orchestrator` | Network coordination. Membership, peer gossip, DAG frontier coordination, validator join/sync. | active | public |
 | `cubeshackles-integration` | Cross-repo integration and production-gate suite. Validates contracts and interoperability across sibling repos; does not run production traffic. | active | public |
 | `cubeshackles-runtime` | Deterministic execution kernel: execution engine, memory management, DAG scheduling, validator execution lifecycle, **settlement handoff orchestration**. Orchestration authority — does not create finality. | scaffolded | public |
@@ -88,10 +89,17 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 |---|---|---|---|
 | `cubeshackles-observability` | **Audit visibility authority.** Intended home for audit-grade telemetry contracts, metrics, tracing, and validator monitoring integrations. Repository is **scaffolded** — module boundaries and docs only; no production telemetry stack is shipped. | scaffolded | partial public |
 
-## 8. Platform operations
+## 8. Platform operations and readiness (v0.1 feature-freeze scaffolds)
 
 | Repository | Role | Status | Visibility |
 |---|---|---|---|
+| `cubeshackles-provincial-topology` | Angola-first node placement, routing, provincial failover planning. **Planning only** — no settlement or validation authority. | scaffolded | public |
+| `cubeshackles-vault` | Key custody, signing boundaries, rotation, recovery. **Secrets boundary** — never stores secrets in repo. | scaffolded | mixed |
+| `cubeshackles-disaster-recovery` | Regional outage, replay rebuild, backup verification plans. Does not create finality. | scaffolded | mixed |
+| `cubeshackles-chaos` | Controlled failure scenarios (test-only). Does not create settlement finality. | scaffolded | mixed |
+| `cubeshackles-security` | Threat model, static analysis, dependency review, secret scanning gates. | scaffolded | mixed |
+| `cubeshackles-operations` | Deployment, rollback, incident response, SLO doctrine. No product features. | scaffolded | mixed |
+| `cubeshackles-angola-pilot` | Controlled pilot corridor scope. **No national deployment claim.** | scaffolded | mixed |
 | `cubeshackles-infra` | Deployment / environment / operations tooling for the platform. Exact scope to be confirmed and reconciled with `cubeshackles-observability`. | active (role to confirm) | mixed |
 
 > Repositories whose role is not yet fully classified are listed here honestly with
@@ -109,7 +117,11 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 - `cubeshackles-settlement-engine` consumes `transaction.validated` from the validator
   path; it is the **sole v0.1 internal ledger finality authority**. It does not mutate
   wallet state or external bank balances; no production bank/regulator integration.
-- `cubeshackles-node-api` fronts `validator-node` as the **public contract gateway**.
+- `cubeshackles-offline-infrastructure` queues initiated transactions under weak
+  connectivity; delayed sync is not validation or settlement. Conflict detection is
+  classification only.
+- `cubeshackles-node-api` fronts `validator-node` as the **public contract gateway**
+  for online ingress.
 - `cubeshackles-runtime` orchestrates validator and settlement handoffs; it does not
   create finality.
 - Access-layer apps depend on `node-api`.
@@ -122,12 +134,13 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
   host AI models, define advisory inference, or create settlement finality.
 - `cubeshackles-observability` provides audit visibility; it is not a finality authority.
 
-## 10. v0.1 authority model (Phase C gate)
+## 10. v0.1 authority model and feature-freeze gate
 
 | Layer | Authority |
 |---|---|
-| Node API | Ingress / public contract gateway |
-| Runtime | Orchestration |
+| Offline Infrastructure | Queueing, delayed sync, conflict classification |
+| Node API | Online ingress / public contract gateway |
+| Runtime | Post-sync orchestration |
 | Validator | Validation |
 | Settlement engine | Internal ledger finality |
 | Observability | Audit visibility |
@@ -135,9 +148,12 @@ abstraction, and credit intelligence. **Not** in the consensus-critical path.
 | Phone Wedge | Device initiation |
 | AI / Compute / Hardware / Network | Infrastructure only |
 
-Settlement engine finality is **internal ledger finality only** in v0.1. Wallet state
-mutation and external bank balance mutation are not v0.1 settlement engine authority.
-No production bank, BNA, telecom, or regulator integration claims.
+Offline sync is **not** validation. Offline sync is **not** settlement. Conflict
+detected is **classification only** — not conflict resolved. Offline infrastructure
+has no wallet or ledger mutation authority. No production telecom or regulator
+integration claims.
+
+Settlement engine finality is **internal ledger finality only** in v0.1.
 
 ## 11. Local layout convention
 
@@ -151,6 +167,14 @@ parent/
 ├── cubeshackles-node-api/             # REQUIRED — runtime API (port 8090)
 ├── cubeshackles-validator-node/
 ├── cubeshackles-settlement-engine/    # scaffolded — internal ledger finality authority
+├── cubeshackles-offline-infrastructure/ # scaffolded — offline queueing and delayed sync
+├── cubeshackles-provincial-topology/  # scaffolded — Angola routing/failover planning
+├── cubeshackles-vault/                # scaffolded — secrets/signing boundary
+├── cubeshackles-disaster-recovery/    # scaffolded — DR planning
+├── cubeshackles-chaos/                # scaffolded — chaos test scenarios
+├── cubeshackles-security/             # scaffolded — security gates
+├── cubeshackles-operations/           # scaffolded — ops doctrine
+├── cubeshackles-angola-pilot/         # scaffolded — limited pilot scope
 ├── cubeshackles-network-orchestrator/
 ├── cubeshackles-phone-wedge/
 ├── cubeshackles-integration/
