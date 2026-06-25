@@ -3,7 +3,7 @@ name: CubeShackles CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: ['**']
 
 jobs:
   repository-compliance:
