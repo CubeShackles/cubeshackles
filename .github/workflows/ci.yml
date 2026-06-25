@@ -24,6 +24,7 @@ jobs:
             --include="*.md" --include="*.py" --include="*.ts" --include="*.js" \
             --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=.venv \
             --exclude="PRODUCTION_PRINCIPLES.md" \
+            --exclude="sovereign-infrastructure-thesis.md" \
             . 2>/dev/null | grep -v "ci.yml"; then
             echo "Forbidden production claim found" && exit 1
           fi

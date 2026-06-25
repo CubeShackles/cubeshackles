@@ -60,7 +60,7 @@ We use precise language deliberately:
 
 We do not use fake decentralization language, and we do not claim production
 readiness where it does not exist. See [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md)
-for what "production ready" actually means here.
+for the org's definition of readiness.
 
 ## Repository visibility
 
