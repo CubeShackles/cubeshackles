@@ -4,7 +4,12 @@ on:
   pull_request:
   push:
     branches:
-      - '**'
+      - main
+      - 'fix/**'
+      - 'feat/**'
+      - 'docs/**'
+      - 'chore/**'
+      - 'ci/**'
 
 jobs:
   repository-compliance:
