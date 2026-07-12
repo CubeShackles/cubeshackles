@@ -132,5 +132,5 @@ start at the top.
 - No claims of decentralization we have not built.
 - No production-ready language for components that have not earned it.
 
-See [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) for the full
-definition of what "production ready" means here.
+See [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) for the org's
+full definition of operational readiness standards and maturity criteria.
