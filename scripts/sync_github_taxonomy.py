@@ -182,12 +182,13 @@ def upsert_milestone(repo: str, ms: dict[str, Any], dry_run: bool) -> str:
         [
             "gh",
             "api",
-            f"repos/{ORG}/{repo}/milestones",
+            f"repos/{ORG}/{repo}/milestones?state=all&per_page=100",
             "--paginate",
         ]
     ) or []
     found = next((m for m in existing if m.get("title") == title), None)
     if found is None:
+        # GitHub rejects creating milestones already closed; create open then close.
         create = run(
             [
                 "gh",
@@ -196,15 +197,35 @@ def upsert_milestone(repo: str, ms: dict[str, Any], dry_run: bool) -> str:
                 "-f",
                 f"title={title}",
                 "-f",
-                f"state={ms['state']}",
+                "state=open",
                 "-f",
                 f"description={ms['description']}",
             ],
             check=False,
         )
-        if create.returncode == 0:
-            return f"created milestone {title}"
-        return f"FAILED milestone create {title}: {create.stderr}"
+        if create.returncode != 0:
+            return f"FAILED milestone create {title}: {create.stderr}"
+        created = json.loads(create.stdout)
+        number = created["number"]
+        if ms["state"] == "closed":
+            close = run(
+                [
+                    "gh",
+                    "api",
+                    "-X",
+                    "PATCH",
+                    f"repos/{ORG}/{repo}/milestones/{number}",
+                    "-f",
+                    "state=closed",
+                    "-f",
+                    f"description={ms['description']}",
+                ],
+                check=False,
+            )
+            if close.returncode != 0:
+                return f"FAILED milestone close {title}: {close.stderr}"
+            return f"created+closed milestone {title}"
+        return f"created milestone {title}"
     number = found["number"]
     update = run(
         [
