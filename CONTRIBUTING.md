@@ -86,9 +86,15 @@ lines in contribution docs or PR templates.
 ## Commit & pull request conventions
 
 - Write clear, imperative commit messages describing the *why*.
+- Use conventional prefixes aligned with the institutional taxonomy:
+  `feat:`, `fix:`, `docs:`, `security:`, `compliance:`, `test:`, `infra:`,
+  `refactor:`, `chore:`.
+- Every PR must carry **`type:*`**, **`layer:*`**, **`risk:*`** labels and a
+  **milestone** — see [`docs/GITHUB_TAXONOMY.md`](docs/GITHUB_TAXONOMY.md).
 - Keep changes focused; one concern per PR where practical.
 - Reference the architectural principle or document a change affects.
 - For cross-repo changes, ensure `cubeshackles-integration` gates pass.
+- Do not add AI-vendor marketing badges or required tool co-author trailers.
 
 ## Security
 

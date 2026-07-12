@@ -144,6 +144,7 @@ The complete inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 53 
 | Review the architecture consistency audit | [`docs/architecture-consistency-audit.md`](docs/architecture-consistency-audit.md) |
 | Founder-led authorship and tooling rules | [`governance/policies/authorship-and-tooling.md`](governance/policies/authorship-and-tooling.md) |
 | Ecosystem documentation audit (founder-led sweep) | [`docs/FOUNDER_LED_DOCUMENTATION_AUDIT.md`](docs/FOUNDER_LED_DOCUMENTATION_AUDIT.md) |
+| GitHub labels, milestones, and commit taxonomy | [`docs/GITHUB_TAXONOMY.md`](docs/GITHUB_TAXONOMY.md) |
 | Contribute | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 
 ---
