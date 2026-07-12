@@ -23,6 +23,10 @@ no repository may be created with implied maturity it has not earned.
    unearned production-readiness, no vendor lock-in language.
 5. **One source of truth.** The umbrella repository (`cubeshackles`) is canonical.
    Architecture, repo map, and standards live here.
+6. **Founder-led authorship.** CubeShackles is founder-led. AI coding tools may
+   assist; they are not authors or owners. See
+   [`../governance/policies/authorship-and-tooling.md`](../governance/policies/authorship-and-tooling.md)
+   and [`documentation-templates.md`](documentation-templates.md).
 
 ## 2. Architectural layers
 
@@ -189,9 +193,11 @@ Before creating a new repository:
 At creation:
 
 - [ ] `git init`; base structure created (§4).
-- [ ] README states layer, visibility, maturity, and what it is NOT.
+- [ ] README states **Owner: CubeShackles (founder-led)**, layer, visibility, maturity, and what it is NOT (see [`documentation-templates.md`](documentation-templates.md)).
+- [ ] `CONTRIBUTING.md` stub points at umbrella CONTRIBUTING and authorship policy.
 - [ ] Core architecture + failure-model docs drafted.
 - [ ] No secrets; security baseline (§6) in place.
+- [ ] No AI-vendor marketing badges or required tool co-author lines.
 - [ ] Committed **in isolation** (its own commit, not merged into others).
 
 Before integration:

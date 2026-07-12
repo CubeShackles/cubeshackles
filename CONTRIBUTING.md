@@ -16,8 +16,9 @@ Read, in order:
 2. [`SYSTEM_ARCHITECTURE.md`](SYSTEM_ARCHITECTURE.md) — how it fits together.
 3. [`PRODUCTION_PRINCIPLES.md`](PRODUCTION_PRINCIPLES.md) — the engineering bar.
 4. [`SECURITY_MODEL.md`](SECURITY_MODEL.md) — trust boundaries.
-5. [`governance/policies/`](governance/policies/) — repository, security, visibility, interoperability policies.
-6. [`cubeshackles-contracts`](../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md) — contract rules (sibling repo).
+5. [`governance/policies/`](governance/policies/) — repository, security, visibility, interoperability, and authorship policies.
+6. [`governance/policies/authorship-and-tooling.md`](governance/policies/authorship-and-tooling.md) — founder-led ownership; AI tools are assistants only.
+7. [`cubeshackles-contracts`](../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md) — contract rules (sibling repo).
 
 Contributions that violate the architecture or principles will not be merged, even
 if they are well written.
@@ -55,6 +56,10 @@ These derive directly from the production principles. A change is rejected if it
 6. Commits **secrets** (`.env`, credentials, key material) or sensitive sovereign
    logic into a public repository.
 7. Adds **fake decentralization** language or **overstates production readiness**.
+8. Presents an **AI tool vendor** (Cursor, Claude, Devin, Codex, Copilot, or similar)
+   as author, owner, or required co-author of CubeShackles in docs, READMEs, PR
+   templates, or manifests — see
+   [`governance/policies/authorship-and-tooling.md`](governance/policies/authorship-and-tooling.md).
 
 ## Honest language
 
@@ -64,6 +69,10 @@ Use precise wording in code, docs, and commit messages:
 - "designed for" / "intended to" / "planned" — committed direction, not shipped.
 
 Do not describe planned capability as if it ships today.
+
+CubeShackles is **founder-led**. AI assistants may draft; they do not own the
+platform. Do not add AI-vendor marketing badges or required tool `Co-authored-by`
+lines in contribution docs or PR templates.
 
 ## Documentation changes (this repo)
 

@@ -3,6 +3,11 @@
 **Canonical umbrella repository — the institutional source of truth for the
 CubeShackles platform.**
 
+**Owner: CubeShackles (founder-led).** Platform narrative, doctrine, and merge
+authority are founder-led. AI coding tools may assist engineering; they are not
+authors or owners of CubeShackles. See
+[`governance/policies/authorship-and-tooling.md`](governance/policies/authorship-and-tooling.md).
+
 > This repository is **not** the protocol implementation. It contains no protocol
 > code, no AI models, no fraud logic, no regulator tooling, and no production
 > secrets. It is the authoritative description of what CubeShackles is, how its
@@ -137,6 +142,8 @@ The complete inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 53 
 | Understand governance and repository policy | [`governance/policies/`](governance/policies/) |
 | Create or classify a new repository | [`docs/repo-governance.md`](docs/repo-governance.md) |
 | Review the architecture consistency audit | [`docs/architecture-consistency-audit.md`](docs/architecture-consistency-audit.md) |
+| Founder-led authorship and tooling rules | [`governance/policies/authorship-and-tooling.md`](governance/policies/authorship-and-tooling.md) |
+| Ecosystem documentation audit (founder-led sweep) | [`docs/FOUNDER_LED_DOCUMENTATION_AUDIT.md`](docs/FOUNDER_LED_DOCUMENTATION_AUDIT.md) |
 | Contribute | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
 
 ---
