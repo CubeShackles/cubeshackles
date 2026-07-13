@@ -72,6 +72,7 @@ These five repositories define the platform's **institutional vocabulary**: what
 |---|---|---|---|
 | `cubeshackles-os` | **CubeKernel — platform composition and operating system.** Composes platform services into a coherent operating system: boot sequence, service discovery, dependency graph, AI Runtime registration, feature flags, and lifecycle orchestration contracts. AI is an OS service in this model, not an application. Does not duplicate service code from sibling repos. | scaffolded | public |
 | `cubeshackles-platform-specs` | **Product and UX governance authority.** Defines what products do: behavior specifications, UX specifications, interaction models, user flows, state machines, copy standards, accessibility requirements, and acceptance criteria. Sits above the design system. | scaffolded | public |
+| `cubeshackles-control-plane` | **Institutional control plane — identity, policy, AI routing, and audit governance authority.** Sole point through which a user, service, or AI agent request is authenticated, authorized, routed across AI providers, checked against deterministic policy, and recorded as immutable evidence. Orchestrates — does not reimplement — `cubeshackles-ai-runtime`, `cubeshackles-ai-sdk`, `cubeshackles-ontology`, `cubeshackles-agent`, `cubeshackles-security-framework`, `cubeshackles-observability`, `cubeshackles-compliance-engine`, `cubeshackles-regulatory-reporting`, and `cubeshackles-institutional-gateway`. **Authority boundary vs. `cubeshackles-os`:** CubeKernel composes and boots platform *services*; the control plane governs *requests* flowing through those services once running (who may act, on what, under what policy, with what evidence). Neither owns the other. | scaffolded | mixed |
 
 ---
 
@@ -212,6 +213,7 @@ These repositories produce read-only, deterministic supervisory and security evi
 | Reality modeling (entities, jurisdiction, context) | `cubeshackles-terrain` |
 | Platform composition and OS kernel | `cubeshackles-os` |
 | Product behavior and UX specifications | `cubeshackles-platform-specs` |
+| Identity, policy decisioning, AI routing, and cross-system audit evidence | `cubeshackles-control-plane` |
 | Institutional instruction normalization | `cubeshackles-institutional-gateway` |
 | Compliance gating | `cubeshackles-compliance-engine` |
 | Clearing decisions and eligibility | `cubeshackles-clearing-house` |
@@ -272,6 +274,7 @@ parent/
 ├── # Operating system
 ├── cubeshackles-os/
 ├── cubeshackles-platform-specs/
+├── cubeshackles-control-plane/         # scaffolded
 │
 ├── # Protocol and execution — REQUIRED for all gate runs
 ├── cubeshackles-core/                     # REQUIRED — economic core
@@ -340,4 +343,4 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Last updated: July 2026. Total repositories: 53.*
+*Last updated: July 2026. Total repositories: 54.*
