@@ -58,6 +58,8 @@ Colors are fixed so the org UI stays consistent.
 | `layer:intelligence` | `#d93f0b` | adviser, AI runtime/sdk, kulifikila (advisory only) |
 | `layer:sovereign` | `#6f42c1` | compute, hardware, private sovereign infra |
 | `layer:ops` | `#c2e0c6` | ops, infra, security, chaos, disaster-recovery, observability |
+| `layer:os` | `#a2eeef` | `cubeshackles-os` (CubeKernel), `cubeshackles-platform-specs` |
+| `layer:control-plane` | `#0052cc` | `cubeshackles-control-plane` (cross-cutting request governance — see `SYSTEM_ARCHITECTURE.md` §5a) |
 
 ### Risk class (`risk:*`) — exactly one
 

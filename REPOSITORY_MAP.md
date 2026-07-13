@@ -75,6 +75,24 @@ These five repositories define the platform's **institutional vocabulary**: what
 
 ---
 
+## 5a. Control plane layer (cross-cutting)
+
+Not a peer of the operating system layer above — its integration reach spans
+sovereign infrastructure, foundation, regulatory/supervision, and
+institutional finance repositories, which is broader than any single-layer
+repository in this map. See `SYSTEM_ARCHITECTURE.md` §5a for the explicit
+mediation rule that keeps this breadth from becoming a backdoor around the
+platform's layer-isolation goal (every call goes through the target's own
+published contract; no target gains a dependency on this repo by appearing
+in its integration list; it never gains settlement/ledger/validator/signing
+authority).
+
+| Repository | Role | Status | Visibility |
+|---|---|---|---|
+| `cubeshackles-control-plane` | **Institutional control plane — identity, policy, AI routing, and audit governance authority.** Sole point through which a user, service, or AI agent request is authenticated, authorized, routed across AI providers, checked against deterministic policy, and recorded as immutable evidence. Orchestrates — does not reimplement — `cubeshackles-ai-runtime`, `cubeshackles-ai-sdk`, `cubeshackles-ontology`, `cubeshackles-agent`, `cubeshackles-security-framework`, `cubeshackles-observability`, `cubeshackles-compliance-engine`, `cubeshackles-regulatory-reporting`, and `cubeshackles-institutional-gateway`. **Authority boundary vs. `cubeshackles-os`:** CubeKernel composes and boots platform *services*; the control plane governs *requests* flowing through those services once running (who may act, on what, under what policy, with what evidence). Neither owns the other. | scaffolded | mixed |
+
+---
+
 ## 6. Protocol and execution layer
 
 Consensus-critical and settlement-critical repositories. These components must remain deterministic, replayable, and independent of advisory AI for correctness.
@@ -212,6 +230,7 @@ These repositories produce read-only, deterministic supervisory and security evi
 | Reality modeling (entities, jurisdiction, context) | `cubeshackles-terrain` |
 | Platform composition and OS kernel | `cubeshackles-os` |
 | Product behavior and UX specifications | `cubeshackles-platform-specs` |
+| Identity, policy decisioning, AI routing, and cross-system audit evidence | `cubeshackles-control-plane` |
 | Institutional instruction normalization | `cubeshackles-institutional-gateway` |
 | Compliance gating | `cubeshackles-compliance-engine` |
 | Clearing decisions and eligibility | `cubeshackles-clearing-house` |
@@ -272,6 +291,9 @@ parent/
 ├── # Operating system
 ├── cubeshackles-os/
 ├── cubeshackles-platform-specs/
+│
+├── # Control plane (cross-cutting — see §5a)
+├── cubeshackles-control-plane/         # scaffolded
 │
 ├── # Protocol and execution — REQUIRED for all gate runs
 ├── cubeshackles-core/                     # REQUIRED — economic core
@@ -340,4 +362,4 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Last updated: July 2026. Total repositories: 53.*
+*Last updated: July 2026. Total repositories: 54.*

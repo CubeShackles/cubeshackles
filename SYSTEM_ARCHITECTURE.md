@@ -60,6 +60,9 @@ interfaces defined in `cubeshackles-contracts`.
 │  Contracts Layer (cross-cutting schema authority)                    │
 │  cubeshackles-contracts (schemas · events · versioning)             │
 ├─────────────────────────────────────────────────────────────────────┤
+│  Control Plane Layer (cross-cutting request governance, scaffolded) │
+│  cubeshackles-control-plane (identity · policy · AI routing · audit)│
+├─────────────────────────────────────────────────────────────────────┤
 │  Sovereign Infrastructure Layer (private, advisory, non-consensus)  │
 │  ai-runtime · ai-sdk · compute (scaffolded) · hardware (scaffolded) │
 └─────────────────────────────────────────────────────────────────────┘
@@ -69,6 +72,15 @@ The single most important rule across all layers: **intelligence is advisory.**
 No output from the Intelligence or Sovereign layers may directly mutate
 consensus-critical state. AI outputs are consumed as signals, scored, recorded,
 and acted upon only through deterministic protocol rules.
+
+Two layers are drawn cross-cutting rather than adjacent-only, and each carries
+an explicit mediation rule so that being cross-cutting does not become a
+backdoor around goal 4 (isolation): the **Contracts layer** mediates shared
+message *shapes*; the **Control Plane layer** mediates *requests* (identity,
+policy, AI routing, audit) against whichever target repository a request
+touches, strictly through that repository's own published interface. Neither
+layer gains internal coupling to any repository by virtue of appearing in its
+integration list — see §3 and §5a.
 
 ---
 
@@ -123,6 +135,41 @@ interfaces — and is **never** financial authority.
 **`cubeshackles-platform-specs`** sits above the design system and governs what
 products do: behavior specifications, UX specifications, user flows, state
 machines, acceptance criteria.
+
+---
+
+## 5a. Control plane layer (cross-cutting)
+
+**`cubeshackles-control-plane`** governs *requests*, not services: identity,
+deterministic policy, AI provider/model routing, cross-repo orchestration,
+and immutable audit for every user-, service-, or agent-initiated request.
+Scaffolded; no orchestration logic is implemented yet (see the repo's own
+`docs/PRODUCT_SCOPE.md`).
+
+Its integration list (`cubeshackles-ai-runtime`, `-ai-sdk`, `-ontology`,
+`-agent`, `-security-framework`, `-observability`, `-compliance-engine`,
+`-regulatory-reporting`, `-institutional-gateway`) spans four different
+layers in the diagram above — Sovereign Infrastructure, Foundation,
+Regulatory and Supervision, and Institutional Finance — which is broader
+than any single-purpose repository in this map. That breadth is
+deliberate and bounded the same way the Contracts layer's breadth is
+bounded:
+
+- The control plane calls each target only through that target's own
+  published contract/interface — never its internals. It does not merge,
+  replace, or bypass any target's existing authority boundary (e.g. it
+  cannot make a compliance decision itself; it can only route a request to
+  `cubeshackles-compliance-engine` and record the result).
+- No target repository gains a dependency *on* the control plane merely by
+  appearing in its integration registry — the relationship is one-directional
+  until and unless a target repo's own contracts explicitly opt in.
+- The control plane never gains settlement, ledger-mutation, validator-approval,
+  or signing authority. Goal 4 (isolation) and the RC2 freeze doctrine apply
+  to it exactly as they apply to the Intelligence and Sovereign layers.
+
+**Authority boundary vs. `cubeshackles-os`:** CubeKernel composes and boots
+platform *services* (§5, above). The control plane governs *requests*
+flowing through those services once running. Neither owns the other.
 
 ---
 
@@ -355,6 +402,7 @@ they are implemented in active repositories.
 | `cubeshackles-terrain` | reality modeling | active (v0.1.0) |
 | `cubeshackles-os` | operating system | scaffolded |
 | `cubeshackles-platform-specs` | operating system | scaffolded |
+| `cubeshackles-control-plane` | control plane (cross-cutting) | scaffolded |
 | `cubeshackles-core` | protocol & execution | active |
 | `cubeshackles-validator-node` | protocol & execution | active |
 | `cubeshackles-settlement-engine` | protocol & execution | active (v0.1 boundary) |

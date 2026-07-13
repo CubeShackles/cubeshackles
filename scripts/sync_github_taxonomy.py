@@ -50,6 +50,8 @@ LABELS: list[dict[str, str]] = [
     {"name": "layer:intelligence", "color": "d93f0b", "description": "Advisory AI only — never consensus"},
     {"name": "layer:sovereign", "color": "6f42c1", "description": "Private sovereign compute / hardware"},
     {"name": "layer:ops", "color": "c2e0c6", "description": "Ops / security / chaos / observability"},
+    {"name": "layer:os", "color": "a2eeef", "description": "cubeshackles-os (CubeKernel) / platform-specs"},
+    {"name": "layer:control-plane", "color": "0052cc", "description": "Control plane — cross-cutting request governance"},
     # risk
     {"name": "risk:consensus-critical", "color": "b60205", "description": "May affect settlement / ledger / validator / finality"},
     {"name": "risk:public-surface", "color": "fbca04", "description": "External API / UX / public docs"},
