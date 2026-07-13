@@ -72,6 +72,23 @@ These five repositories define the platform's **institutional vocabulary**: what
 |---|---|---|---|
 | `cubeshackles-os` | **CubeKernel — platform composition and operating system.** Composes platform services into a coherent operating system: boot sequence, service discovery, dependency graph, AI Runtime registration, feature flags, and lifecycle orchestration contracts. AI is an OS service in this model, not an application. Does not duplicate service code from sibling repos. | scaffolded | public |
 | `cubeshackles-platform-specs` | **Product and UX governance authority.** Defines what products do: behavior specifications, UX specifications, interaction models, user flows, state machines, copy standards, accessibility requirements, and acceptance criteria. Sits above the design system. | scaffolded | public |
+
+---
+
+## 5a. Control plane layer (cross-cutting)
+
+Not a peer of the operating system layer above — its integration reach spans
+sovereign infrastructure, foundation, regulatory/supervision, and
+institutional finance repositories, which is broader than any single-layer
+repository in this map. See `SYSTEM_ARCHITECTURE.md` §5a for the explicit
+mediation rule that keeps this breadth from becoming a backdoor around the
+platform's layer-isolation goal (every call goes through the target's own
+published contract; no target gains a dependency on this repo by appearing
+in its integration list; it never gains settlement/ledger/validator/signing
+authority).
+
+| Repository | Role | Status | Visibility |
+|---|---|---|---|
 | `cubeshackles-control-plane` | **Institutional control plane — identity, policy, AI routing, and audit governance authority.** Sole point through which a user, service, or AI agent request is authenticated, authorized, routed across AI providers, checked against deterministic policy, and recorded as immutable evidence. Orchestrates — does not reimplement — `cubeshackles-ai-runtime`, `cubeshackles-ai-sdk`, `cubeshackles-ontology`, `cubeshackles-agent`, `cubeshackles-security-framework`, `cubeshackles-observability`, `cubeshackles-compliance-engine`, `cubeshackles-regulatory-reporting`, and `cubeshackles-institutional-gateway`. **Authority boundary vs. `cubeshackles-os`:** CubeKernel composes and boots platform *services*; the control plane governs *requests* flowing through those services once running (who may act, on what, under what policy, with what evidence). Neither owns the other. | scaffolded | mixed |
 
 ---
@@ -274,6 +291,8 @@ parent/
 ├── # Operating system
 ├── cubeshackles-os/
 ├── cubeshackles-platform-specs/
+│
+├── # Control plane (cross-cutting — see §5a)
 ├── cubeshackles-control-plane/         # scaffolded
 │
 ├── # Protocol and execution — REQUIRED for all gate runs
