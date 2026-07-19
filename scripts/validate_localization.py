@@ -87,6 +87,67 @@ REQUIRED_METADATA_KEYS = [
 ]
 VALID_TRANSLATION_STATUS = {"reviewed", "machine-assisted", "pending-review"}
 
+# --- Rule 1: Claims Register enforcement (docs/LOCALIZATION_POLICY.md §3,
+# docs/CLAIMS_REGISTER.md) ---------------------------------------------------
+#
+# Institutional terms that make a claim about regulatory, financial, or
+# security posture. Every paragraph in README.md that uses one of these
+# (case-insensitive, whole word) must either belong to a repository that
+# already has at least one docs/CLAIMS_REGISTER.md row, or contain an inline
+# qualifier marking the statement as scoped/non-live/roadmap. Enforcement is
+# per-repository (does the repo have *a* register entry at all), not
+# per-claim (does *this exact sentence* have its own row) — matching a
+# specific sentence to a specific register row isn't reliably deterministic,
+# so this trades precision for a check that can't be gamed by wording and
+# can't silently pass on stale content.
+SENSITIVE_TERMS_EN = [
+    "regulator", "central bank", "settlement", "clearing", "custody",
+    "tokenization", "supervision", "compliance", "audit", "sovereign",
+]
+SENSITIVE_TERMS_PT = [
+    "regulador", "banco central", "liquidação", "compensação", "custódia",
+    "tokenização", "supervisão", "conformidade", "auditoria", "soberan",
+]
+
+# Phrases that mark a sensitive-term paragraph as explicitly scoped, non-live,
+# or roadmap — satisfies the "or be explicitly tagged as strategic intent or
+# roadmap" branch of Rule 1 without requiring a Claims Register row.
+QUALIFIER_MARKERS_EN = [
+    "planned", "proposed", "roadmap", "prototype", "experimental", "sandbox",
+    "not yet", "does not represent", "does not imply", "no live", "no direct",
+    "stub", "scaffolded", "designed for", "intended to", "strategic intent",
+    "under evaluation", "not independently verified", "partially implemented",
+    "not a regulatory", "no regulatory",
+]
+QUALIFIER_MARKERS_PT = [
+    "planeado", "proposto", "roteiro", "protótipo", "experimental", "sandbox",
+    "ainda não", "não representa", "não implica", "não existe", "não há",
+    "estruturado", "concebido para", "destinado a", "intenção estratégica",
+    "em avaliação", "não verificado", "parcialmente implementado",
+    "não é uma aprovação regulatória", "sem aprovação regulatória",
+]
+
+INLINE_CODE_PATTERN = re.compile(r"`[^`\n]+`")
+
+# --- Rule 2: EN/PT maturity-tag consistency ---------------------------------
+#
+# Authoring convention for a per-capability maturity claim inside a README
+# section: `**Status:** <word>` in English, `**Estado:** <word>` in
+# Portuguese (see docs/REPOSITORY_README_TEMPLATE.md "Current Implementation
+# Status"). Repos that don't use the convention simply have zero tags on
+# both sides and this check no-ops.
+STATUS_EN_TO_PT = {
+    "implemented": "Implementado",
+    "partially implemented": "Parcialmente implementado",
+    "prototype": "Protótipo",
+    "experimental": "Experimental",
+    "planned": "Planeado",
+    "proposed": "Proposto",
+}
+STATUS_PT_SET = {v.lower() for v in STATUS_EN_TO_PT.values()}
+STATUS_TAG_EN_PATTERN = re.compile(r"\*\*Status:\*\*\s*([A-Za-z][A-Za-z ]*[A-Za-z])")
+STATUS_TAG_PT_PATTERN = re.compile(r"\*\*Estado:\*\*\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ ]*[A-Za-zÀ-ÿ])")
+
 
 @dataclass
 class Finding:
@@ -289,6 +350,112 @@ def check_numeric_parity(report: Report, en_relpath: str, en_text: str, pt_relpa
         )
 
 
+def paragraphs(text: str) -> list:
+    """Splits prose into blank-line-delimited paragraphs, unwrapping each to
+    a single line so a sensitive term and its qualifier are seen together
+    even when the source wraps them across multiple lines.
+
+    Pure markdown heading blocks (e.g. ``## Regulatory Considerations``) are
+    skipped — section titles are structure, not institutional claims.
+    """
+    prose = INLINE_CODE_PATTERN.sub("", strip_code_blocks(text))
+    out = []
+    for p in re.split(r"\n\s*\n", prose):
+        if not p.strip():
+            continue
+        lines = [ln for ln in p.splitlines() if ln.strip()]
+        if lines and all(re.match(r"^#{1,6}\s+", ln.strip()) for ln in lines):
+            continue
+        out.append(" ".join(p.split()))
+    return out
+
+
+def load_claims_register_repos(path: Path) -> set:
+    if not path.exists():
+        return set()
+    text = path.read_text(encoding="utf-8")
+    names = re.findall(r"\|\s*`([A-Za-z0-9_.-]+)`\s*\|", text)
+    return {n.lower() for n in names}
+
+
+def find_claims_register(repo_root: Path, override: str | None) -> Path:
+    if override:
+        return Path(override).resolve()
+    candidates = [
+        repo_root / "docs" / "CLAIMS_REGISTER.md",
+        repo_root.parent / "cubeshackles" / "docs" / "CLAIMS_REGISTER.md",
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
+def check_claims_register(
+    report: Report, relpath: str, text: str, repo_name: str, register_repos: set
+) -> None:
+    if repo_name.lower() in register_repos:
+        return  # repo has at least one register entry — whole-repo pass
+    terms = SENSITIVE_TERMS_PT if "pt.md" in relpath or ".pt." in relpath else SENSITIVE_TERMS_EN
+    qualifiers = QUALIFIER_MARKERS_PT if terms is SENSITIVE_TERMS_PT else QUALIFIER_MARKERS_EN
+    term_res = [re.compile(r"\b" + re.escape(t) + r"\w*\b", re.IGNORECASE) for t in terms]
+    for para in paragraphs(text):
+        hit_terms = [t for t, rx in zip(terms, term_res) if rx.search(para)]
+        if not hit_terms:
+            continue
+        lowered = para.lower()
+        if any(q in lowered for q in qualifiers) or STATUS_TAG_EN_PATTERN.search(para) or STATUS_TAG_PT_PATTERN.search(para):
+            continue
+        report.error(
+            relpath,
+            f"sensitive term(s) {hit_terms} used without a docs/CLAIMS_REGISTER.md "
+            f"entry for this repository and without an inline roadmap/strategic-intent "
+            f"qualifier — paragraph: \"{para[:120]}{'...' if len(para) > 120 else ''}\"",
+        )
+
+
+def check_maturity_consistency(
+    report: Report, en_relpath: str, en_text: str, pt_relpath: str, pt_text: str
+) -> None:
+    en_tags = [m.group(1).strip() for m in STATUS_TAG_EN_PATTERN.finditer(strip_code_blocks(en_text))]
+    pt_tags = [m.group(1).strip() for m in STATUS_TAG_PT_PATTERN.finditer(strip_code_blocks(pt_text))]
+
+    for i, raw in enumerate(en_tags):
+        if raw.lower() not in STATUS_EN_TO_PT:
+            report.error(
+                en_relpath,
+                f'**Status:** tag #{i + 1} "{raw}" is not one of the controlled '
+                f"maturity terms: {sorted(STATUS_EN_TO_PT)}",
+            )
+    for i, raw in enumerate(pt_tags):
+        if raw.lower() not in STATUS_PT_SET:
+            report.error(
+                pt_relpath,
+                f'**Estado:** tag #{i + 1} "{raw}" is not one of the controlled '
+                f"maturity terms: {sorted(STATUS_PT_SET)}",
+            )
+
+    if len(en_tags) != len(pt_tags):
+        report.error(
+            pt_relpath,
+            f"**Status:**/**Estado:** tag count mismatch: English has "
+            f"{len(en_tags)}, Portuguese has {len(pt_tags)} — every "
+            "maturity-tagged capability must be tagged on both sides",
+        )
+        return
+
+    for i, (en_raw, pt_raw) in enumerate(zip(en_tags, pt_tags)):
+        expected_pt = STATUS_EN_TO_PT.get(en_raw.lower())
+        if expected_pt and pt_raw.lower() != expected_pt.lower():
+            report.error(
+                pt_relpath,
+                f'Status tag #{i + 1} contradicts English: English says '
+                f'"{en_raw}", Portuguese says "{pt_raw}" (expected '
+                f'"{expected_pt}") — translation must not change the '
+                "maturity label",
+            )
+
+
 def check_links_resolve(report: Report, relpath: str, text: str, base: Path) -> None:
     for m in re.finditer(r"\[[^\]]*\]\(([^)]+)\)", strip_code_blocks(text)):
         target = m.group(1).split("#")[0]
@@ -301,7 +468,14 @@ def check_links_resolve(report: Report, relpath: str, text: str, base: Path) -> 
             report.error(relpath, f"relative link target does not resolve: {target}")
 
 
-def validate_pair(report: Report, repo_root: Path, en_path: Path, pt_path: Path) -> None:
+def validate_pair(
+    report: Report,
+    repo_root: Path,
+    en_path: Path,
+    pt_path: Path,
+    repo_name: str,
+    register_repos: set,
+) -> None:
     en_rel = str(en_path.relative_to(repo_root))
     pt_rel = str(pt_path.relative_to(repo_root))
 
@@ -330,6 +504,10 @@ def validate_pair(report: Report, repo_root: Path, en_path: Path, pt_path: Path)
     check_secrets(report, pt_rel, pt_text)
     check_links_resolve(report, en_rel, en_text, en_path)
     check_links_resolve(report, pt_rel, pt_text, pt_path)
+    check_maturity_consistency(report, en_rel, en_text, pt_rel, pt_text)
+    if en_rel == "README.md":
+        check_claims_register(report, en_rel, en_text, repo_name, register_repos)
+        check_claims_register(report, pt_rel, pt_text, repo_name, register_repos)
 
 
 def english_sibling_for_pt(pt_path: Path) -> Path | None:
@@ -367,9 +545,23 @@ def discover_pairs(repo_root: Path) -> list:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("repo_root", nargs="?", default=".")
+    parser.add_argument(
+        "--claims-register",
+        default=None,
+        help="Path to CLAIMS_REGISTER.md (default: repo_root/docs/CLAIMS_REGISTER.md, "
+        "falling back to ../cubeshackles/docs/CLAIMS_REGISTER.md)",
+    )
+    parser.add_argument(
+        "--repo-name",
+        default=None,
+        help="Repository name for Claims Register lookup (default: repo_root's directory name)",
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
+    repo_name = args.repo_name or repo_root.name
+    register_path = find_claims_register(repo_root, args.claims_register)
+    register_repos = load_claims_register_repos(register_path)
     report = Report()
 
     pairs = discover_pairs(repo_root)
@@ -378,7 +570,7 @@ def main() -> int:
         return 0
 
     for en_path, pt_path in pairs:
-        validate_pair(report, repo_root, en_path, pt_path)
+        validate_pair(report, repo_root, en_path, pt_path, repo_name, register_repos)
 
     errors = [f for f in report.findings if f.level == "ERROR"]
     warnings = [f for f in report.findings if f.level == "WARNING"]

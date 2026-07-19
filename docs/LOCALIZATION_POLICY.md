@@ -148,14 +148,17 @@ localization:
 ## 8. Validation
 
 `scripts/validate_localization.py` (this repo) is the deterministic gate. It
-checks required-file presence, navigation links, heading parity, metadata
-presence, forbidden-claims terms (shared list with
+checks required-file presence, navigation links, heading parity, code-block
+byte-identity, metadata presence, forbidden-claims terms (shared list with
 [`repo-governance.md`](repo-governance.md)'s honesty doctrine), untranslated
-placeholders, and maturity-drift between English and Portuguese status fields.
-It is invoked from the reusable workflow in the `.github` organization repo.
-AI review may supplement this but is never the only CI gate — see
-[`../scripts/README.md`](../scripts/README.md) if present, or the script's own
-docstring.
+placeholders, secret patterns, and relative-link resolution. Since 2026-07-19
+it also enforces two rules introduced for Batch 2 (see
+[`INSTITUTIONAL_README_PATTERN.md`](INSTITUTIONAL_README_PATTERN.md)):
+Claims Register coverage for sensitive institutional terms, and EN/PT
+maturity-tag consistency (`**Status:**`/`**Estado:**`). It is invoked from
+the reusable workflow in the `.github` organization repo. AI review may
+supplement this but is never the only CI gate — see the script's own
+docstring for full details.
 
 ## Related
 
