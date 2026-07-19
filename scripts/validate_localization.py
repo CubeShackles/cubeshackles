@@ -67,8 +67,14 @@ NUMBER_PATTERN = re.compile(r"(?<![\w.])\d[\d,.]*%?(?![\w])")
 # used for the pipeline-arrow diagrams in several READMEs — and are allowed
 # to carry translated labels, checked only for line-count correspondence.
 CODE_BLOCK_PATTERN = re.compile(r"```([^\n`]*)\n(.*?)```", re.DOTALL)
+# Accepts either nav convention: both languages linked
+# ([English](url) | [Português](url)), or the current page's language bolded
+# instead of self-linked (**English** | [Português](url), and the mirror on
+# the Portuguese file) — the bolded form avoids a dead self-link and is the
+# convention already in use on the org profile README.
 NAV_PATTERN = re.compile(
-    r"\[English\]\(([^)]+)\)\s*\|\s*\[Português\]\(([^)]+)\)"
+    r"(?:\[English\]\([^)]+\)|\*\*English\*\*)\s*\|\s*"
+    r"(?:\[Português\]\([^)]+\)|\*\*Português\*\*)"
 )
 METADATA_PATTERN = re.compile(
     r"<!--\s*localization:\s*(.*?)-->", re.DOTALL
