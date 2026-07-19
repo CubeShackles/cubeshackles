@@ -105,10 +105,14 @@ thematically coherent (mirrors `REPOSITORY_MAP.md` layers):
   or correcting prior notes) before any README was written. All 7 repos
   validate at 0 errors, each has Claims Register entries, and
   `docs-localization.yml` is wired into each repo's own CI. Real findings
-  surfaced, most severe first: `cubeshackles-offline-infrastructure`'s
-  entire queue-admission path is unreachable (an unconditional `raise`
-  fires before any work happens, not just at the transport layer as a
-  prior audit found — confirmed by direct execution); `cubeshackles-terrain`
+  surfaced, most severe first: `cubeshackles-offline-infrastructure` — **P0
+  implementation blocker, not ordinary technical debt.** Its entire
+  queue-admission path is unreachable (an unconditional `raise` fires
+  before any work happens, not just at the transport layer as a prior
+  audit found — confirmed by direct execution); the current
+  queue-admission path raises before accepting or persisting work, so
+  offline transaction processing is not operational in the present
+  implementation. `cubeshackles-terrain`
   (the canonical Terrain system every other repo's stub client is meant to
   call) has no HTTP service of its own — it's a library, same maturity
   tier as the stubs waiting on it; `Cubeshackles-validator-node` has real
