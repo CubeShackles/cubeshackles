@@ -48,9 +48,10 @@ founder/legal review** instead of being softened into vague marketing prose.
 Prohibited language patterns (checked by the validator, see
 [`LOCALIZATION_POLICY.md`](LOCALIZATION_POLICY.md) §8):
 
-- "production ready", "fully operational", "guaranteed uptime", "unbreakable"
-  (existing `repository-compliance` CI grep — do not reintroduce these outside
-  `PRODUCTION_PRINCIPLES.md` / `sovereign-infrastructure-thesis.md`);
+- claims of production-readiness, full operationality, uptime guarantees, or
+  unbreakability (existing `repository-compliance` CI grep — do not
+  reintroduce these outside `PRODUCTION_PRINCIPLES.md` /
+  `sovereign-infrastructure-thesis.md`);
 - unqualified claims of regulatory approval, central-bank endorsement,
   sovereign status, audited financial results, or user/transaction counts not
   backed by a cited source in the repository.

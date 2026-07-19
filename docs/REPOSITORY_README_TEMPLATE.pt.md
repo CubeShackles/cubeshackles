@@ -4,8 +4,8 @@
 
 **Proprietário: CubeShackles (liderado pelo fundador).**
 
-Estrutura de secções para um `README.pt.md` de Nível 1–2. Ver
-[`REPOSITORY_CLASSIFICATION_TIERS.md`](REPOSITORY_CLASSIFICATION_TIERS.md).
+Estrutura de secções para um `README.pt.md` de Nível 1–2 (ver
+[`REPOSITORY_CLASSIFICATION_TIERS.md`](REPOSITORY_CLASSIFICATION_TIERS.md)).
 Repositórios de Nível 3 usam um subconjunto reduzido (título, bloco de
 propriedade, finalidade, âmbito, o que não é, estado). Omitir qualquer
 secção sem conteúdo material — ver
@@ -14,7 +14,7 @@ secção sem conteúdo material — ver
 O **bloco de propriedade** (`Proprietário` / `Camada` / `Estado` /
 `Visibilidade`) traduz o bloco inglês campo a campo — os valores de `Estado`
 seguem o vocabulário de maturidade em
-[`LOCALIZATION_POLICY.md`](LOCALIZATION_POLICY.md) §4.
+[`LOCALIZATION_POLICY.md`](LOCALIZATION_POLICY.md).
 
 ```markdown
 [English](./README.md) | [Português](./README.pt.md)

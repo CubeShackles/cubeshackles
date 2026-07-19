@@ -1,5 +1,7 @@
 # Style Guide — English
 
+[English](STYLE_GUIDE.en.md) | [Português](STYLE_GUIDE.pt.md)
+
 **Owner: CubeShackles (founder-led).**
 
 CubeShackles English documentation already has a strong, consistent voice
@@ -16,8 +18,8 @@ new and translated documentation matches it.
 2. **State what a thing is not.** Every README says what the repository is
    NOT, immediately after saying what it is (see `documentation-templates.md`).
 3. **No fake decentralization or unearned readiness language.** No
-   "production ready", "fully operational", "guaranteed uptime",
-   "unbreakable" outside the two allow-listed doctrine documents.
+   claims of production-readiness, full operationality, uptime guarantees,
+   or unbreakability outside the two allow-listed doctrine documents.
 4. **Institutional audience, not marketing audience.** Write for an engineer,
    regulator, or institutional reviewer deciding whether to trust a claim —
    not for a landing-page visitor. Short declarative sentences over

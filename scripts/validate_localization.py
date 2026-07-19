@@ -9,10 +9,11 @@ Usage:
     python3 scripts/validate_localization.py [repo_root] [--pt-file NAME]...
 
 Discovers every `*.md` file in repo_root (default: current directory) that
-has a sibling `<name>.pt.md`, and validates the pair. Also validates the
-top-level README.md/README.pt.md pair explicitly, even if README.md has no
-Portuguese sibling yet (reported as a MISSING_TRANSLATION finding rather than
-silently skipped).
+has a sibling `<name>.pt.md`, and validates the pair. English partners may be
+untagged (`FOO.md`) or tagged (`FOO.en.md`). Also validates the top-level
+README.md/README.pt.md pair explicitly, even if README.md has no Portuguese
+sibling yet (reported as a MISSING_TRANSLATION finding rather than silently
+skipped).
 
 Exit code is non-zero if any ERROR-level finding was produced. WARNING-level
 findings do not fail the run but are always printed.
@@ -107,6 +108,15 @@ def strip_code_blocks(text: str) -> str:
     return CODE_BLOCK_PATTERN.sub("", text)
 
 
+def strip_localization_metadata(text: str) -> str:
+    """Remove PT translation metadata footers before prose comparisons.
+
+    The `last_synchronized: YYYY-MM-DD` date is PT-only bookkeeping and must
+    not drive numeric-parity warnings against the English canonical file.
+    """
+    return METADATA_PATTERN.sub("", text)
+
+
 def extract_code_blocks(text: str) -> list:
     """Returns [(language_tag, body), ...] for every fenced block."""
     return [(tag.strip(), body) for tag, body in CODE_BLOCK_PATTERN.findall(text)]
@@ -117,7 +127,8 @@ def extract_headings(text: str) -> list:
 
 
 def extract_numbers(text: str) -> set:
-    return set(NUMBER_PATTERN.findall(strip_code_blocks(text)))
+    prose = strip_localization_metadata(strip_code_blocks(text))
+    return set(NUMBER_PATTERN.findall(prose))
 
 
 def check_prohibited_terms(report: Report, relpath: str, text: str) -> None:
@@ -130,7 +141,17 @@ def check_prohibited_terms(report: Report, relpath: str, text: str) -> None:
 
 
 def check_placeholders(report: Report, relpath: str, text: str) -> None:
-    for m in PLACEHOLDER_PATTERN.finditer(strip_code_blocks(text)):
+    # Match against the original text so reported line numbers stay accurate,
+    # then skip hits that fall inside fenced code blocks (same exclusion as
+    # strip_code_blocks, without shifting offsets).
+    code_spans = [(m.start(), m.end()) for m in CODE_BLOCK_PATTERN.finditer(text)]
+
+    def in_code_block(pos: int) -> bool:
+        return any(start <= pos < end for start, end in code_spans)
+
+    for m in PLACEHOLDER_PATTERN.finditer(text):
+        if in_code_block(m.start()):
+            continue
         line_no = text.count("\n", 0, m.start()) + 1
         report.error(
             relpath,
@@ -305,13 +326,30 @@ def validate_pair(report: Report, repo_root: Path, en_path: Path, pt_path: Path)
     check_links_resolve(report, pt_rel, pt_text, pt_path)
 
 
+def english_sibling_for_pt(pt_path: Path) -> Path | None:
+    """Resolve the English partner for a `*.pt.md` file.
+
+    Supports both untagged English names (`FOO.md` ↔ `FOO.pt.md`) and the
+    tagged style-guide convention (`FOO.en.md` ↔ `FOO.pt.md`). Prefers the
+    untagged form when both exist.
+    """
+    stem = pt_path.name[: -len(".pt.md")]
+    untagged = pt_path.with_name(stem + ".md")
+    if untagged.exists():
+        return untagged
+    tagged = pt_path.with_name(stem + ".en.md")
+    if tagged.exists():
+        return tagged
+    return None
+
+
 def discover_pairs(repo_root: Path) -> list:
     pairs = []
     for pt_path in repo_root.rglob("*.pt.md"):
         if any(part in (".git", "node_modules", ".venv") for part in pt_path.parts):
             continue
-        en_path = pt_path.with_name(pt_path.name[: -len(".pt.md")] + ".md")
-        if en_path.exists():
+        en_path = english_sibling_for_pt(pt_path)
+        if en_path is not None:
             pairs.append((en_path, pt_path))
     readme_en = repo_root / "README.md"
     readme_pt = repo_root / "README.pt.md"
