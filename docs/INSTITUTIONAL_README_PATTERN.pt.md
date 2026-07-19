@@ -123,6 +123,6 @@ localization:
   canonical_file: INSTITUTIONAL_README_PATTERN.md
   locale: pt-AO
   translation_status: machine-assisted
-  canonical_commit: 6609902376b448bdca3e457392941a07947015a4
+  canonical_commit: 9347b5d5ddadeafd10432470ddcff1f97f97fe8b
   last_synchronized: 2026-07-19
 -->
