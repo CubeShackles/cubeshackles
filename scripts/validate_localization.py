@@ -29,18 +29,29 @@ from pathlib import Path
 
 PROHIBITED_TERMS = [
     "production ready",
+    "production-ready",
     "fully operational",
     "guaranteed uptime",
     "unbreakable",
+    "approved by the regulator",
+    "approved by a regulator",
+    "guaranteed settlement finality",
     "pronto para produção",
     "totalmente operacional",
     "tempo de atividade garantido",
     "inquebrável",
+    "aprovado pelo regulador",
+    "aprovado por qualquer regulador",
+    "assegura finalidade de liquidação",
 ]
 
 PROHIBITED_ALLOWLIST_FILES = {
     "PRODUCTION_PRINCIPLES.md",
     "sovereign-infrastructure-thesis.md",
+    # Meta-docs that name prohibited phrases as examples of what NOT to write —
+    # same rationale as the two doctrine docs above.
+    "INSTITUTIONAL_README_PATTERN.md",
+    "INSTITUTIONAL_README_PATTERN.pt.md",
 }
 
 # Uppercase-only: a case-insensitive match would false-positive on the
