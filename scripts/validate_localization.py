@@ -198,13 +198,28 @@ def extract_numbers(text: str) -> set:
     return set(NUMBER_PATTERN.findall(prose))
 
 
+# Negation markers checked immediately before a prohibited term. Without this,
+# an honest disclosure like "not production-ready" / "não está pronto para
+# produção" trips the same gate meant to catch an unqualified claim of
+# "production ready" — the phrase is identical, only the negation differs.
+NEGATION_WINDOW_CHARS = 30
+NEGATION_MARKERS = ["not ", "n't ", "não ", "nunca ", "sem ser ", "isn't ", "aren't "]
+
+
 def check_prohibited_terms(report: Report, relpath: str, text: str) -> None:
     if Path(relpath).name in PROHIBITED_ALLOWLIST_FILES:
         return
     lowered = text.lower()
     for term in PROHIBITED_TERMS:
-        if term in lowered:
-            report.error(relpath, f'prohibited claim language found: "{term}"')
+        start = 0
+        while True:
+            idx = lowered.find(term, start)
+            if idx == -1:
+                break
+            window = lowered[max(0, idx - NEGATION_WINDOW_CHARS):idx]
+            if not any(marker in window for marker in NEGATION_MARKERS):
+                report.error(relpath, f'prohibited claim language found: "{term}"')
+            start = idx + len(term)
 
 
 def check_placeholders(report: Report, relpath: str, text: str) -> None:
