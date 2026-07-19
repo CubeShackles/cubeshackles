@@ -353,9 +353,21 @@ def check_numeric_parity(report: Report, en_relpath: str, en_text: str, pt_relpa
 def paragraphs(text: str) -> list:
     """Splits prose into blank-line-delimited paragraphs, unwrapping each to
     a single line so a sensitive term and its qualifier are seen together
-    even when the source wraps them across multiple lines."""
+    even when the source wraps them across multiple lines.
+
+    Pure markdown heading blocks (e.g. ``## Regulatory Considerations``) are
+    skipped — section titles are structure, not institutional claims.
+    """
     prose = INLINE_CODE_PATTERN.sub("", strip_code_blocks(text))
-    return [" ".join(p.split()) for p in re.split(r"\n\s*\n", prose) if p.strip()]
+    out = []
+    for p in re.split(r"\n\s*\n", prose):
+        if not p.strip():
+            continue
+        lines = [ln for ln in p.splitlines() if ln.strip()]
+        if lines and all(re.match(r"^#{1,6}\s+", ln.strip()) for ln in lines):
+            continue
+        out.append(" ".join(p.split()))
+    return out
 
 
 def load_claims_register_repos(path: Path) -> set:

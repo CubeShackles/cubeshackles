@@ -93,10 +93,15 @@ simples.
 aplicada retroativamente a `cubeshackles`, `cubeshackles-developer-portal`
 ou `.github` — a sua prosa existente utiliza legitimamente este vocabulário
 como descrição arquitetural da plataforma, mas é anterior à regra e não tem
-entrada no registo. Nenhum CI de repositório invoca atualmente o validador
-(`docs-localization.yml` ainda não tem workflow chamador em lado nenhum),
-pelo que isto não é uma quebra de CI ao vivo — é uma lacuna documentada para
-um futuro lote de correção. Ver `LOCALIZATION_ROLLOUT.md`.
+entrada no registo. Esses repositórios do Lote 0/1 **não** ligam
+`docs-localization.yml` ao seu próprio CI hoje (o `ci.yml` guarda-chuva /
+do developer-portal corre apenas verificações de conformidade do
+repositório), pelo que a lacuna não é uma quebra de CI ao vivo para eles.
+Os repositórios do Lote 2 *ligam* o workflow reutilizável e têm entradas no
+Registo de Reivindicações, pelo que a Regra 1 é aplicada aí. A correção do
+Lote 0/1 é um lote futuro registado — ver `LOCALIZATION_ROLLOUT.md`. Não
+ativar `docs-localization.yml` no Lote 0/1 até essa correção aterrar (ou
+até cada repositório ter uma linha no Registo / prosa qualificada).
 
 ## Linguagem ambígua — disciplina de autoria, ainda não uma regra do validador
 

@@ -70,10 +70,11 @@ thematically coherent (mirrors `REPOSITORY_MAP.md` layers):
   both. **Known gap, not silently ignored:** Rule 1 is not retroactively
   enforced against `cubeshackles`, `cubeshackles-developer-portal`, or
   `.github` (Batch 0/1) — their prose predates the rule and has no register
-  row. Not a live CI break today (no repo's CI invokes the validator yet),
-  but a tracked item for a future remediation batch, not something Batch 2
-  is silently exempting itself from — Batch 2 repos get the rule applied in
-  full.
+  row. Not a live CI break for those repos (they do not wire
+  `docs-localization.yml` into their own CI), but a tracked item for a
+  future remediation batch — do not enable that workflow on Batch 0/1 until
+  remediation lands. Batch 2 repos get the rule applied in full (register
+  rows + wired CI).
 
   **Status (2026-07-19): Wave 2A and Wave 2B both complete.** All 6 repos
   validate at 0 errors (`--claims-register docs/CLAIMS_REGISTER.md`), each

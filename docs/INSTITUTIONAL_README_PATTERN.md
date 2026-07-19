@@ -84,10 +84,14 @@ simpler path.
 retroactively enforced against `cubeshackles`, `cubeshackles-developer-portal`,
 or `.github` — their existing prose legitimately uses this vocabulary as
 platform-architecture description but predates the rule and has no register
-row. No repository's CI currently invokes the validator (`docs-localization.yml`
-has no caller workflow yet anywhere), so this is not a live CI break — it is
-a documented gap for a future remediation batch. See
-`LOCALIZATION_ROLLOUT.md`.
+row. Those Batch 0/1 repositories do **not** wire `docs-localization.yml`
+into their own CI today (umbrella `ci.yml` / developer-portal `ci.yml` only
+run repository-compliance checks), so the gap is not a live CI break for
+them. Batch 2 repositories *do* wire the reusable workflow and carry Claims
+Register rows, so Rule 1 is enforced there. Remediation of Batch 0/1 is a
+tracked future batch — see `LOCALIZATION_ROLLOUT.md`. Do not enable
+`docs-localization.yml` on Batch 0/1 until that remediation lands (or until
+each repo has a Claims Register row / qualified prose).
 
 ## Ambiguous wording — author discipline, not (yet) a validator rule
 
