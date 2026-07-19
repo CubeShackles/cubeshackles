@@ -74,6 +74,26 @@ thematically coherent (mirrors `REPOSITORY_MAP.md` layers):
   but a tracked item for a future remediation batch, not something Batch 2
   is silently exempting itself from — Batch 2 repos get the rule applied in
   full.
+
+  **Status (2026-07-19): Wave 2A and Wave 2B both complete.** All 6 repos
+  validate at 0 errors (`--claims-register docs/CLAIMS_REGISTER.md`), each
+  has a Claims Register entry, `docs-localization.yml` is wired into each
+  repo's own CI (new, additive — first repos in the org to actually run the
+  validator automatically, alongside `cubeshackles-compliance-engine`
+  retroactively enabled from Batch 1). Two `README`s were rewritten rather
+  than lightly reviewed, because the review surfaced real, material
+  discrepancies between doctrine and code: `cubeshackles-clearing-house`
+  described the whole repo as in-memory/no-database when the more mature of
+  three coexisting subsystems is SQL-persisted; `cubeshackles-settlement-engine`
+  stated "cryptographic ledger persistence... intentionally `NotImplemented`"
+  when the RC2A pipeline already does real (sandbox-scoped) ledger postings
+  with a genuine SHA-256 receipt hash chain. `cubeshackles-institutional-gateway`
+  had two overstatements corrected (implied live institutional connectivity;
+  an unenforced "non-bypassable" control-chain claim). One stale project-notes
+  figure was corrected: `cubeshackles-contracts`'s "56 shackle specs / 413
+  tests" exists only on an unmerged branch, not `main`. All findings are
+  cited to specific file:line evidence in each repo's Claims Register entry,
+  not asserted from memory. All PRs are open as drafts, none merged.
 - **Batch 3 (core protocol):** `Cubeshackles-core`,
   `Cubeshackles-validator-node`, `cubeshackles-runtime`, `Cubeshackles-node-api`,
   `Cubeshackles-network-orchestrator`, `cubeshackles-offline-infrastructure`,
