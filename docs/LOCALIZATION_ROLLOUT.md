@@ -72,14 +72,28 @@ avoidable): `cubeshackles-os`, `cubeshackles-platform-specs`,
 `cubeshackles-disaster-recovery`, `cubeshackles-chaos`,
 `cubeshackles-operations`, `cubeshackles-infra`, `cubeshackles-observability`.
 
-## Excluded (Tier 4)
+## Excluded (Tier 4-P / 4-U)
 
-- Private-visibility repositories (`cubeshackles-ai-runtime`,
-  `cubeshackles-compute`, `cubeshackles-hardware`, `kulifikila`) — excluded by
-  policy, not oversight. Revisit if reclassified public/mixed.
+**Tier 4-P — private/restricted, excluded from public localization by
+policy, not oversight:**
+
+- `cubeshackles-ai-runtime`, `cubeshackles-compute`, `cubeshackles-hardware`,
+  `kulifikila` — private. Revisit if reclassified public/mixed.
+- `Cubeshackles-Enterprise-Brain` — internal operations/enterprise knowledge.
+  Confirmed on GitHub (2026-07-18): private, `size: 0`,
+  `initialization-pending`. No localization of any kind — public or internal
+  — until content, ownership, confidentiality zone, and lifecycle status are
+  established by the founder. When that happens, expect *selective internal*
+  pt-AO coverage (governance pages, subsidiary-facing consumption views), not
+  the standard Tier 1–3 public README treatment. Local clone directory name
+  (`CubeShackles-Enterprise-Brain`) doesn't match the canonical GitHub name
+  (`Cubeshackles-Enterprise-Brain`) — tracked defect, see `REPOSITORY_MAP.md`
+  §14a.
+
+**Tier 4-U — unclassified/orphaned, revisit once resolved (not a visibility
+exclusion):**
+
 - `cubeshackles-angola-pilot` — effectively empty; nothing to translate yet.
-- `CubeShackles-Enterprise-Brain` — not in `REPOSITORY_MAP.md`, no recorded
-  remote. Needs founder classification before this initiative touches it.
 
 ## Git discipline (every batch)
 

@@ -13,7 +13,7 @@ authors or owners of CubeShackles. See
 > This repository is **not** the protocol implementation. It contains no protocol
 > code, no AI models, no fraud logic, no regulator tooling, and no production
 > secrets. It is the authoritative description of what CubeShackles is, how its
-> 53 repositories fit together, the standards every component is held to, and the
+> 55 repositories fit together, the standards every component is held to, and the
 > governance that keeps the ecosystem honest.
 
 ---
@@ -104,7 +104,7 @@ CubeShackles is split across public and private repositories by design:
 - **Public** repositories present truthful, developer-facing architecture. They contain no sovereign orchestration logic, no AI/fraud models, no regulator tooling, no economic intelligence, and no production secrets.
 - **Private** repositories protect sovereign infrastructure, AI/fraud models, regulator tooling, economic intelligence, and future Cube Silicon / Shackle Silicon R&D.
 
-The complete inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 53 repositories across 14 layers.
+The complete inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 55 repositories across 14 layers plus a restricted internal-operations entry.
 
 ---
 

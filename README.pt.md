@@ -14,7 +14,7 @@ autoras nem proprietárias da CubeShackles. Ver
 > Este repositório **não** é a implementação do protocolo. Não contém código
 > de protocolo, modelos de IA, lógica de fraude, ferramentas para reguladores
 > nem segredos de produção. É a descrição autorizada do que é a CubeShackles,
-> de como os seus 53 repositórios se encaixam, dos padrões a que cada
+> de como os seus 55 repositórios se encaixam, dos padrões a que cada
 > componente está sujeito e da governança que mantém o ecossistema honesto.
 
 ---
@@ -133,8 +133,8 @@ desenho:
   modelos de IA/fraude, as ferramentas para reguladores, a inteligência
   económica e a I&D futura de Cube Silicon / Shackle Silicon.
 
-O inventário completo está em [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 53
-repositórios em 14 camadas.
+O inventário completo está em [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 55
+repositórios em 14 camadas, mais uma entrada interna restrita.
 
 ---
 

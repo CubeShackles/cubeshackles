@@ -215,6 +215,30 @@ These repositories produce read-only, deterministic supervisory and security evi
 
 ---
 
+## 14a. Internal operations and enterprise knowledge (restricted, cross-cutting)
+
+Not a protocol, product, or public-facing layer — an internal knowledge base
+for the organization itself. Kept structurally separate from §14 because its
+documentation posture is qualitatively different: restricted rather than
+mixed, and not subject to automatic bilingual public localization (see
+`docs/REPOSITORY_CLASSIFICATION_TIERS.md`, Tier 4-P).
+
+| Repository | Role | Status | Visibility |
+|---|---|---|---|
+| `Cubeshackles-Enterprise-Brain` | Internal operations and enterprise knowledge base. Repository exists on GitHub (confirmed via API 2026-07-18: private, `size: 0`, default branch `main`) but has no committed content yet. | initialization-pending | private |
+
+**Known defect, tracked per [`docs/repo-governance.md`](docs/repo-governance.md)
+§3:** the local workspace clone directory is named
+`CubeShackles-Enterprise-Brain` (capital S); the canonical GitHub repository
+name is `Cubeshackles-Enterprise-Brain` (lowercase s). Reconcile the local
+clone's name/remote to match the canonical GitHub name rather than
+normalizing this away in documentation. Until content exists and ownership,
+confidentiality zone, and lifecycle status are established by the founder,
+this repository receives **no localization of any kind** — public or
+internal — beyond this inventory entry.
+
+---
+
 ## 15. Canonical authority map
 
 | Domain | Canonical authority repository |
@@ -362,4 +386,7 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Last updated: July 2026. Total repositories: 54.*
+*Last updated: 2026-07-18. Total mapped repositories: 55 (54 platform
+repositories + `Cubeshackles-Enterprise-Brain`, restricted). The org's
+`.github` governance repository is separate from this count — see
+[`docs/repo-governance.md`](docs/repo-governance.md).*

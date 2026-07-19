@@ -23,11 +23,18 @@ not about inflating what exists.
 | **1** | Full bilingual institutional documentation. Public entry points, the developer portal, major citizen-facing products, core protocol/architecture, and institutionally sensitive gateways (compliance, regulatory reporting). |
 | **2** | Full bilingual `README.md`/`README.pt.md` with concise technical depth. Active or scaffolded technical repositories an external engineer or institutional reviewer may plausibly open. |
 | **3** | Bilingual repository summary and status disclosure only — short README, no deep section-by-section translation. |
-| **4** | No automatic translation. Private repositories (excluded by [`LOCALIZATION_POLICY.md`](LOCALIZATION_POLICY.md) §2), empty/placeholder repositories, or repositories with unresolved factual ambiguity pending founder review. |
+| **4-P** | Private, security-sensitive, or restricted localization. No automatic *public* localization — visibility, not technical importance, is what excludes it. May still warrant excellent bilingual *internal* documentation; that is a separate, founder-directed decision per repository, not automatic. |
+| **4-U** | Unclassified, orphaned, obsolete, or unresolved. Empty repositories, repositories with unresolved factual ambiguity, or repositories pending founder classification. Revisit once resolved — do not default these to 4-P. |
 
-Per `LOCALIZATION_POLICY.md` §2, **`private`-visibility repositories are Tier 4
-by policy regardless of technical importance** — they are not public, so
-translation has no institutional-legibility benefit until reclassified.
+Per `LOCALIZATION_POLICY.md` §2, **`private`-visibility repositories are
+Tier 4-P by policy regardless of technical importance** — visibility alone
+determines exclusion from *public* localization; it does not determine
+whether internal documentation quality matters. A private settlement-grade
+repository may still deserve excellent bilingual internal documentation — it
+simply does not receive automatic public `README.pt.md` treatment the way a
+Tier 1–3 repository does. Any internal bilingual documentation for a 4-P
+repository is a distinct, founder-directed decision, tracked in
+`LOCALIZATION_ROLLOUT.md`, not part of the default batch sequence.
 
 ---
 
@@ -65,12 +72,12 @@ translation has no institutional-legibility benefit until reclassified.
 | `cubeshackles-asset-registry` | mixed | **3** | Active but dormant/not wired into core rail |
 | `cubeshackles-tokenization-engine` | mixed | **3** | Active but dormant/not wired into core rail |
 | `cubeshackles-rwa-custody` | mixed | **3** | Active but dormant/not wired into core rail |
-| `cubeshackles-ai-runtime` | **private** | **4** | Private by policy |
+| `cubeshackles-ai-runtime` | **private** | **4-P** | Private by policy |
 | `cubeshackles-ai-sdk` | public | **2** | Public consumer kit; advisory-boundary enforcement is a real, documentable asset |
-| `cubeshackles-compute` | **private** | **4** | Private by policy |
-| `cubeshackles-hardware` | **private** | **4** | Private by policy |
+| `cubeshackles-compute` | **private** | **4-P** | Private by policy |
+| `cubeshackles-hardware` | **private** | **4-P** | Private by policy |
 | `cubeshackles-adviser` | mixed | **2** | Active, public-facing advisory UI with private model backend |
-| `kulifikila` | **private** | **4** | Private by policy — product name preserved untranslated if/when reclassified |
+| `kulifikila` | **private** | **4-P** | Private by policy — product name preserved untranslated if/when reclassified |
 | `cubeshackles-phone-wedge` | public | **2** | Public citizen entry point; claims need heavy care (simulator, not a real telecom bridge) |
 | `BualaBuitu` | mixed | **2** | Active citizen-facing product |
 | `national-transit-app-cubeshackles` | public | **2** | Public citizen-facing product; claims need heavy care (hardcoded demo balance) |
@@ -87,13 +94,14 @@ translation has no institutional-legibility benefit until reclassified.
 | `cubeshackles-chaos` | mixed | **3** | Scaffolded |
 | `cubeshackles-security` | mixed | **2** | Security posture overview |
 | `cubeshackles-operations` | mixed | **3** | Internal ops; known unresolved CI issue, not public-audience critical |
-| `cubeshackles-angola-pilot` | mixed | **4** | Effectively empty (dataclasses only, no logic/tests/CI) — do not translate an empty repository |
+| `cubeshackles-angola-pilot` | mixed | **4-U** | Effectively empty (dataclasses only, no logic/tests/CI) — unclassified/orphaned, not private; revisit once content exists |
 | `cubeshackles-infra` | mixed | **3** | Platform operations tooling |
 | `cubeshackles-observability` | mixed | **3** | Scaffolded telemetry contracts |
+| `Cubeshackles-Enterprise-Brain` | **private** | **4-P** | Internal operations and enterprise knowledge base. Confirmed via GitHub API (2026-07-18) to exist as `Cubeshackles-Enterprise-Brain`, private, `size: 0`. Class: internal operations and enterprise knowledge. Status: initialization-pending. Localization: none until content, ownership, confidentiality zone, and lifecycle status are established — when it is, expect *selective internal* pt-AO coverage (governance pages and subsidiary-facing consumption views only), not automatic public `README.pt.md` treatment. See `REPOSITORY_MAP.md` §14a. |
 
-Not listed above because not present in `REPOSITORY_MAP.md` / has no recorded
-GitHub remote: `CubeShackles-Enterprise-Brain`. **Tier: unassigned — excluded
-pending founder review** (see `LOCALIZATION_POLICY.md` §6).
+Local/remote name casing defect tracked on this row: the workspace clone is
+named `CubeShackles-Enterprise-Brain`; the canonical GitHub name is
+`Cubeshackles-Enterprise-Brain`. Reconcile per `repo-governance.md` §3.
 
 ---
 

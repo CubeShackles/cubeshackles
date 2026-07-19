@@ -32,11 +32,17 @@ Every repository classified `public` or `mixed` in `REPOSITORY_MAP.md` carries:
   [English](./README.md) | [Português](./README.pt.md)
   ```
 
-Repositories classified `private` in `REPOSITORY_MAP.md` are **not** translated
-under this policy — they are not public-facing and translating them would create
-maintenance surface with no institutional-legibility benefit. If a private
-repository is reclassified `public`/`mixed`, it enters localization scope at
-that point, not before.
+Repositories classified `private` in `REPOSITORY_MAP.md` are Tier 4-P (see
+[`REPOSITORY_CLASSIFICATION_TIERS.md`](REPOSITORY_CLASSIFICATION_TIERS.md))
+and are **not** given automatic *public* `README.pt.md` translation under
+this policy — they are not public-facing, so a public bilingual README has
+no institutional-legibility benefit. This is a visibility rule, not a
+judgment about technical importance: a private repository can still warrant
+excellent *internal* bilingual documentation (e.g. governance pages or
+subsidiary-facing consumption views), but that is a separate, explicit,
+founder-directed decision per repository — never automatic, and never
+published externally. If a private repository is reclassified
+`public`/`mixed`, it enters normal localization scope at that point.
 
 Deeper `docs/` content is translated selectively by
 [repository tier](REPOSITORY_CLASSIFICATION_TIERS.md) — Tier 1 repositories
@@ -106,12 +112,15 @@ translation review.
 
 ## 6. Exceptions
 
-- Repositories with no material public documentation need (Tier 4 —
-  archived, empty, duplicate, or awaiting founder classification) are excluded
-  until reviewed. See [`REPOSITORY_CLASSIFICATION_TIERS.md`](REPOSITORY_CLASSIFICATION_TIERS.md).
-  `CubeShackles-Enterprise-Brain` is explicitly out of scope: it does not
-  appear in `REPOSITORY_MAP.md` and has no recorded remote — it is not yet a
-  classified platform repository.
+- Repositories with no material public documentation need are Tier 4-P
+  (private/restricted) or Tier 4-U (unclassified, empty, duplicate, or
+  awaiting founder classification) and are excluded from automatic public
+  localization. See
+  [`REPOSITORY_CLASSIFICATION_TIERS.md`](REPOSITORY_CLASSIFICATION_TIERS.md).
+  `Cubeshackles-Enterprise-Brain` is Tier 4-P: confirmed to exist on GitHub
+  (private, empty, `initialization-pending`) but out of scope for any
+  localization — public or internal — until content, ownership,
+  confidentiality zone, and lifecycle status are established.
 - Security-sensitive implementation detail is never expanded into a public
   Portuguese document beyond what the English canonical document already
   discloses. Translation must not become a second disclosure channel.
