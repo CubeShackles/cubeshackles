@@ -31,7 +31,7 @@ Founder-selected pilot set:
 Each gets: language nav on `README.md`, new `README.pt.md`, repo-level
 `CLAUDE.md` bilingual-governance section, and a validator run. Do not merge
 without founder review — branches stay local/pushed-to-branch only, per
-[`../../CONTRIBUTING.md`](../../CONTRIBUTING.md) and standing instruction.
+[`../CONTRIBUTING.md`](../CONTRIBUTING.md) and standing instruction.
 
 Pilot goal: find glossary gaps, template friction, and regulatory-language
 edge cases (especially in `cubeshackles-compliance-engine`, which carries
