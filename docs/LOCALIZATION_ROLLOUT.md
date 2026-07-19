@@ -43,10 +43,37 @@ they propagate to 50+ repositories.
 Sequencing after the pilot passes review, grouped to keep each PR cycle
 thematically coherent (mirrors `REPOSITORY_MAP.md` layers):
 
-- **Batch 2 (institutional finance):** `cubeshackles-institutional-gateway`,
-  `cubeshackles-regulatory-reporting`, `cubeshackles-ledger`,
-  `cubeshackles-clearing-house`, `cubeshackles-settlement-engine`,
-  `cubeshackles-contracts`.
+- **Batch 2 (institutional finance)** — narrowed scope (2026-07-19): prove
+  the framework scales across financial-market infrastructure and
+  institutional-integration repos accurately, not just translate six more
+  READMEs. Split into two waves, second only after the first validates:
+  - **Wave 2A — financial market infrastructure:** `cubeshackles-ledger`,
+    `cubeshackles-clearing-house`, `cubeshackles-settlement-engine`. English
+    README review + Portuguese README, following
+    [`REPOSITORY_README_TEMPLATE.md`](REPOSITORY_README_TEMPLATE.md) plus
+    the required-depth sections (architecture, transaction lifecycle, trust
+    boundaries, failure modes, state management, interfaces, maturity
+    classification), Claims Register entries, glossary additions only if
+    genuinely new terminology appears.
+  - **Wave 2B — institutional integration:** `cubeshackles-institutional-gateway`,
+    `cubeshackles-regulatory-reporting`, `cubeshackles-contracts`. Follows
+    [`INSTITUTIONAL_README_PATTERN.md`](INSTITUTIONAL_README_PATTERN.md) (a
+    stricter 12-section structure) plus its `**Status:**`/`**Estado:**`
+    maturity-tag convention and Claims Register discipline — this is where
+    institutional wording matters most.
+
+  Two new validator rules landed *before* Wave 2A started, per founder
+  direction: Claims Register enforcement (sensitive institutional terms
+  need a register row or an inline roadmap/strategic-intent qualifier) and
+  EN/PT maturity-tag consistency. See
+  [`INSTITUTIONAL_README_PATTERN.md`](INSTITUTIONAL_README_PATTERN.md) for
+  both. **Known gap, not silently ignored:** Rule 1 is not retroactively
+  enforced against `cubeshackles`, `cubeshackles-developer-portal`, or
+  `.github` (Batch 0/1) — their prose predates the rule and has no register
+  row. Not a live CI break today (no repo's CI invokes the validator yet),
+  but a tracked item for a future remediation batch, not something Batch 2
+  is silently exempting itself from — Batch 2 repos get the rule applied in
+  full.
 - **Batch 3 (core protocol):** `Cubeshackles-core`,
   `Cubeshackles-validator-node`, `cubeshackles-runtime`, `Cubeshackles-node-api`,
   `Cubeshackles-network-orchestrator`, `cubeshackles-offline-infrastructure`,
