@@ -31,7 +31,7 @@ Founder-selected pilot set:
 Each gets: language nav on `README.md`, new `README.pt.md`, repo-level
 `CLAUDE.md` bilingual-governance section, and a validator run. Do not merge
 without founder review — branches stay local/pushed-to-branch only, per
-[`../../CONTRIBUTING.md`](../../CONTRIBUTING.md) and standing instruction.
+[`../CONTRIBUTING.md`](../CONTRIBUTING.md) and standing instruction.
 
 Pilot goal: find glossary gaps, template friction, and regulatory-language
 edge cases (especially in `cubeshackles-compliance-engine`, which carries
@@ -99,6 +99,32 @@ thematically coherent (mirrors `REPOSITORY_MAP.md` layers):
   `Cubeshackles-validator-node`, `cubeshackles-runtime`, `Cubeshackles-node-api`,
   `Cubeshackles-network-orchestrator`, `cubeshackles-offline-infrastructure`,
   `cubeshackles-terrain`.
+
+  **Status (2026-07-19): COMPLETE.** Same research-then-write method as
+  Batch 2 — 7 parallel research agents read code/tests directly (verifying
+  or correcting prior notes) before any README was written. All 7 repos
+  validate at 0 errors, each has Claims Register entries, and
+  `docs-localization.yml` is wired into each repo's own CI. Real findings
+  surfaced, most severe first: `cubeshackles-offline-infrastructure` — **P0
+  implementation blocker, not ordinary technical debt.** Its entire
+  queue-admission path is unreachable (an unconditional `raise` fires
+  before any work happens, not just at the transport layer as a prior
+  audit found — confirmed by direct execution); the current
+  queue-admission path raises before accepting or persisting work, so
+  offline transaction processing is not operational in the present
+  implementation. `cubeshackles-terrain`
+  (the canonical Terrain system every other repo's stub client is meant to
+  call) has no HTTP service of its own — it's a library, same maturity
+  tier as the stubs waiting on it; `Cubeshackles-validator-node` has real
+  Ed25519 signature verification (no presence-only bug here) but its real,
+  tested quorum-computation function has zero production callers;
+  `cubeshackles-runtime`'s "scaffolded" self-label was accurate for the
+  execution core but didn't disclose a separate, tested boundary/handoff
+  layer built alongside it; `Cubeshackles-node-api` had no ownership block
+  at all and four dead companion-doc links. One validator bug the pilot
+  itself exposed: the prohibited-claims check flagged negated honest
+  disclosures ("not production-ready") as if they were the claim itself —
+  fixed to be negation-aware. All PRs open as drafts, none merged.
 - **Batch 4 (access/products, Tier 1–2 only — private repos excluded):**
   `Cubeshackles-web`, `CubeWallet`, `Cubeshackles-phone-wedge`, `BualaBuitu`,
   `national-transit-app-cubeshackles`, `cubeshackles-adviser`.

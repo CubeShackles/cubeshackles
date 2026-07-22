@@ -60,6 +60,7 @@ Colors are fixed so the org UI stays consistent.
 | `layer:ops` | `#c2e0c6` | ops, infra, security, chaos, disaster-recovery, observability |
 | `layer:os` | `#a2eeef` | `cubeshackles-os` (CubeKernel), `cubeshackles-platform-specs` |
 | `layer:control-plane` | `#0052cc` | `cubeshackles-control-plane` (cross-cutting request governance — see `SYSTEM_ARCHITECTURE.md` §5a) |
+| `layer:reality-modeling` | `#5319e7` | `cubeshackles-terrain` (Reality modeling layer — see `REPOSITORY_MAP.md` §4) |
 
 ### Risk class (`risk:*`) — exactly one
 

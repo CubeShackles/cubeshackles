@@ -31,6 +31,7 @@ jobs:
             --exclude="PRODUCTION_PRINCIPLES.md" \
             --exclude="sovereign-infrastructure-thesis.md" \
             --exclude="validate_localization.py" \
+            --exclude="test_validate_localization.py" \
             . 2>/dev/null | grep -v "ci.yml"; then
             echo "Forbidden production claim found" && exit 1
           fi
@@ -45,4 +46,17 @@ jobs:
             echo "Potential key file detected" && exit 1
           fi
           echo "No committed secrets detected."
+
+  localization-validator-selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run negation-aware prohibited-claims regression fixtures
+        run: python3 scripts/test_validate_localization.py
 
