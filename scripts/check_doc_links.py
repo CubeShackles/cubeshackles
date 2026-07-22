@@ -17,6 +17,10 @@ absolute paths (leading /, which usually mean "resolve from a different
 repo's root" in this org's cross-repo companion-doc tables and can't be
 checked locally). Exit code is non-zero if any relative link fails to
 resolve.
+
+Line numbers are computed against the original file text. Matches that fall
+inside fenced or inline code spans are skipped (same offset-preserving
+pattern as `validate_localization.check_placeholders`).
 """
 
 from __future__ import annotations
@@ -32,14 +36,24 @@ INLINE_CODE_PATTERN = re.compile(r"`[^`\n]+`")
 SKIP_DIRS = {".git", "node_modules", ".venv", "__pycache__"}
 
 
-def strip_code(text: str) -> str:
-    return INLINE_CODE_PATTERN.sub("", CODE_BLOCK_PATTERN.sub("", text))
+def code_spans(text: str) -> list[tuple[int, int]]:
+    """Return (start, end) spans for fenced blocks and inline code."""
+    spans = [(m.start(), m.end()) for m in CODE_BLOCK_PATTERN.finditer(text)]
+    spans.extend((m.start(), m.end()) for m in INLINE_CODE_PATTERN.finditer(text))
+    return spans
 
 
-def check_file(md_path: Path, repo_root: Path) -> list:
-    findings = []
+def in_code_span(pos: int, spans: list[tuple[int, int]]) -> bool:
+    return any(start <= pos < end for start, end in spans)
+
+
+def check_file(md_path: Path, repo_root: Path) -> list[str]:
+    findings: list[str] = []
     text = md_path.read_text(encoding="utf-8", errors="replace")
-    for m in LINK_PATTERN.finditer(strip_code(text)):
+    spans = code_spans(text)
+    for m in LINK_PATTERN.finditer(text):
+        if in_code_span(m.start(), spans):
+            continue
         target = m.group(1).strip()
         target = target.split("#", 1)[0]
         if not target:
@@ -57,7 +71,7 @@ def check_file(md_path: Path, repo_root: Path) -> list:
 
 def main() -> int:
     repo_root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
-    all_findings = []
+    all_findings: list[str] = []
     for md_path in repo_root.rglob("*.md"):
         if any(part in SKIP_DIRS for part in md_path.parts):
             continue
