@@ -170,6 +170,8 @@ Private or mixed infrastructure for AI execution, compute orchestration, and har
 |---|---|---|---|
 | `cubeshackles-phone-wedge` | **Angola phone transaction wedge — device initiation authority.** Offline-first, low-connectivity entry point for phone-based transactions. Migrating to CubeShackles Design System (P4-1). | active | public |
 | `CubeWallet` | **Wallet — user initiation authority.** Identity-linked wallet infrastructure and transaction UX. Migrated to CubeShackles Design System (P4-2). | active | public |
+| `Cubeshackles-retail` | **Retail DeFi web — citizen / SME markets, wallet, staking, lending, liquidity, governance, explorer.** Workshop / pre-launch Next.js surface (local port **3001**). Product-shell + landing-atmosphere pattern registered in `cubeshackles-design-system` (`RETAIL_VIEW_CATALOG.md`); full `--cs-*` migration **pending**. | active — workshop | private |
+| `Cubeshackles-Retail-DeFi-API` | **Retail DeFi API — FastAPI backend for `Cubeshackles-retail`.** Wallets, markets, staking, lending, FX, vault; canonical 29-currency African market universe. Workshop / pre-launch; not institutional `node-api`. | active — workshop | private |
 | `cubeshackles-web` | **Explorer — institutional and public web surface.** Browser-based client for transactions, validator state, audit views, and account management over `node-api`. Institutional admin canonical authority. | active | public |
 | `BualaBuitu` | **Market intelligence terminal.** Angola market data and intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | **National transit infrastructure.** AOA-native transit platform for Angola: fare visibility, driver/passenger flows, QR/digital ticket flows, operator settlement support, and transit analytics on CubeShackles economic rails. | active | public |
@@ -268,6 +270,8 @@ internal — beyond this inventory entry.
 | Advisory financial intelligence | `cubeshackles-adviser` |
 | Credit intelligence and underwriting | `kulifikila` |
 | Device initiation (retail/mobile) | `cubeshackles-phone-wedge` |
+| Retail DeFi web (citizen / SME) | `Cubeshackles-retail` |
+| Retail DeFi API | `Cubeshackles-Retail-DeFi-API` |
 | Wallet and user initiation | `CubeWallet` |
 | Institutional and public web surface | `cubeshackles-web` |
 | Market data terminal | `BualaBuitu` |
@@ -354,6 +358,8 @@ parent/
 ├── # Access layer
 ├── cubeshackles-phone-wedge/
 ├── CubeWallet/
+├── Cubeshackles-retail/                   # private — workshop retail DeFi web
+├── Cubeshackles-Retail-DeFi-API/          # private — workshop retail DeFi API
 ├── cubeshackles-web/
 ├── BualaBuitu/
 ├── national-transit-app-cubeshackles/
