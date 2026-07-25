@@ -71,13 +71,87 @@ by `make feature-freeze-check` and `make platform-gates` applies:
 
 ---
 
-## Next milestone — PLATFORM_BETA_1 (target)
+## Current priority — PILOT RAIL (supersedes breadth work below)
+
+**Decision (2026-07-25):** the 2026-07-25 institutional readiness audit
+(43 of 58 repos, published as the *Institutional Readiness Ledger*) found
+that every hard cryptographic and financial-math primitive on the platform
+already exists and is independently tested, but the connective tissue
+between components — auth, live wiring, consensus enforcement, compliance-gate
+calls — is broken or missing at nearly every seam, across all seven
+architectural clusters reviewed. Widening surface area (more UI migrations,
+more product lines) before that seam is closed produces more of the same
+pattern, not less.
+
+**Effective immediately: broad feature development is paused.** All engineering
+effort concentrates on one program — **Pilot Rail** — a single production
+transaction path, real end to end, that a regulator or institutional partner
+can evaluate as one complete lifecycle instead of dozens of isolated
+components:
+
+```
+Phone Wedge → Institutional Gateway → Compliance → Settlement → Ledger → Validator → Receipt → Audit
+```
+
+Every box in that chain must be, simultaneously:
+
+- **real** — not a stub, not a fixture, not a template string standing in for a signature
+- **wired** — called from the live route, not merely present and tested in isolation
+- **authenticated** — no open door at any inbound or outbound hop
+- **tested** — covered by tests that exercise the live path, not just the unit in isolation
+- **observable** — state and failures visible to an operator, not silent
+- **recoverable** — a real DR/failover story, not a report generator run against stale evidence
+
+No new product surface, business module, or UI migration is approved while
+this bar is unmet on the rail above. This supersedes the PLATFORM_BETA_1
+breadth criteria further down this document until Pilot Rail exits Phase C.
+
+### Execution phases
+
+**Phase A — Close the open security and wiring gaps.**
+Wire already-built, already-tested functions into the live route instead of
+building new ones: `institutional-gateway`'s compliance-gate and
+clearing-forward calls, `compliance-engine`'s API auth,
+`network-orchestrator`'s `coordinate-anchor` auth, the `ml_v1` mislabeling,
+and DR evidence regeneration producing genuinely fresh hashes. Days, not
+weeks — the code mostly already exists.
+
+**Phase B — Build one complete production transaction rail.**
+Make the eight-box Pilot Rail chain above real, wired, authenticated,
+tested, observable, and recoverable end to end. Phone Wedge is the closest
+citizen entry point today; invest there rather than splitting effort across
+CubeWallet, Explorer, and national-transit simultaneously.
+
+**Phase C — Run an institutional pilot.**
+Bring one real KYC/sanctions data provider online (or permanently label
+compliance-engine a sandbox rules-simulator), stand up real egress to one
+of BNA/CMC/BODIVA, and let a regulator or institutional partner evaluate
+the complete Pilot Rail lifecycle rather than isolated components.
+
+**Phase D — Expand to additional products and services.**
+Only after Phase C: bring the remaining citizen surfaces (CubeWallet,
+Explorer, national-transit), additional business lines (asset-registry,
+market-infrastructure, tokenization-engine, rwa-custody), and sovereign/
+state-entity scale requirements up to the same bar proven on the rail.
+
+**Why this sequencing:** stop optimizing for breadth until one vertical
+slice is unquestionably production-ready. A regulator evaluating one
+complete, honest transaction lifecycle is worth more than dozens of
+independently-impressive but disconnected components.
+
+See the full findings this decision is based on:
+https://claude.ai/code/artifact/e3fd2793-0ac9-4dee-9b29-af2d8adc824a
+
+---
+
+## Deferred — PLATFORM_BETA_1 (breadth target, paused for Pilot Rail)
 
 **Definition:** CubeShackles presents as **one unified Operating System** across
 all applications — shared design language, shared components, migrated product
 UX, explorer redesign, live demos, and pilot deployment tooling.
 
-**Requirements:**
+**Status: paused.** This breadth program resumes at Pilot Rail Phase D, not
+before. Requirements as last recorded:
 
 | Criterion | Status |
 |---|---|
