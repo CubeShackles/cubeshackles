@@ -268,6 +268,25 @@ def test_fails_run_kinds_match_documented_contract():
 # --- workspace discovery ----------------------------------------------------
 
 
+def test_scans_a_repo_root_that_sits_inside_dot_claude_worktrees(tmp_path):
+    """Ground-truth regression, found while re-verifying the
+    VALIDATOR_PRIVATE_KEY fix: every worktree-based checkout this org
+    actually works from sits under a literal `.claude/worktrees/...` path.
+    An earlier version checked SKIP_DIR_NAMES against each file's ABSOLUTE
+    path, so `.claude` being an ancestor of repo_root itself silently
+    skipped every file with no error -- zero findings, no warning."""
+    repo_root = tmp_path / ".claude" / "worktrees" / "some-branch"
+    repo_root.mkdir(parents=True)
+    (repo_root / "app").mkdir()
+    (repo_root / "app" / "security.py").write_text(
+        'import os\nKEY = os.getenv("SETTLEMENT_API_KEY", "dev-settlement-key")\n',
+        encoding="utf-8",
+    )
+    result = ScanResult()
+    scan_repo(repo_root, result)
+    assert [f for f in result.findings if f.kind == "HARDCODED_FALLBACK"]
+
+
 def test_discover_workspace_repos_finds_only_git_directories(tmp_path):
     (tmp_path / "repo-a" / ".git").mkdir(parents=True)
     (tmp_path / "repo-b" / ".git").mkdir(parents=True)

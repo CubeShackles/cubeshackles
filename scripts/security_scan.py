@@ -505,9 +505,19 @@ SKIP_DIR_NAMES = {".venv", "venv", "node_modules", ".git", "__pycache__", ".clau
 
 
 def scan_repo(repo_root: Path, result: ScanResult) -> None:
+    """Note: the skip check uses the path RELATIVE to repo_root, not the
+    absolute path. Using path.parts directly (an earlier version's bug,
+    caught while re-verifying the VALIDATOR_PRIVATE_KEY fix) means every
+    file's ancestor directories are checked, including repo_root's own --
+    and every worktree-based checkout this org actually works from sits
+    under a literal `.claude/worktrees/...` path, which is itself in
+    SKIP_DIR_NAMES. That silently produced zero findings for any repo root
+    passed as a worktree path, with no error or warning. Does not affect
+    the original 296/243/33 baseline, which scanned top-level checkouts."""
     repo = repo_root.name
     for path in repo_root.rglob("*.py"):
-        if any(part in SKIP_DIR_NAMES for part in path.parts):
+        relative_parts = path.relative_to(repo_root).parts
+        if any(part in SKIP_DIR_NAMES for part in relative_parts):
             continue
         scan_file(repo, repo_root, path, result)
 
