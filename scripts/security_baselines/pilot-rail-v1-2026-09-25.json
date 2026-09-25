@@ -1,0 +1,2499 @@
+{
+  "classification_counts": {
+    "intentional-denylist": 2,
+    "production-reachable": 210,
+    "test-fixture": 51
+  },
+  "created_at": "2026-09-25T06:59:51.372930+00:00",
+  "creation_source": "pilot-rail-v1-post-remediation-2026-09-25: 6 fixes (7 files, validator-node signing key + adviser/ledger + CIEL SDK core/orchestrator/validator-node) closing all verified production-reachable P0/P1 findings from the 296/243/33 baseline",
+  "finding_counts": {
+    "production_reachable": 210,
+    "production_reachable_defects": 19,
+    "total": 263
+  },
+  "findings": [
+    {
+      "canonical_repo": "cubeshackles-institutional-gateway",
+      "classification": "production-reachable",
+      "enclosing_scope": "_settlement_api_key",
+      "file": "src/institutional_gateway/interoperability/settlement_client.py",
+      "identity": "8ee12809363c0dbf",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "SETTLEMENT_ENGINE_API_KEY"
+    },
+    {
+      "canonical_repo": "cubeshackles-institutional-gateway",
+      "classification": "production-reachable",
+      "enclosing_scope": "_reviewer_credentials",
+      "file": "src/institutional_gateway/api/reviewer_security.py",
+      "identity": "cba65240cfe807ec",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "GATEWAY_REVIEWER_CREDENTIALS"
+    },
+    {
+      "canonical_repo": "cubeshackles-institutional-gateway",
+      "classification": "production-reachable",
+      "enclosing_scope": "_api_key_set",
+      "file": "src/institutional_gateway/api/security.py",
+      "identity": "41c8522b854390a2",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "GATEWAY_API_KEYS"
+    },
+    {
+      "canonical_repo": "cubeshackles-institutional-gateway",
+      "classification": "production-reachable",
+      "enclosing_scope": "readiness_for_writes",
+      "file": "src/institutional_gateway/api/main.py",
+      "identity": "39045e8e030236a7",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /readiness/writes has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-compliance-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "instruction_review",
+      "file": "src/compliance_engine/api/routes.py",
+      "identity": "d80329189a4029fb",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /compliance/instruction-review has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-compliance-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "gateway_gate",
+      "file": "src/compliance_engine/api/routes.py",
+      "identity": "c1eb036046871977",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /compliance/gateway-gate has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-compliance-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "clearing_gate",
+      "file": "src/compliance_engine/api/routes.py",
+      "identity": "0de8dd6655b25691",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /compliance/clearing-gate has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "resolve_service_secret",
+      "file": "scripts/service_auth_client.py",
+      "identity": "53537c3869cc4b1e",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_SERVICE_AUTH_SECRET_ORCHESTRATOR"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "220da89b8b2b9e29",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "b54a5be6eb05fd5e",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "8cd2765a83f2f77f",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "826664cee1636dce",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "_api_key_set",
+      "file": "app/core/security.py",
+      "identity": "b8c00bdbbf599ffe",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "ORCHESTRATOR_API_KEYS"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "_api_key_accepted",
+      "file": "app/core/security.py",
+      "identity": "51528ace79e77803",
+      "kind": "COMPARE_DIGEST_STR_RISK",
+      "stable_key": "compare_digest argument is not visibly bytes-encoded (non-ASCII input may raise TypeError instead of returning False)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "classification": "production-reachable",
+      "enclosing_scope": "_validator_api_key_headers",
+      "file": "app/services/kulifikila_stack_client.py",
+      "identity": "0c34a8a29875cc80",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "VALIDATOR_API_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "validator_info",
+      "file": "app/main.py",
+      "identity": "8dbb68d0e2a16675",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /validator/info has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "0cfb8155270f9cd5",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "d4cf4e82eea744be",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "1d69f0bda7283aba",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/sdk_http.py",
+      "identity": "811ba03aba7d7ba3",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "_api_key_set",
+      "file": "app/core/security.py",
+      "identity": "216a88e1f56578b5",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "VALIDATOR_API_KEYS"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "_adviser_api_key",
+      "file": "app/services/adviser_gate.py",
+      "identity": "51d98a3e71d73de6",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "ADVISER_API_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "_ledger_api_key",
+      "file": "app/services/ledger_client.py",
+      "identity": "151f467daa7aeab4",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "LEDGER_API_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "classification": "production-reachable",
+      "enclosing_scope": "_validator_private_key",
+      "file": "app/services/validator_runtime.py",
+      "identity": "2b2c9d0d6a306c6b",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "VALIDATOR_PRIVATE_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "telemetry_recent_route",
+      "file": "app/main.py",
+      "identity": "9296364e939be2b3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /telemetry/recent has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "health_live",
+      "file": "app/main.py",
+      "identity": "6f532979bd4c2f20",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /health/live has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "health_detail_route",
+      "file": "app/main.py",
+      "identity": "48bfc2ca7a68b352",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /health/detail has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "health_ready_route",
+      "file": "app/main.py",
+      "identity": "6ea8722bb30d8eea",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /health/ready has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "runtime_integrity_route",
+      "file": "app/main.py",
+      "identity": "9dd28589b457be48",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /runtime/integrity has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "security_secrets_validate_route",
+      "file": "app/main.py",
+      "identity": "4a09bb5f9e7c611e",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /security/secrets/validate has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "validators_info_route",
+      "file": "app/main.py",
+      "identity": "c0f545f7277b83e0",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /validators/info has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "resolve_recipient_route",
+      "file": "app/main.py",
+      "identity": "e4ade6376402b99a",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /identity/resolve-recipient has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "score_transfer_risk_route",
+      "file": "app/main.py",
+      "identity": "f3bcc37d4ef3b698",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /risk/score-transfer has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "transfer_preview_route",
+      "file": "app/main.py",
+      "identity": "939728309e9aa32a",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /transfers/preview has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "prepare_transfer_route",
+      "file": "app/main.py",
+      "identity": "2812c303ed906ec8",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /transfers/prepare has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_transfer_session_route",
+      "file": "app/main.py",
+      "identity": "5d80d1eeaa7a45b0",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /transfers/session/{preview_hash} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "confirm_transfer_route",
+      "file": "app/main.py",
+      "identity": "654b9c5fad216eaf",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /transfers/confirm has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "execute_transfer_route",
+      "file": "app/main.py",
+      "identity": "5bfaf57b82f0ac77",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /transfers/execute has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "institution_payment_preview_route",
+      "file": "app/main.py",
+      "identity": "327493e2b183e672",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /institutions/preview-payment has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "agent_cash_in_preview_route",
+      "file": "app/main.py",
+      "identity": "89348932f69ed6e0",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /agents/cash-in/preview has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "agent_cash_out_preview_route",
+      "file": "app/main.py",
+      "identity": "232ba84057c8e22d",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /agents/cash-out/preview has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "agent_cash_in_prepare_route",
+      "file": "app/main.py",
+      "identity": "c487eacd38d233f3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /agents/cash-in/prepare has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "agent_cash_out_prepare_route",
+      "file": "app/main.py",
+      "identity": "573b418b4df9cdca",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /agents/cash-out/prepare has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "agent_cash_session_lookup_route",
+      "file": "app/main.py",
+      "identity": "d679556465b48a21",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /agents/cash-session/{session_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "agent_cash_ticket_lookup_route",
+      "file": "app/main.py",
+      "identity": "e288a4fe94ce76df",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /agents/cash-ticket/{ticket_code} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "account_lookup",
+      "file": "app/main.py",
+      "identity": "9aef221df6469aa9",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /accounts/{account_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "audit_by_batch_route",
+      "file": "app/main.py",
+      "identity": "6e30c77b9b73bc33",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /audit/batch/{batch_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "audit_by_transaction_route",
+      "file": "app/main.py",
+      "identity": "255bcda7bd0969b0",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /audit/{transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "receipts_route",
+      "file": "app/main.py",
+      "identity": "3ecbd9dd2619e6ad",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /receipts has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "receipt_route",
+      "file": "app/main.py",
+      "identity": "7f0e5c5250bd9cef",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /receipts/{batch_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "verify_receipt_route",
+      "file": "app/main.py",
+      "identity": "0ef7c641f290b4e9",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /receipts/{receipt_id}/verify has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlement_route",
+      "file": "app/main.py",
+      "identity": "73480b9f39747e0c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /settlements/{batch_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "protocol_events_route",
+      "file": "app/main.py",
+      "identity": "b02f4d291550d13c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/protocol-events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "lockdown_status_route",
+      "file": "app/main.py",
+      "identity": "07da5b6e7cdf7b3c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/system-lockdown/status has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "policy_flags_route",
+      "file": "app/main.py",
+      "identity": "88abef80af200205",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/policy-flags has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "reset_policy_flags_route",
+      "file": "app/main.py",
+      "identity": "c5a5847faf10670d",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/policy-flags/reset has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "set_policy_flag_route",
+      "file": "app/main.py",
+      "identity": "45ff0854707e559c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/policy-flags/set has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "policy_metrics_route",
+      "file": "app/main.py",
+      "identity": "d1eb7e953bcb8b80",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/policy-metrics has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "reset_policy_metrics_route",
+      "file": "app/main.py",
+      "identity": "07a3faf6aadbe558",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/policy-metrics/reset has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "execute_batch_route",
+      "file": "app/main.py",
+      "identity": "8a0f8c192e052b36",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /batches/execute has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "simulate",
+      "file": "app/main.py",
+      "identity": "569eaa55db099591",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /simulate has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "state_root_route",
+      "file": "app/main.py",
+      "identity": "b6d210ec2bfeddd8",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /state-root has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "protocol_storage_health_route",
+      "file": "app/main.py",
+      "identity": "074f7fc882e9b4b2",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /admin/protocol-storage/health has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_config_route",
+      "file": "app/main.py",
+      "identity": "f52a0ad94db1cb27",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/config has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_revenue_summary_route",
+      "file": "app/main.py",
+      "identity": "0b4e5f7491040eff",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/revenue-summary has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_ledger_verify_route",
+      "file": "app/main.py",
+      "identity": "970dc346d17d9f7b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/ledger/verify has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_replay_summary_route",
+      "file": "app/main.py",
+      "identity": "d730edaa9bb943c7",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/replay/summary has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_snapshot_latest_route",
+      "file": "app/main.py",
+      "identity": "a5ff999dab5a91c3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/snapshots/latest has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_agt_route",
+      "file": "app/main.py",
+      "identity": "2f046a078d881f63",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/exports/agt has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_bna_route",
+      "file": "app/main.py",
+      "identity": "bf4aef0ea00bf358",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/exports/bna has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_validators_route",
+      "file": "app/main.py",
+      "identity": "41431e03b45c9490",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/exports/validators has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_platform_route",
+      "file": "app/main.py",
+      "identity": "0056d906b1d6d25b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/exports/platform has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_token_consumption_route",
+      "file": "app/main.py",
+      "identity": "eb5b4438c9f8b186",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /economics/token-consumption-preview has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_offline_intents_route",
+      "file": "app/main.py",
+      "identity": "bb4ac6a46ef455e8",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /offline/intents has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_offline_intent_route",
+      "file": "app/main.py",
+      "identity": "b8b9d96582752096",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /offline/intents/{offline_intent_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "clear_offline_intent_test_state_route",
+      "file": "app/main.py",
+      "identity": "cd60d0db91ab1e5b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /offline/intents/clear-test-state has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "run_province_partition_simulation_route",
+      "file": "app/main.py",
+      "identity": "ba16c44eab3d667c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /simulations/province-partition has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_province_partition_scenario_route",
+      "file": "app/main.py",
+      "identity": "e810852452482244",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /simulations/province-partition/{scenario_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_province_partition_scenarios_route",
+      "file": "app/main.py",
+      "identity": "ee4054a9430476bb",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /simulations/province-partition has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "clear_province_partition_test_state_route",
+      "file": "app/main.py",
+      "identity": "b11eb93313ba7093",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /simulations/province-partition/clear-test-state has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "rates_route",
+      "file": "app/main.py",
+      "identity": "3b4ee2f7098a53b4",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /rates has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "liquidity_route",
+      "file": "app/main.py",
+      "identity": "53dc70bbcdc87b0c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /liquidity has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "compliance_receipt_route",
+      "file": "app/main.py",
+      "identity": "61e708d85dac72d3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /compliance/receipt has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "province_profile_route",
+      "file": "app/main.py",
+      "identity": "01e6e2d5a4197473",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /province/profile has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "citizen_risk_route",
+      "file": "app/main.py",
+      "identity": "8aa7067258edd462",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /citizen/risk has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "transaction_intent_schema_anchor",
+      "file": "app/main.py",
+      "identity": "27ada1487443e023",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /contracts/schemas/transaction-intent has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_receipt_routes.py",
+      "identity": "1e17557bf98b6e06",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_receipt_routes.py",
+      "identity": "fb8c236afeb954c9",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_receipt_routes.py",
+      "identity": "2cb5daa96493efae",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_receipt_routes.py",
+      "identity": "4dfb13e8dc57df97",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "platform_write_signed_post",
+      "file": "tests/conftest.py",
+      "identity": "b217d7c30d7cdf8f",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "platform_write_signed_post",
+      "file": "tests/conftest.py",
+      "identity": "3202a435719a7379",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "platform_write_signed_post",
+      "file": "tests/conftest.py",
+      "identity": "f7d4a9504e60b807",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "platform_write_signed_post",
+      "file": "tests/conftest.py",
+      "identity": "ab24d0141c645628",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_platform_write_signed_post",
+      "file": "tests/test_policy_runtime.py",
+      "identity": "77c1a87dd237aa76",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_platform_write_signed_post",
+      "file": "tests/test_policy_runtime.py",
+      "identity": "ac21a8e59c514e0b",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_platform_write_signed_post",
+      "file": "tests/test_policy_runtime.py",
+      "identity": "8f4f32dfa7fd04a8",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_platform_write_signed_post",
+      "file": "tests/test_policy_runtime.py",
+      "identity": "46de7be6f391afa8",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_economics_routes.py",
+      "identity": "18a18df77f728bef",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_economics_routes.py",
+      "identity": "2a18baf26a7f801d",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_economics_routes.py",
+      "identity": "d066c9f091603e1e",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_economics_routes.py",
+      "identity": "59ad8ac27b556728",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_ciel_entities.py",
+      "identity": "3c15cb70b7a4e2db",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_ciel_entities.py",
+      "identity": "bb3e3fb733964bcd",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_ciel_entities.py",
+      "identity": "d485b26a01462666",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "tests/test_ciel_entities.py",
+      "identity": "41cc2687d8728fdb",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "root",
+      "file": "src/cubeshackles_node_api/main.py",
+      "identity": "7365afdd3f79ec60",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> / has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlement_status",
+      "file": "src/routes/settlements.py",
+      "identity": "2def12213824fbf1",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /{settlement_instruction_id}/status has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlements_by_transaction",
+      "file": "src/routes/settlements.py",
+      "identity": "808892a28fe3310c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-transaction/{transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlements_by_replay",
+      "file": "src/routes/settlements.py",
+      "identity": "e72d80f5f0d1d0e1",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-replay/{replay_correlation_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "runtime_trace_by_replay",
+      "file": "src/routes/persistence.py",
+      "identity": "81d627ec701a520b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /runtime/by-replay/{replay_correlation_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "runtime_trace_by_deterministic",
+      "file": "src/routes/persistence.py",
+      "identity": "ae1e0cc07b50b631",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /runtime/by-deterministic-id/{deterministic_transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "offline_intent_persistence",
+      "file": "src/routes/persistence.py",
+      "identity": "1918fb224e5e89c7",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /offline/{offline_intent_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlement_persistence",
+      "file": "src/routes/persistence.py",
+      "identity": "2835afe187341422",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /settlement/{settlement_instruction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_explorer_transfers",
+      "file": "src/routes/explorer_truth.py",
+      "identity": "0a0f86ff9ff7860f",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transfers has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_explorer_transaction_by_replay",
+      "file": "src/routes/explorer_truth.py",
+      "identity": "8357c026e1c9713f",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transactions/by-replay/{replay_correlation_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_explorer_transaction",
+      "file": "src/routes/explorer_truth.py",
+      "identity": "86a0f6f72622b1ae",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transactions/{transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_explorer_transfer",
+      "file": "src/routes/explorer_truth.py",
+      "identity": "bc860db5af0037e3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transfers/{transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "audit_visibility",
+      "file": "src/routes/audit.py",
+      "identity": "d0f289abbc93e616",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /visibility has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "audit_events",
+      "file": "src/routes/audit.py",
+      "identity": "4ca5ff95610d234e",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "record_audit_event",
+      "file": "src/routes/audit.py",
+      "identity": "59584181c41ea2eb",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "node_health",
+      "file": "src/routes/health.py",
+      "identity": "8d68c4775611a73e",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /node has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "gateway_health",
+      "file": "src/routes/health.py",
+      "identity": "d601b0bd145bd88e",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /gateway has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "accept_transaction_initiated",
+      "file": "src/routes/transactions.py",
+      "identity": "c0715cc03c3a13d3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /initiated has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_transaction_status",
+      "file": "src/routes/transactions.py",
+      "identity": "a6c70d1c5e365fa9",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /{deterministic_transaction_id}/status has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_validator_status",
+      "file": "src/routes/validators.py",
+      "identity": "db2518b89f8a2d5e",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /status has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "cache_validator_heartbeat",
+      "file": "src/routes/validators.py",
+      "identity": "9ba5f9a687816f1c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /heartbeat-cache has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "create_wedge_transfer_intent",
+      "file": "src/routes/wedge_transfers.py",
+      "identity": "f1ec252eb7594603",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_wedge_intent",
+      "file": "src/routes/wedge_transfers.py",
+      "identity": "0a7236ca655bf556",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents/{transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wedge_cash_settle_route",
+      "file": "src/routes/wedge_transfers.py",
+      "identity": "c999b2b544c2043c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /cash/settle has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wedge_transfer_finalize_route",
+      "file": "src/routes/wedge_transfers.py",
+      "identity": "4111e43bfbcdbefd",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transfers/finalize has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wedge_transfer_settle_route",
+      "file": "src/routes/wedge_transfers.py",
+      "identity": "429b61b8af426710",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transfers/settle has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wedge_intents_by_phone",
+      "file": "src/routes/wedge_transfers.py",
+      "identity": "bf34e637cd3fa483",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-phone/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_validator_transactions",
+      "file": "src/routes/validator_transactions.py",
+      "identity": "d624c5c7a50c1295",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transactions has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_validator_transaction",
+      "file": "src/routes/validator_transactions.py",
+      "identity": "6aa2a43e7c954842",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transactions/{transaction_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "create_offline_intent",
+      "file": "src/routes/offline.py",
+      "identity": "bd292dcd58ca6b4d",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "sync_offline_intent",
+      "file": "src/routes/offline.py",
+      "identity": "fb8a2f8145f991ee",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /sync has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_offline_intent",
+      "file": "src/routes/offline.py",
+      "identity": "69df625a9cade067",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents/{offline_intent_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "offline_by_phone",
+      "file": "src/routes/offline.py",
+      "identity": "0ce39384d1f64510",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-phone/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "offline_by_replay",
+      "file": "src/routes/offline.py",
+      "identity": "0e7a494b7582b1a6",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-replay/{replay_correlation_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "citizen_by_phone",
+      "file": "src/routes/citizens.py",
+      "identity": "c722b8bd83e26fc0",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-phone/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "resolve_citizen",
+      "file": "src/routes/citizens.py",
+      "identity": "21873dabb45100f2",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /resolve/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "citizen_status",
+      "file": "src/routes/citizens.py",
+      "identity": "d92459e9f10ba3e2",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /status/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "ledger_truth_by_phone",
+      "file": "src/routes/ledger_truth.py",
+      "identity": "dc6eefbb440a8c9e",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-phone/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_ledger_transactions",
+      "file": "src/routes/ledger_transactions.py",
+      "identity": "699f7171beef7486",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transactions has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_ledger_events",
+      "file": "src/routes/ledger_transactions.py",
+      "identity": "1aeac32ed71c1485",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "ledger_transactions_by_phone",
+      "file": "src/routes/ledger_transactions.py",
+      "identity": "f3800cf75720f368",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /by-phone/{phone_number} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "src/gateway/wedge_validator_attestation.py",
+      "identity": "7509609e4902fc0e",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "VALIDATOR_API_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "guarantee_tiers",
+      "file": "api/guarantee/routes.py",
+      "identity": "bf17717e2adfd7ca",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /tiers has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_guarantee",
+      "file": "api/guarantee/routes.py",
+      "identity": "986c3fb771865849",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /wallet/{wallet_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "simulate_failure",
+      "file": "api/guarantee/routes.py",
+      "identity": "42943e89260bd5b4",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /simulate/failure has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_kid_rotation.py",
+      "identity": "4e3e8bd3f29d2e74",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_kid_rotation.py",
+      "identity": "52dbc181fd8c6bd4",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_hmac_auth.py",
+      "identity": "022956f5641261e3",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_hmac_auth.py",
+      "identity": "2016ee79cf83f177",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_flow.py",
+      "identity": "72fb8eee2197df35",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_flow.py",
+      "identity": "5c7e26812b8ef4f1",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/hmac_client.py",
+      "identity": "b189f0cad8ea6bf7",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/hmac_client.py",
+      "identity": "492880c0de311feb",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/hmac_client.py",
+      "identity": "9a519f75f7492aaa",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/hmac_client.py",
+      "identity": "e913dcd38ea6522b",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_persistence.py",
+      "identity": "5e26f58db26bdf87",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_persistence.py",
+      "identity": "8ccba6606dee9a49",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_idempotency.py",
+      "identity": "6b5983f69ff36d93",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_idempotency.py",
+      "identity": "95c3c40aac2c48ce",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_transaction_grouping.py",
+      "identity": "23227c34e208d23b",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/test_ciel_transaction_grouping.py",
+      "identity": "a81b6eaecc0df975",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "test-fixture",
+      "enclosing_scope": "build_service_auth_headers",
+      "file": "tests/helpers/service_auth_client.py",
+      "identity": "730cee2ea8a97324",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_SERVICE_AUTH_SECRET_ORCHESTRATOR"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_entities",
+      "file": "app/ciel/routes.py",
+      "identity": "1e3f6e654ac6163a",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /entities has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_entity",
+      "file": "app/ciel/routes.py",
+      "identity": "6d6ea1941043e130",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /entities/{entity_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "entity_events",
+      "file": "app/ciel/routes.py",
+      "identity": "ce74a944e4c9ffef",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /entities/{entity_id}/events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "validation_signal",
+      "file": "app/ciel/routes.py",
+      "identity": "159d55fc964f8b4d",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /entities/{entity_id}/validation-signal has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "transaction_events",
+      "file": "app/ciel/routes.py",
+      "identity": "1f464b208ca3c34d",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /transactions/{transaction_id}/events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "app/security/dev_token.py",
+      "identity": "e96ebb59ac6eab9a",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "system_state",
+      "file": "app/routes/system.py",
+      "identity": "5ef504d62bdd7ef1",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /admin/system-state has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "reset_state",
+      "file": "app/routes/system.py",
+      "identity": "8d818ad4f4b5dc5a",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /admin/system-state/reset has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "set_state",
+      "file": "app/routes/system.py",
+      "identity": "20bd9e41fc57fb7c",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /admin/system-state/set has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "list_offline_intents_route",
+      "file": "app/routes/offline.py",
+      "identity": "b50c1e99c593dac7",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "get_offline_intent_route",
+      "file": "app/routes/offline.py",
+      "identity": "1d27a3fbcfc8f363",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents/{offline_intent_id} has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "clear_offline_intent_test_state_route",
+      "file": "app/routes/offline.py",
+      "identity": "6aece9d07c32cf6b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /intents/clear-test-state has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "classify",
+      "file": "app/routes/agent.py",
+      "identity": "58696356accaa027",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /classify has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "contracts_version_route",
+      "file": "app/routes/contracts.py",
+      "identity": "f181ffbdab0fa221",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /version has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "transaction_intent_example",
+      "file": "app/routes/contracts.py",
+      "identity": "12bcb2b36b6c4dee",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /ontology/transaction-intent/example has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "smartshackle_decision_example",
+      "file": "app/routes/contracts.py",
+      "identity": "58479545e9049c79",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /ontology/smartshackle-decision/example has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "validator_attestation_example",
+      "file": "app/routes/contracts.py",
+      "identity": "040c5208e1ca6a21",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /ontology/validator-attestation/example has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "ledger_commit_receipt_example",
+      "file": "app/routes/contracts.py",
+      "identity": "23bb96afebfc0a51",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /ontology/ledger-commit-receipt/example has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "audit_event_example",
+      "file": "app/routes/contracts.py",
+      "identity": "621794b592baca7b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /ontology/audit-event/example has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_config_route",
+      "file": "app/routes/economics.py",
+      "identity": "c4f6f5ee7c7c36db",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /config has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_revenue_summary_route",
+      "file": "app/routes/economics.py",
+      "identity": "461b402e77baa480",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /revenue-summary has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_ledger_verify_route",
+      "file": "app/routes/economics.py",
+      "identity": "afaa322b4c7585c1",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /ledger/verify has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_replay_summary_route",
+      "file": "app/routes/economics.py",
+      "identity": "ab008dfc5121c229",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /replay/summary has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_snapshot_latest_route",
+      "file": "app/routes/economics.py",
+      "identity": "9d09a71c9fd25e3a",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /snapshots/latest has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_agt_route",
+      "file": "app/routes/economics.py",
+      "identity": "beeec8dddfa49443",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /exports/agt has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_bna_route",
+      "file": "app/routes/economics.py",
+      "identity": "6790b461adbabfba",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /exports/bna has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_validators_route",
+      "file": "app/routes/economics.py",
+      "identity": "5332d5f4cb9ded70",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /exports/validators has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_export_platform_route",
+      "file": "app/routes/economics.py",
+      "identity": "e0b7fa70f747b747",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /exports/platform has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "economics_token_consumption_route",
+      "file": "app/routes/economics.py",
+      "identity": "82b3a6913d2aebeb",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /token-consumption-preview has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlement_prepare",
+      "file": "app/routes/settlement_prepare.py",
+      "identity": "b3846a7539b41282",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /prepare has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_events_route",
+      "file": "app/routes/wallet.py",
+      "identity": "85d49ff9e35247d1",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /events has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_receipt_route",
+      "file": "app/routes/wallet.py",
+      "identity": "094f30b131a7bb6b",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /receipt has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_rates_route",
+      "file": "app/routes/wallet.py",
+      "identity": "3959dae3446c20d1",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /rates has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_liquidity_route",
+      "file": "app/routes/wallet.py",
+      "identity": "c468fc7ba9057205",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /liquidity has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_compliance_receipt_route",
+      "file": "app/routes/wallet.py",
+      "identity": "2a748166b2c23a63",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /compliance/receipt has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_province_profile_route",
+      "file": "app/routes/wallet.py",
+      "identity": "4db964b6de9321f9",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /province/profile has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "wallet_citizen_risk_route",
+      "file": "app/routes/wallet.py",
+      "identity": "e219c43d008d6ff8",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /citizen/risk has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "resolve_service_secret",
+      "file": "app/services/service_auth.py",
+      "identity": "7c2f3e92ddc28095",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_SERVICE_AUTH_SECRET_ORCHESTRATOR"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "service_auth_configured",
+      "file": "app/services/service_auth.py",
+      "identity": "7c241b30939028dd",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_SERVICE_AUTH_SECRET_ORCHESTRATOR"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "_schema_path",
+      "file": "app/services/secrets_validation.py",
+      "identity": "2d99cd75eb0304ff",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_SECRET_SCHEMA_PATH"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "_validator_api_key",
+      "file": "app/services/settlement_prepare_runtime.py",
+      "identity": "b6e748c4418f9615",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "VALIDATOR_API_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "_validator_api_key_headers",
+      "file": "app/services/validator_client.py",
+      "identity": "9cc3db417ee35c16",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "VALIDATOR_API_KEY"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "fetch_validator_infos",
+      "file": "app/services/validator_client.py",
+      "identity": "453793f8a3022d49",
+      "kind": "OUTBOUND_CALL_NO_CRED",
+      "stable_key": "httpx.get(...) to what looks like an internal service URL, no headers= argument"
+    },
+    {
+      "canonical_repo": "Cubeshackles-node-api",
+      "classification": "production-reachable",
+      "enclosing_scope": "ingest_kulifikila_audit_route",
+      "file": "app/routes/integrations/kulifikila.py",
+      "identity": "636a6a8f3676a9ef",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /audit has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-settlement-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "_api_key_set",
+      "file": "src/settlement_service/security.py",
+      "identity": "9b420a9bbb438fd1",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "SETTLEMENT_API_KEYS"
+    },
+    {
+      "canonical_repo": "cubeshackles-settlement-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "readiness_for_writes",
+      "file": "src/settlement_service/api.py",
+      "identity": "299da3f36fa4b427",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /readiness/writes has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-settlement-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "settlement_mode_status",
+      "file": "src/settlement_service/api.py",
+      "identity": "70319dbad24437b3",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "app.<method> /settlement/mode/status has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-settlement-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "_ledger_api_key",
+      "file": "src/ledger/ledger_http_client.py",
+      "identity": "381f27eb7589f80a",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "LEDGER_API_KEY"
+    },
+    {
+      "canonical_repo": "cubeshackles-settlement-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "_wait_for_health",
+      "file": "scripts/demo/demo_rc2a.py",
+      "identity": "672fa4df40a957c8",
+      "kind": "OUTBOUND_CALL_NO_CRED",
+      "stable_key": "httpx.get(...) to what looks like an internal service URL, no headers= argument"
+    },
+    {
+      "canonical_repo": "cubeshackles-settlement-engine",
+      "classification": "production-reachable",
+      "enclosing_scope": "run_demo",
+      "file": "scripts/demo/demo_rc2a.py",
+      "identity": "27a2ebda55604971",
+      "kind": "OUTBOUND_CALL_NO_CRED",
+      "stable_key": "httpx.get(...) to what looks like an internal service URL, no headers= argument"
+    },
+    {
+      "canonical_repo": "cubeshackles-clearing-house",
+      "classification": "production-reachable",
+      "enclosing_scope": "_api_key_set",
+      "file": "src/clearing_house/preparation/security.py",
+      "identity": "c1ee48b87a9e5c5f",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CLEARING_API_KEYS"
+    },
+    {
+      "canonical_repo": "cubeshackles-ledger",
+      "classification": "production-reachable",
+      "enclosing_scope": "readiness_for_writes",
+      "file": "app/routers/health.py",
+      "identity": "a02600eee9a53eba",
+      "kind": "ROUTE_NO_AUTH_DEPENDENCY",
+      "stable_key": "router.<method> /readiness/writes has no visible Depends(...) and is not on the public-path allowlist (cross-check router-level dependencies defined elsewhere before treating this as confirmed)"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "api_client",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "0cd6c3c30a81812c",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "api_client",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "36382657621a61c8",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "b94ec1d628445bd1",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "779fadb739756d5c",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "f58627295d1a9bb5",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "d3253569ec1cf768",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "f58627295d1a9bb5",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "_signed_post",
+      "file": "contracts/test_platform_interoperability.py",
+      "identity": "d3253569ec1cf768",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "test_prepare_transfer_maps_to_transaction_intent",
+      "file": "tests/test_platform_interoperability.py",
+      "identity": "dbc72e4befe120ae",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "test_prepare_transfer_maps_to_transaction_intent",
+      "file": "tests/test_platform_interoperability.py",
+      "identity": "9a7a1a6bc2db9f08",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "test_prepare_transfer_maps_to_transaction_intent",
+      "file": "tests/test_platform_interoperability.py",
+      "identity": "309c45bef334862f",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "test_prepare_transfer_maps_to_transaction_intent",
+      "file": "tests/test_platform_interoperability.py",
+      "identity": "a2542a7b2ce103b3",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "test_prepare_transfer_maps_to_transaction_intent",
+      "file": "tests/test_platform_interoperability.py",
+      "identity": "309c45bef334862f",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "test_prepare_transfer_maps_to_transaction_intent",
+      "file": "tests/test_platform_interoperability.py",
+      "identity": "a2542a7b2ce103b3",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_live_backbone_smoke.py",
+      "identity": "07baead3c2993dcc",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_live_backbone_smoke.py",
+      "identity": "cd8d34a0f3866329",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_live_backbone_smoke.py",
+      "identity": "9d34f1e63fba1058",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_live_backbone_smoke.py",
+      "identity": "a9da56eec4e3f5b5",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_live_backbone_smoke.py",
+      "identity": "95a3165bb3e8bd4a",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_SERVICE_AUTH_SECRET_ORCHESTRATOR"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_live_backbone_smoke.py",
+      "identity": "83b25689ac8017c9",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_SERVICE_AUTH_SECRET_ORCHESTRATOR"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_platform_authority_suite.py",
+      "identity": "73e3bf6cab43aa16",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_platform_authority_suite.py",
+      "identity": "52b78af595d185e3",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_platform_authority_suite.py",
+      "identity": "ff29168fd4e705da",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/run_platform_authority_suite.py",
+      "identity": "d39e815072e08e0b",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/cross_repo_sdk_validation.py",
+      "identity": "ee2140bed9845b79",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/cross_repo_sdk_validation.py",
+      "identity": "a9c106a0fdaa4371",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/cross_repo_sdk_validation.py",
+      "identity": "8da1ab71eaf5f4da",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "scripts/ciel/cross_repo_sdk_validation.py",
+      "identity": "33cc6602272883c9",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "main",
+      "file": "scripts/ciel/test_trace_propagation.py",
+      "identity": "e111cb48577d3b53",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "main",
+      "file": "scripts/ciel/test_trace_propagation.py",
+      "identity": "857ddd6a83a288dd",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "main",
+      "file": "scripts/ciel/test_trace_propagation.py",
+      "identity": "1c2ab315c6870ce2",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "test-fixture",
+      "enclosing_scope": "main",
+      "file": "scripts/ciel/test_trace_propagation.py",
+      "identity": "e68016c6bb47ca1b",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/security/check_secrets_hierarchy.py",
+      "identity": "7ac71f2c2cf0f5c4",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "intentional-denylist",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/security/check_secrets_hierarchy.py",
+      "identity": "9cc1f8cef5b2ae1c",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/security/check_secrets_hierarchy.py",
+      "identity": "e49a233bb0f928e1",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/security/check_secrets_hierarchy.py",
+      "identity": "37e417b82b0eb1d5",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_check_env",
+      "file": "scripts/runtime/validate_dev_env.py",
+      "identity": "7f3137db1c11fb9f",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_check_env",
+      "file": "scripts/runtime/validate_dev_env.py",
+      "identity": "f22aa6486ac43216",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/runtime/check_environment_authority.py",
+      "identity": "a362f77874940c03",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "intentional-denylist",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/runtime/check_environment_authority.py",
+      "identity": "db8a60bca637476b",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_DEV_TOKEN"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/runtime/check_environment_authority.py",
+      "identity": "b9a77bda34929824",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "_local_suite_environ",
+      "file": "scripts/runtime/check_environment_authority.py",
+      "identity": "47620c69c9e427e8",
+      "kind": "HARDCODED_FALLBACK",
+      "stable_key": "CUBESHACKLES_HMAC_SECRET"
+    },
+    {
+      "canonical_repo": "cubeshackles-integration",
+      "classification": "production-reachable",
+      "enclosing_scope": "<module>",
+      "file": "deploy/scripts/run_integration_smoke.py",
+      "identity": "bfc2e5bc643dfa0d",
+      "kind": "CREDENTIAL_READ",
+      "stable_key": "POSTGRES_PASSWORD"
+    }
+  ],
+  "known_v1_blind_spots": [
+    "No cross-repo call-graph resolution (env var -> base URL -> which repo's server owns that port).",
+    "Python only -- no TypeScript/Next.js coverage.",
+    "AST-based -- a dynamically built credential (string concatenation, an f-string with no static literal, a value read from a config object) is invisible to it.",
+    "Cannot trace a value through an intermediate variable before it reaches compare_digest.",
+    "ROUTE_NO_AUTH_DEPENDENCY identity is call-site based, not resolved-OpenAPI-path based.",
+    "Repo display name (the 'repo' field) is a directory basename and can collide across different repos checked out to identically-named worktree paths; identity uses canonical_repo (git remote derived) specifically to avoid this, but the human-readable 'repo' field in ordinary output can still be ambiguous when scanning worktree paths directly.",
+    "Identity has no per-occurrence disambiguator: two textually-identical statements (the exact same env var read with the exact same default, e.g. from a copy-pasted line) inside the SAME enclosing function collide onto one identity, undercounting distinct findings by one per such pair. Found in the real 263-finding baseline (4 collisions, all in test-fixture-classified files, none production-reachable, none P0/P1) while verifying an identical re-scan was 100% UNCHANGED."
+  ],
+  "repository_scope": [
+    "Cubeshackles-core",
+    "Cubeshackles-network-orchestrator",
+    "Cubeshackles-node-api",
+    "Cubeshackles-validator-node",
+    "cubeshackles-clearing-house",
+    "cubeshackles-compliance-engine",
+    "cubeshackles-institutional-gateway",
+    "cubeshackles-integration",
+    "cubeshackles-ledger",
+    "cubeshackles-settlement-engine"
+  ],
+  "resolved_history": [
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "file": "app/services/validator_runtime.py",
+      "identity": "16b4348bb2761bcd",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed f62ce11 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-core",
+      "file": "src/cubeshackles_ciel_sdk/client.py",
+      "identity": "26e7e45d273dc376",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed 415e206 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-core",
+      "file": "src/cubeshackles_ciel_sdk/client.py",
+      "identity": "cd0fa8b16131ac28",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed 415e206 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-core",
+      "file": "src/cubeshackles_ciel_sdk/client.py",
+      "identity": "8fc5db0e837cc28d",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed 415e206 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-core",
+      "file": "src/cubeshackles_ciel_sdk/client.py",
+      "identity": "427440a9eb7b39c7",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed 415e206 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "file": "app/ciel/forwarder.py",
+      "identity": "66824e4534d11495",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed bc1ec38 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "file": "app/ciel/forwarder.py",
+      "identity": "4883462b254c8445",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed bc1ec38 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "file": "app/ciel/validator_policy_client.py",
+      "identity": "9f56a3209d5f1012",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed bc1ec38 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-network-orchestrator",
+      "file": "app/ciel/validator_policy_client.py",
+      "identity": "a3183b7340f7d549",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed bc1ec38 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "file": "app/ciel/policy_client.py",
+      "identity": "ab91b245bd2b3a6b",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed 2cc0602 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "file": "app/ciel/policy_client.py",
+      "identity": "80b67d29e273c650",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed 2cc0602 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "file": "app/services/adviser_gate.py",
+      "identity": "b80afcd0a77d5b03",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed b071740 -- removed hardcoded default for the credential env var this identity encodes"
+    },
+    {
+      "canonical_repo": "Cubeshackles-validator-node",
+      "file": "app/services/ledger_client.py",
+      "identity": "07ff3d275fb52a57",
+      "kind": "HARDCODED_FALLBACK",
+      "note": "fixed b071740 -- removed hardcoded default for the credential env var this identity encodes"
+    }
+  ],
+  "scanner_commit": "44d27778323a10fe719b1ac6c8d777f00d6e31ff",
+  "schema_version": 1
+}

@@ -198,6 +198,13 @@ KNOWN_V1_BLIND_SPOTS = [
     "function collide onto one identity, undercounting distinct findings by one per such pair. Found "
     "in the real 263-finding baseline (4 collisions, all in test-fixture-classified files, none "
     "production-reachable, none P0/P1) while verifying an identical re-scan was 100% UNCHANGED.",
+    "REGRESSED detection requires the SAME enclosing scope/structure the finding had when it was "
+    "recorded resolved, not just the same literal default value reappearing. Verified against real "
+    "code: fully reverting a fixed file back to its exact pre-fix shape correctly reports REGRESSED; "
+    "reintroducing the same literal default value inside a since-refactored function (a different "
+    "enclosing scope than the original module-level constant) reports NEW instead, because the "
+    "structural fingerprint genuinely differs -- v1 does not guess that relationship rather than risk "
+    "a false REGRESSED on an unrelated finding that merely shares a literal value.",
 ]
 
 
