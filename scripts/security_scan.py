@@ -73,30 +73,76 @@ came out of):
   - AST-based, so a credential built dynamically (string concatenation,
     an f-string with no static literal, a value read from a config object
     rather than os.getenv directly) is invisible to it.
+  - Cannot trace a value through an intermediate variable (e.g.
+    `b = x.encode(); compare_digest(b, ...)` is not recognised as safe --
+    confirmed false positive found scanning network-orchestrator's own
+    fixed app/core/security.py this pass).
+  - ROUTE_NO_AUTH_DEPENDENCY's identity is call-site based (repo + path +
+    enclosing function); it cannot yet identify a route by matching
+    request method + resolved path against a live OpenAPI document the way
+    this session's manual test suites did.
+
+Baseline / diff mode (see BASELINE_SCHEMA_VERSION below): a baseline is a
+repository-controlled, versioned snapshot of a scan's findings, identified
+by a hash that is stable across checkout location, worktree path, and line
+number movement (see `compute_identity`). It is NOT an allowlist: ordinary
+`--json`/`--md` output always reports every finding regardless of any
+baseline. `--baseline <path>` adds a second, additional comparison view
+that classifies each current finding as NEW, UNCHANGED, or (compared
+against the baseline's `resolved_history`) REGRESSED, and each baseline
+finding no longer present as RESOLVED.
 
 Usage:
     python3 scripts/security_scan.py <repo_root> [<repo_root> ...] \\
-        [--json out.json] [--md out.md] [--workspace <dir>]
+        [--json out.json] [--md out.md] [--workspace <dir>] \\
+        [--write-baseline baseline.json [--creation-source TEXT] \\
+         [--resolved-history resolved.json]] \\
+        [--baseline baseline.json [--baseline-json diff.json] [--baseline-md diff.md]]
 
-    --workspace <dir>   instead of listing repos, treat every immediate
-                        subdirectory of <dir> containing a .git entry as a
-                        repo root (the 50+-repo case).
+    --workspace <dir>       instead of listing repos, treat every immediate
+                            subdirectory of <dir> containing a .git entry as
+                            a repo root (the 50+-repo case).
+    --write-baseline PATH   write a new baseline snapshot of the current
+                            scan to PATH instead of (or in addition to)
+                            comparing against one.
+    --resolved-history PATH JSON list of {"identity", "repo", "kind",
+                            "note"} entries for findings confirmed fixed in
+                            a prior remediation pass, folded into a newly
+                            written baseline's "resolved_history" so a
+                            later reappearance of that exact identity is
+                            reported as REGRESSED, not NEW.
+    --baseline PATH         compare the current scan against this baseline
+                            and print/write the NEW/UNCHANGED/RESOLVED/
+                            REGRESSED classification. Malformed JSON or an
+                            incompatible schema_version fails closed (a
+                            clear error, non-zero exit) rather than
+                            silently treating everything as NEW.
 
-Exit code is non-zero if any production-reachable HARDCODED_FALLBACK,
-COMPARE_DIGEST_STR_RISK, or OUTBOUND_CALL_NO_CRED finding exists. Findings
-of kind ROUTE_NO_AUTH_DEPENDENCY never fail the run on their own (too many
-legitimate false positives from router-level dependencies) -- they are
-always reported, never gate.
+Exit code (ordinary mode, no --baseline): non-zero if any production-
+reachable HARDCODED_FALLBACK, COMPARE_DIGEST_STR_RISK, or
+OUTBOUND_CALL_NO_CRED finding exists. ROUTE_NO_AUTH_DEPENDENCY never fails
+the run on its own (too many legitimate false positives from router-level
+dependencies) -- always reported, never gates.
+
+Exit code (--baseline mode): also non-zero if any NEW or REGRESSED finding
+is itself a production-reachable HARDCODED_FALLBACK / COMPARE_DIGEST_STR_RISK
+/ OUTBOUND_CALL_NO_CRED. Nothing wires this into CI yet in this version --
+see the baseline's own "creation_source" and the org's decision to run an
+observation period before any hard gate.
 """
 
 from __future__ import annotations
 
 import argparse
 import ast
+import hashlib
 import json
 import re
+import subprocess
 import sys
+from collections import Counter
 from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 
 # --- what counts as a credential-shaped env var name -----------------------
@@ -136,6 +182,24 @@ TEST_FILE_PATTERN = re.compile(r"(^test_.*\.py$|.*_test\.py$|^conftest\.py$)")
 
 DOCSTRING_PATTERN = re.compile(r'("""|\'\'\')(.*?)(\1)', re.DOTALL)
 
+KNOWN_V1_BLIND_SPOTS = [
+    "No cross-repo call-graph resolution (env var -> base URL -> which repo's server owns that port).",
+    "Python only -- no TypeScript/Next.js coverage.",
+    "AST-based -- a dynamically built credential (string concatenation, an f-string with no static "
+    "literal, a value read from a config object) is invisible to it.",
+    "Cannot trace a value through an intermediate variable before it reaches compare_digest.",
+    "ROUTE_NO_AUTH_DEPENDENCY identity is call-site based, not resolved-OpenAPI-path based.",
+    "Repo display name (the 'repo' field) is a directory basename and can collide across different "
+    "repos checked out to identically-named worktree paths; identity uses canonical_repo (git remote "
+    "derived) specifically to avoid this, but the human-readable 'repo' field in ordinary output can "
+    "still be ambiguous when scanning worktree paths directly.",
+    "Identity has no per-occurrence disambiguator: two textually-identical statements (the exact same "
+    "env var read with the exact same default, e.g. from a copy-pasted line) inside the SAME enclosing "
+    "function collide onto one identity, undercounting distinct findings by one per such pair. Found "
+    "in the real 263-finding baseline (4 collisions, all in test-fixture-classified files, none "
+    "production-reachable, none P0/P1) while verifying an identical re-scan was 100% UNCHANGED.",
+]
+
 
 @dataclass
 class Finding:
@@ -146,6 +210,9 @@ class Finding:
     detail: str
     classification: str
     confidence: str = "heuristic"
+    canonical_repo: str = ""
+    enclosing_scope: str = "<module>"
+    identity: str = ""
 
     def key(self) -> tuple:
         return (self.repo, self.file, self.line, self.kind, self.detail)
@@ -193,6 +260,68 @@ def classify(
     return "production-reachable"
 
 
+# --- stable finding identity -------------------------------------------------
+#
+# Identity must survive: ordinary line movement, a different local checkout
+# root, a different worktree path, and a directory-basename collision
+# between two unrelated repos. It must NOT survive: the underlying security
+# primitive actually changing (a different credential name, a different
+# kind of finding, a different enclosing function).
+
+
+def canonical_repo_id(repo_root: Path) -> str:
+    """Stable repo identity independent of local directory basename or
+    checkout location -- derived from the git remote origin URL when
+    available. This is what makes identity survive worktrees and basename
+    collisions: two different repos both checked out to a directory
+    literally named "pilot-rail-doc" (the exact collision found scanning
+    Cubeshackles-network-orchestrator and Cubeshackles-validator-node's
+    worktrees side by side this pass) resolve to their real, distinct repo
+    names here, even though `repo_root.name` -- kept as the separate,
+    purely cosmetic `repo` display field -- would be identical for both.
+    Falls back to an explicitly-marked directory-basename identity when no
+    git remote is configured (e.g. a synthetic test fixture, or a bare
+    local clone with no origin) -- this is deliberately NOT silently
+    treated as equivalent to a real canonical id."""
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(repo_root), "config", "--get", "remote.origin.url"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return f"unresolved:{repo_root.name}"
+    url = proc.stdout.strip()
+    if proc.returncode != 0 or not url:
+        return f"unresolved:{repo_root.name}"
+    name = url.rstrip("/").rsplit("/", 1)[-1]
+    if name.endswith(".git"):
+        name = name[: -len(".git")]
+    return name or f"unresolved:{repo_root.name}"
+
+
+def stable_detail_key(kind: str, detail: str) -> str:
+    """The part of `detail` that reflects the actual security primitive,
+    with anything that could vary cosmetically (there is currently nothing
+    line/path-based in `detail` at all -- it is already string-only) kept,
+    and -- for the two credential-related kinds -- narrowed to just the
+    env var name, dropping the literal default value. This both makes
+    identity independent of a default value being edited for clarity
+    (e.g. quoting style) and keeps literal credential-shaped strings out of
+    anything this key feeds into (the baseline file)."""
+    if kind in ("CREDENTIAL_READ", "HARDCODED_FALLBACK"):
+        return detail.split(" defaults to")[0].split(" (default=")[0].strip()
+    return detail
+
+
+def compute_identity(
+    *, canonical_repo: str, relpath: str, kind: str, enclosing_scope: str, stable_key: str
+) -> str:
+    raw = "\x1f".join([canonical_repo, relpath, kind, enclosing_scope, stable_key])
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+
+
 # --- AST literal helpers -----------------------------------------------------
 
 
@@ -211,8 +340,18 @@ def collection_contains_str(node: ast.AST, name_hint: str | None) -> bool:
 
 
 class SecurityScanVisitor(ast.NodeVisitor):
-    def __init__(self, *, repo: str, relpath: str, source: str, tree: ast.AST, result: ScanResult):
+    def __init__(
+        self,
+        *,
+        repo: str,
+        canonical_repo: str,
+        relpath: str,
+        source: str,
+        tree: ast.AST,
+        result: ScanResult,
+    ):
         self.repo = repo
+        self.canonical_repo = canonical_repo
         self.relpath = relpath
         self.source = source
         self.result = result
@@ -221,6 +360,7 @@ class SecurityScanVisitor(ast.NodeVisitor):
         self._collect_denylists(tree)
         self.router_dependency_names: set[str] = set()
         self._collect_router_level_dependencies(tree)
+        self._scope_stack: list[str] = []
 
     # -- setup passes ---------------------------------------------------
     #
@@ -284,6 +424,9 @@ class SecurityScanVisitor(ast.NodeVisitor):
 
     # -- per-node visits --------------------------------------------------
 
+    def _current_scope(self) -> str:
+        return ".".join(self._scope_stack) if self._scope_stack else "<module>"
+
     def _emit(self, node: ast.AST, kind: str, detail: str, *, in_denylist: bool = False) -> None:
         offset = getattr(node, "col_offset", 0)
         # Use the node's line to compute a rough char offset for docstring
@@ -298,6 +441,15 @@ class SecurityScanVisitor(ast.NodeVisitor):
             spans=self.docstring_spans,
             in_denylist=in_denylist,
         )
+        enclosing_scope = self._current_scope()
+        skey = stable_detail_key(kind, detail)
+        identity = compute_identity(
+            canonical_repo=self.canonical_repo,
+            relpath=self.relpath,
+            kind=kind,
+            enclosing_scope=enclosing_scope,
+            stable_key=skey,
+        )
         self.result.add(
             Finding(
                 repo=self.repo,
@@ -306,6 +458,9 @@ class SecurityScanVisitor(ast.NodeVisitor):
                 kind=kind,
                 detail=detail,
                 classification=classification,
+                canonical_repo=self.canonical_repo,
+                enclosing_scope=enclosing_scope,
+                identity=identity,
             )
         )
 
@@ -316,12 +471,32 @@ class SecurityScanVisitor(ast.NodeVisitor):
         self.generic_visit(node)
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+        # Push the function's own name onto the scope stack BEFORE checking
+        # its route auth, not after: an earlier version called
+        # _check_route_auth() first, so `enclosing_scope` at emit time
+        # reflected the PARENT scope, not this function's own name. Two
+        # different route handlers both defined at module level (a real
+        # case: Cubeshackles-node-api's POST and GET
+        # /simulations/province-partition, two distinct functions, same
+        # path) then collided onto the identical "<module>" scope and the
+        # identical identity, silently merging two distinct findings into
+        # one. Found by comparing a real baseline against an identical
+        # re-scan, which should be 100% UNCHANGED and was not.
+        self._scope_stack.append(node.name)
         self._check_route_auth(node)
         self.generic_visit(node)
+        self._scope_stack.pop()
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
+        self._scope_stack.append(node.name)
         self._check_route_auth(node)
         self.generic_visit(node)
+        self._scope_stack.pop()
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+        self._scope_stack.append(node.name)
+        self.generic_visit(node)
+        self._scope_stack.pop()
 
     # -- detection 1 & 2: credential reads and hardcoded fallbacks --------
 
@@ -459,7 +634,9 @@ def _looks_like_bytes(node: ast.AST) -> bool:
     did not originally recognise. This trades a false negative (a helper
     that does NOT actually encode, and is instead named misleadingly) for
     eliminating a false positive on the org's own now-dominant pattern --
-    the right tradeoff for a heuristic tool meant to be re-run often."""
+    the right tradeoff for a heuristic tool meant to be re-run often. Note:
+    a value encoded via an intermediate variable two lines earlier (a plain
+    ast.Name at the call site) is NOT recognised -- see KNOWN_V1_BLIND_SPOTS."""
     if isinstance(node, ast.Call):
         return True
     if isinstance(node, ast.Constant) and isinstance(node.value, bytes):
@@ -487,7 +664,7 @@ def _looks_like_internal_url(node: ast.AST) -> bool:
 # --- driver ------------------------------------------------------------------
 
 
-def scan_file(repo: str, repo_root: Path, path: Path, result: ScanResult) -> None:
+def scan_file(repo: str, canonical_repo: str, repo_root: Path, path: Path, result: ScanResult) -> None:
     try:
         source = path.read_text(encoding="utf-8")
     except (UnicodeDecodeError, OSError):
@@ -497,7 +674,9 @@ def scan_file(repo: str, repo_root: Path, path: Path, result: ScanResult) -> Non
     except SyntaxError:
         return
     relpath = str(path.relative_to(repo_root))
-    visitor = SecurityScanVisitor(repo=repo, relpath=relpath, source=source, tree=tree, result=result)
+    visitor = SecurityScanVisitor(
+        repo=repo, canonical_repo=canonical_repo, relpath=relpath, source=source, tree=tree, result=result
+    )
     visitor.visit(tree)
 
 
@@ -515,11 +694,12 @@ def scan_repo(repo_root: Path, result: ScanResult) -> None:
     passed as a worktree path, with no error or warning. Does not affect
     the original 296/243/33 baseline, which scanned top-level checkouts."""
     repo = repo_root.name
+    canonical_repo = canonical_repo_id(repo_root)
     for path in repo_root.rglob("*.py"):
         relative_parts = path.relative_to(repo_root).parts
         if any(part in SKIP_DIR_NAMES for part in relative_parts):
             continue
-        scan_file(repo, repo_root, path, result)
+        scan_file(repo, canonical_repo, repo_root, path, result)
 
 
 def discover_workspace_repos(workspace: Path) -> list[Path]:
@@ -582,12 +762,238 @@ def render_markdown(result: ScanResult) -> str:
     return "\n".join(lines)
 
 
+# --- baseline: schema, build, load, compare ----------------------------------
+
+BASELINE_SCHEMA_VERSION = 1
+
+
+class BaselineError(Exception):
+    """Raised when a baseline file is malformed or schema-incompatible.
+    Callers must fail closed on this -- never fall back to treating every
+    current finding as NEW, which would silently hide the distinction this
+    whole mechanism exists to make."""
+
+
+def _scanner_commit() -> str:
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(Path(__file__).resolve().parent), "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+        if proc.returncode == 0:
+            return proc.stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return "unknown"
+
+
+def build_baseline(
+    result: ScanResult,
+    *,
+    repository_scope: list[str],
+    creation_source: str,
+    resolved_history: list[dict] | None = None,
+) -> dict:
+    """A baseline never stores a finding's literal `detail` text -- for
+    HARDCODED_FALLBACK/CREDENTIAL_READ that text contains the actual
+    credential-shaped default value (e.g. "defaults to 'hmac-secret-local'").
+    Only `stable_key` (the env var name alone, for those two kinds) is
+    stored, which is what identity is computed from anyway."""
+    prod = [f for f in result.findings if f.classification == "production-reachable"]
+    defects = [f for f in prod if f.kind in FAILS_RUN]
+    findings_out = []
+    for f in result.findings:
+        findings_out.append(
+            {
+                "identity": f.identity,
+                "canonical_repo": f.canonical_repo,
+                "file": f.file,
+                "kind": f.kind,
+                "classification": f.classification,
+                "enclosing_scope": f.enclosing_scope,
+                "stable_key": stable_detail_key(f.kind, f.detail),
+            }
+        )
+    return {
+        "schema_version": BASELINE_SCHEMA_VERSION,
+        "scanner_commit": _scanner_commit(),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "creation_source": creation_source,
+        "repository_scope": sorted(repository_scope),
+        "finding_counts": {
+            "total": len(result.findings),
+            "production_reachable": len(prod),
+            "production_reachable_defects": len(defects),
+        },
+        "classification_counts": dict(Counter(f.classification for f in result.findings)),
+        "known_v1_blind_spots": KNOWN_V1_BLIND_SPOTS,
+        "resolved_history": resolved_history or [],
+        "findings": findings_out,
+    }
+
+
+def load_baseline(path: Path) -> dict:
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise BaselineError(f"cannot read baseline at {path}: {exc}") from exc
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise BaselineError(f"malformed baseline JSON at {path}: {exc}") from exc
+    if not isinstance(data, dict):
+        raise BaselineError(f"malformed baseline at {path}: root is not an object")
+    required = {"schema_version", "findings"}
+    missing = required - data.keys()
+    if missing:
+        raise BaselineError(f"malformed baseline at {path}: missing required keys {sorted(missing)}")
+    if not isinstance(data["findings"], list):
+        raise BaselineError(f"malformed baseline at {path}: 'findings' is not a list")
+    version = data["schema_version"]
+    if version != BASELINE_SCHEMA_VERSION:
+        raise BaselineError(
+            f"incompatible baseline schema_version {version!r} at {path}; "
+            f"this scanner reads/writes schema_version {BASELINE_SCHEMA_VERSION}. "
+            "Refusing to compare rather than guess compatibility."
+        )
+    return data
+
+
+@dataclass
+class BaselineDiff:
+    new: list[Finding]
+    unchanged_count: int
+    resolved: list[dict]
+    regressed: list[Finding]
+
+    def to_dict(self) -> dict:
+        return {
+            "new": [asdict(f) for f in self.new],
+            "unchanged_count": self.unchanged_count,
+            "resolved": self.resolved,
+            "regressed": [asdict(f) for f in self.regressed],
+            "counts": {
+                "new": len(self.new),
+                "unchanged": self.unchanged_count,
+                "resolved": len(self.resolved),
+                "regressed": len(self.regressed),
+            },
+        }
+
+
+def compare_to_baseline(result: ScanResult, baseline: dict) -> BaselineDiff:
+    """REGRESSED, precisely: a current finding whose identity matches an
+    entry in the baseline's `resolved_history` -- i.e. something this org
+    explicitly recorded as fixed in a prior remediation pass -- and which
+    is NOT present in the baseline's ordinary `findings` list (it should
+    never be in both; if it somehow is, ordinary UNCHANGED wins, since the
+    baseline's own current-state list is the more authoritative signal).
+
+    A finding this scanner has simply never seen before, with no matching
+    resolved_history entry, is NEW, not REGRESSED -- v1 cannot reliably
+    tell "this is a brand new occurrence of an old pattern in a place we
+    never checked" from "this specific thing came back," and does not
+    guess: it reports NEW and lets a human decide.
+
+    UNCHANGED: present in both the baseline's `findings` and the current
+    scan. RESOLVED: present in the baseline's `findings` but absent from
+    the current scan (regardless of resolved_history)."""
+    baseline_ids = {f["identity"] for f in baseline["findings"]}
+    resolved_history_ids = {f["identity"] for f in baseline.get("resolved_history", [])}
+    current_by_id: dict[str, Finding] = {f.identity: f for f in result.findings}
+    current_ids = set(current_by_id)
+
+    regressed_ids = (current_ids & resolved_history_ids) - baseline_ids
+    new_ids = current_ids - baseline_ids - resolved_history_ids
+    unchanged_ids = current_ids & baseline_ids
+    resolved_ids = baseline_ids - current_ids
+
+    resolved_entries = [f for f in baseline["findings"] if f["identity"] in resolved_ids]
+
+    return BaselineDiff(
+        new=[current_by_id[i] for i in sorted(new_ids)],
+        unchanged_count=len(unchanged_ids),
+        resolved=resolved_entries,
+        regressed=[current_by_id[i] for i in sorted(regressed_ids)],
+    )
+
+
+def render_baseline_markdown(diff: BaselineDiff, baseline: dict) -> str:
+    lines = ["# Security Invariant Scan -- Baseline Comparison\n"]
+    lines.append(
+        f"Comparing against baseline created {baseline.get('created_at', 'unknown')} "
+        f"(schema v{baseline.get('schema_version')}, scanner commit "
+        f"`{baseline.get('scanner_commit', 'unknown')}`).\n"
+    )
+    c = diff.to_dict()["counts"]
+    lines.append(
+        f"**NEW: {c['new']}  UNCHANGED: {c['unchanged']}  "
+        f"RESOLVED: {c['resolved']}  REGRESSED: {c['regressed']}**\n"
+    )
+
+    new_defects = [f for f in diff.new if f.classification == "production-reachable" and f.kind in FAILS_RUN]
+    regressed_defects = [f for f in diff.regressed if f.classification == "production-reachable" and f.kind in FAILS_RUN]
+
+    if new_defects or regressed_defects:
+        lines.append("## ⚠ New or regressed production-reachable defects\n")
+        lines.append("| State | Repo | File | Kind | Detail |")
+        lines.append("|---|---|---|---|---|")
+        for f in new_defects:
+            lines.append(f"| NEW | {f.repo} | {f.file} | {f.kind} | {f.detail} |")
+        for f in regressed_defects:
+            lines.append(f"| REGRESSED | {f.repo} | {f.file} | {f.kind} | {f.detail} |")
+        lines.append("")
+    else:
+        lines.append("No new or regressed production-reachable P0/P1-class defects.\n")
+
+    if diff.regressed:
+        lines.append("## All REGRESSED findings\n")
+        lines.append("| Repo | File | Kind | Classification | Detail |")
+        lines.append("|---|---|---|---|---|")
+        for f in diff.regressed:
+            lines.append(f"| {f.repo} | {f.file} | {f.kind} | {f.classification} | {f.detail} |")
+        lines.append("")
+
+    if diff.new:
+        lines.append("## All NEW findings\n")
+        lines.append("| Repo | File | Kind | Classification | Detail |")
+        lines.append("|---|---|---|---|---|")
+        for f in diff.new:
+            lines.append(f"| {f.repo} | {f.file} | {f.kind} | {f.classification} | {f.detail} |")
+        lines.append("")
+
+    if diff.resolved:
+        lines.append("## All RESOLVED findings (no longer detected)\n")
+        lines.append("| Repo | File | Kind |")
+        lines.append("|---|---|---|")
+        for entry in diff.resolved:
+            lines.append(f"| {entry.get('canonical_repo')} | {entry.get('file')} | {entry.get('kind')} |")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
 def main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("repos", nargs="*", help="Repo root directories to scan")
     parser.add_argument("--workspace", help="Scan every .git-containing subdirectory of this path")
     parser.add_argument("--json", dest="json_out", help="Write JSON findings to this path")
     parser.add_argument("--md", dest="md_out", help="Write Markdown report to this path")
+    parser.add_argument("--write-baseline", dest="write_baseline", help="Write a new baseline JSON to this path")
+    parser.add_argument(
+        "--creation-source", default="manual", help="Provenance note stored in a newly written baseline"
+    )
+    parser.add_argument(
+        "--resolved-history",
+        dest="resolved_history_in",
+        help="JSON file: list of {identity, canonical_repo, file, kind, note} folded into a "
+        "newly written baseline's resolved_history",
+    )
+    parser.add_argument("--baseline", dest="baseline_in", help="Compare the current scan against this baseline")
+    parser.add_argument("--baseline-json", dest="baseline_json_out", help="Write the baseline diff as JSON")
+    parser.add_argument("--baseline-md", dest="baseline_md_out", help="Write the baseline diff as Markdown")
     args = parser.parse_args(argv)
 
     repo_roots: list[Path] = [Path(r).resolve() for r in args.repos]
@@ -603,6 +1009,7 @@ def main(argv: list[str]) -> int:
             continue
         scan_repo(root, result)
 
+    # Ordinary output: always produced, in full, regardless of baseline mode.
     if args.json_out:
         Path(args.json_out).write_text(
             json.dumps([asdict(f) for f in result.findings], indent=2, sort_keys=True) + "\n",
@@ -614,10 +1021,54 @@ def main(argv: list[str]) -> int:
     else:
         print(md)
 
+    exit_code = 0
     prod_defects = [
         f for f in result.findings if f.classification == "production-reachable" and f.kind in FAILS_RUN
     ]
-    return 1 if prod_defects else 0
+    if prod_defects:
+        exit_code = 1
+
+    if args.write_baseline:
+        resolved_history = []
+        if args.resolved_history_in:
+            resolved_history = json.loads(Path(args.resolved_history_in).read_text(encoding="utf-8"))
+        canonical_scope = sorted({f.canonical_repo for f in result.findings} | {
+            canonical_repo_id(root) for root in repo_roots if root.is_dir()
+        })
+        baseline = build_baseline(
+            result,
+            repository_scope=canonical_scope,
+            creation_source=args.creation_source,
+            resolved_history=resolved_history,
+        )
+        Path(args.write_baseline).write_text(json.dumps(baseline, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        print(f"[baseline] wrote {args.write_baseline}", file=sys.stderr)
+
+    if args.baseline_in:
+        try:
+            baseline = load_baseline(Path(args.baseline_in))
+        except BaselineError as exc:
+            print(f"[ERROR] {exc}", file=sys.stderr)
+            return 2
+        diff = compare_to_baseline(result, baseline)
+        if args.baseline_json_out:
+            Path(args.baseline_json_out).write_text(
+                json.dumps(diff.to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+        baseline_md = render_baseline_markdown(diff, baseline)
+        if args.baseline_md_out:
+            Path(args.baseline_md_out).write_text(baseline_md, encoding="utf-8")
+        else:
+            print(baseline_md)
+        new_or_regressed_defects = [
+            f
+            for f in diff.new + diff.regressed
+            if f.classification == "production-reachable" and f.kind in FAILS_RUN
+        ]
+        if new_or_regressed_defects:
+            exit_code = 1
+
+    return exit_code
 
 
 if __name__ == "__main__":
