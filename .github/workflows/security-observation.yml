@@ -1,0 +1,108 @@
+name: Security Scanner V1 -- CI Observation (non-blocking)
+
+# Observation only. This workflow NEVER fails a PR because a security
+# finding exists -- see the "Report observation summary" step below, which
+# always exits 0. It is not a required check, and nothing in this file
+# should be added to branch protection as one. Scanner V1 detection
+# semantics, finding identity, and both frozen baselines are untouched by
+# this workflow; it only reads the canonical baseline and compares.
+#
+# Scope: this job scans THIS repository's checked-out ref against the
+# entry for this repository inside the org-wide canonical baseline
+# (canonical-main-v1-2026-09-27, baseline_name recorded in the diff
+# output). It does not attempt to check out and scan the other ~59
+# CubeShackles repositories from inside this repo's CI -- that is a
+# separate, larger piece of infrastructure this workflow deliberately does
+# not take on (see scripts/security_ci_diff.py's module docstring and
+# CI_OBSERVATION_MODE.md for the full org-wide-scan story, run manually /
+# from a dedicated scanning context that already has all repos cloned).
+#
+# The canonical baseline JSON is NOT committed to this repository (it is
+# public; the baseline would expose unfixed org-wide weaknesses). It must
+# be provided to this workflow out-of-band via the
+# CUBESHACKLES_SECURITY_BASELINE_B64 repository or org secret (base64 of
+# the baseline JSON file). Until that secret is populated, this job still
+# runs and reports its own status distinctly as an infrastructure
+# condition -- never as a security finding.
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security-observation:
+    runs-on: ubuntu-latest
+    continue-on-error: true # belt-and-suspenders: this job can never redden the PR check summary
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Materialize baseline (from secret, if configured)
+        id: baseline
+        env:
+          BASELINE_B64: ${{ secrets.CUBESHACKLES_SECURITY_BASELINE_B64 }}
+        run: |
+          if [ -z "$BASELINE_B64" ]; then
+            echo "status=NOT_CONFIGURED" >> "$GITHUB_OUTPUT"
+            echo "::notice::CUBESHACKLES_SECURITY_BASELINE_B64 secret is not set -- observation mode has no baseline to diff against. This is an infrastructure/configuration state, not a security finding."
+            exit 0
+          fi
+          echo "$BASELINE_B64" | base64 -d > "$RUNNER_TEMP/canonical-baseline.json"
+          if ! python3 -c "import json; json.load(open('$RUNNER_TEMP/canonical-baseline.json'))" 2>/dev/null; then
+            echo "status=MALFORMED" >> "$GITHUB_OUTPUT"
+            echo "::warning::CUBESHACKLES_SECURITY_BASELINE_B64 did not decode to valid JSON -- treating as a scanner/infrastructure failure, not a security finding."
+            exit 0
+          fi
+          echo "status=OK" >> "$GITHUB_OUTPUT"
+
+      - name: Run Scanner V1 observation/diff (this repository only)
+        if: steps.baseline.outputs.status == 'OK'
+        working-directory: .claude/worktrees/security-scan-v1/scripts
+        run: |
+          python3 security_ci_diff.py \
+            --baseline "$RUNNER_TEMP/canonical-baseline.json" \
+            --workspace "$(dirname "$GITHUB_WORKSPACE")" \
+            --out-json "$RUNNER_TEMP/observation.json" \
+            --out-md "$RUNNER_TEMP/observation.md" \
+            2> "$RUNNER_TEMP/observation.stderr" || echo "scanner_exit=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Report observation summary
+        if: always()
+        run: |
+          echo "## Security Scanner V1 -- Observation Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Mode: non-blocking observation. This check cannot fail the PR.**" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.baseline.outputs.status }}" != "OK" ]; then
+            echo "Scanner/infrastructure status: baseline ${{ steps.baseline.outputs.status || 'UNKNOWN' }} -- no diff performed this run." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [ -f "$RUNNER_TEMP/observation.md" ]; then
+            cat "$RUNNER_TEMP/observation.md" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Scanner did not produce output -- reporting as scanner/infrastructure failure, not a security finding." >> "$GITHUB_STEP_SUMMARY"
+            if [ -f "$RUNNER_TEMP/observation.stderr" ]; then
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              tail -n 40 "$RUNNER_TEMP/observation.stderr" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+            fi
+          fi
+          exit 0
+
+      - name: Upload observation artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-observation-report
+          path: |
+            ${{ runner.temp }}/observation.json
+            ${{ runner.temp }}/observation.md
+          if-no-files-found: ignore
+          retention-days: 90
