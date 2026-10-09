@@ -1,8 +1,8 @@
 # Repository Consolidation Plan — CubeShackles
 
-**Status as of:** 2026-08-16 (classification evidence). Summary arithmetic, section cross-references, repository slugs, and the map inventory pointer were corrected on 2026-10-09.
-**Method:** Cross-references three sources of truth: (1) `gh api orgs/CubeShackles/repos` — the org's authoritative live repo list, **58 repositories, verified count**; (2) `REPOSITORY_MAP.md` (this repo) — the founder's canonical documented architecture (roles, layers, status, consumers); (3) direct repository inspection (persistence layer checks, module structure) performed for this plan and in the prior `RWA_SYSTEM_MAP.md` audit (`cubeshackles-retail-defi-api`, PR #2). Every repo below is accounted for — 58 in, 58 classified, none dropped.
-**Trigger:** founder-proposed consolidation into 8 authoritative domains, following the RWA lifecycle audit finding that the "clean" microservice decomposition is largely scaffold, while the real persisted system lives in `cubeshackles-retail-defi-api`. This plan keeps 29 repositories independent (11 shared-platform, 7 products, 10 boundary-kept, and `cubeshackles-ledger`) and leaves the retail API repository in place. Whole-repo merge scope is 28 repositories.
+**Status as of:** 2026-08-16 (classification evidence for the original 58). On 2026-10-09 the org API listed **61** repositories. This plan classifies **60**. `vegemai-demo` is in the org and is outside this plan.
+**Method:** Cross-references three sources of truth: (1) `gh api orgs/CubeShackles/repos` — the org's authoritative live repo list; (2) `REPOSITORY_MAP.md` (this repo) — the founder's canonical documented architecture (roles, layers, status, consumers); (3) direct repository inspection (persistence layer checks, module structure) performed for this plan and in the prior `RWA_SYSTEM_MAP.md` audit (`cubeshackles-retail-defi-api`, PR #2). Every repository in scope below is accounted for — 60 in, 60 classified, none of those dropped. `vegemai-demo` is the one org repository not classified here.
+**Trigger:** founder-proposed consolidation into 8 authoritative domains, following the RWA lifecycle audit finding that the "clean" microservice decomposition is largely scaffold, while the real persisted system lives in `cubeshackles-retail-defi-api`. This plan keeps 30 repositories independent (11 shared-platform, 7 products, 11 boundary-kept, and `cubeshackles-ledger`) and leaves the retail API repository in place. `cubeshackles-cubereg` is not in that merge scope until the audit in §1.9. Whole-repo merge scope is 28 repositories.
 **Names:** classification tables use the slugs in `REPOSITORY_MAP.md`. GitHub and some local checkouts use a leading capital for the same repository (`Cubeshackles-core`, `Cubeshackles-control-plane`, `Cubeshackles-validator-node`, `Cubeshackles-network-orchestrator`, `Cubeshackles-node-api`, `Cubeshackles-phone-wedge`, `Cubeshackles-web`, `Cubeshackles-retail`, `Cubeshackles-Retail-DeFi-API`). `Cubeshackles-Enterprise-Brain`, `CubeWallet`, and `BualaBuitu` keep the casing already recorded in the map.
 **Relationship to prior audit:** this plan assumes the findings in `RWA_SYSTEM_MAP.md` (in `cubeshackles-retail-defi-api`, PR #2) as ground truth for the 14 RWA-chain repos it covered. Nothing here re-litigates those findings; it extends the same evidence standard — IMPLEMENTED/PARTIAL/STUB/DOCUMENTATION-ONLY tags backed by file evidence — to the other 44 repos.
 
@@ -16,7 +16,7 @@ This means: **consolidating the documented 12-repo institutional-finance-stack c
 
 ---
 
-## 1. Full classification — all 58 repositories
+## 1. Full classification — 60 repositories in this plan
 
 Legend: **KEEP** = stays independent as-is. **MERGE INTO** = folds into a named target. **ARCHIVE** = candidate for archival/retirement (not currently load-bearing). **PRODUCT** = customer/end-user-facing surface, kept independent by design. **SHARED PLATFORM** = cross-cutting authority every other repo consumes; consolidating it would break the layer-isolation model. **REQUIRES AUDIT** = insufficient evidence in this pass to classify safely; needs the same file-level treatment `RWA_SYSTEM_MAP.md` gave the RWA chain before a merge decision is made.
 
@@ -29,7 +29,7 @@ Legend: **KEEP** = stays independent as-is. **MERGE INTO** = folds into a named 
 | `cubeshackles-rwa-custody` | MERGE INTO `rwa-platform/custody` | **DOCUMENTATION-ONLY** — no sqlalchemy dep, no alembic (verified) | Standalone FastAPI, no DB | Downstream financial ops (documented) | **LOW** — no data to migrate, ~39 Python files |
 | RWA portions of `cubeshackles-retail-defi-api` (`AssetToken`, `AssetTokenBalance`, `Wallet`/`VaultNode` custody, `Loan`/`Stake`/`InvestmentFund`/`InvestmentPosition`/`RecurringInvestment` corporate-actions models) | MERGE INTO `rwa-platform/{tokenization,custody,corporate-actions,redemption}` — **do this LAST, not first** | **IMPLEMENTED** — real Postgres schema, 58 SQLAlchemy models, 12 Alembic migrations, 8 live API endpoint modules depend on adjacent tables | Monolith FastAPI, shared DB with the entire retail product | Retail mobile/web product, `cubeshackles-retail` frontend | **HIGH** — this is the one part of the whole plan with real data. Do not attempt extraction until: (a) `fix_decimal_precision_20260307`'s broken `down_revision` is fixed (`RWA_SYSTEM_MAP.md` §4, §10.1), (b) `16c208fbde59`'s 27-table drop is neutralized (§5.1, §10.2), (c) `app/db/base.py` imports all 58 models so `Base.metadata` is trustworthy for any future extraction migration. Extracting live tables out of a monolith with a currently-broken migration graph is how you turn one outage into two. |
 
-**valuation / lifecycle module** — no repo in the current 58 owns this explicitly; `InvestmentFund`/`InvestmentPosition` in the monolith carry some of this responsibility informally. **REQUIRES AUDIT**: decide whether `rwa-platform/valuation` is a new module built fresh, or extracted from monolith investment models — not yet scoped.
+**valuation / lifecycle module** — no repo in this classified set owns this explicitly; `InvestmentFund`/`InvestmentPosition` in the monolith carry some of this responsibility informally. **REQUIRES AUDIT**: decide whether `rwa-platform/valuation` is a new module built fresh, or extracted from monolith investment models — not yet scoped.
 
 ### 1.2 → `cubeshackles-regulatory` (proposed consolidation target)
 
@@ -96,6 +96,16 @@ Legend: **KEEP** = stays independent as-is. **MERGE INTO** = folds into a named 
 | `Cubeshackles-Enterprise-Brain` | MERGE INTO `ai/enterprise-brain` — **or just don't**, see risk note | **MISSING** — confirmed via GitHub API: private, `size: 0`, no committed content (map §14a, dated 2026-07-18) | N/A | N/A | **NONE** — there is nothing here to merge. This is a placeholder repo. Folding an empty repo into `cubeshackles-ai` is a rename, not a consolidation; consider just deleting/renaming rather than "merging." |
 | `cubeshackles-adviser` | MERGE INTO `ai/adviser` — **flagged as the one item in this whole plan closest to a live product** | **IMPLEMENTED** — real `sqlalchemy` dependency AND a real `alembic.ini` at `apps/adviser-api/alembic.ini` (both verified, this is the only repo outside the ledger/monolith/security-framework cluster with a confirmed live migration setup). Map: "active," "mixed," dev port 8080, 5 named agents (PortfolioAI, RebalanceAI, TaxAI, AlertAI, SimulationAI) | Standalone, own DB, own port | Consumes `cubeshackles-ai-sdk`; runs outside consensus-critical path (documented) | **MEDIUM-HIGH** — this is a real, running, data-backed service, not a scaffold. It deserves the same migration-graph check (`alembic heads`) that surfaced the monolith's broken chain before anyone plans an extraction/merge. Do not assume it's dataless like its `cubeshackles-ai` siblings just because they're grouped together in the founder's proposal — verify independently. |
 
+### 1.9 Repositories created after the 2026-08-16 pass
+
+`gh api orgs/CubeShackles/repos` on 2026-10-09 returned 61 repositories. Two of the three created after 2026-08-16 are in this plan. `vegemai-demo` is not.
+
+| Repo | Classification | Persistence evidence | Deployment boundary today | Key consumers | Migration risk |
+|---|---|---|---|---|---|
+| `cubeshackles-cubereg` | **REQUIRES AUDIT** before assigning it to `regulatory` or `platform` | Repository description: fiscal rule registry, deterministic tax calculation, conformance testing, and a discrepancy/evidence engine, called a platform service. Default branch uses SQLAlchemy; `app/db/base.py` states that the v1 slice uses SQLite. No `alembic.ini` was present in the default-branch tree. Created 2026-09-28. | Not re-audited in this update | Not recorded in `REPOSITORY_MAP.md` before 2026-10-09 | **UNKNOWN** — do not fold it into a domain on the description alone |
+
+`cubeshackles-corporate-web` (created 2026-08-18) is kept in §4. Its repository description calls it the official corporate website. The default branch is a Next.js tree, and that tree had no Alembic or Prisma path.
+
 ---
 
 ## 2. KEEP — shared platform / foundational singletons (not part of any consolidation wave)
@@ -132,7 +142,7 @@ These sit above or across the domains being consolidated; folding them in would 
 
 | Repo | Note |
 |---|---|
-| `.github` | Org governance repo — confirmed present via GitHub org API; not counted in `REPOSITORY_MAP.md`'s 55 by the map's own convention, but is part of the org's real 58 |
+| `.github` | Org governance repo — confirmed present via GitHub org API; not counted in `REPOSITORY_MAP.md`'s role tables. The org list on 2026-10-09 is 61 repositories. This plan classifies 60 and leaves `vegemai-demo` out. |
 | `cubeshackles-demo` | Regulator/bank-grade demo environment, no real money movement — a distinct evidence-artifact product, not infrastructure |
 | `cubeshackles-sandbox-lab` | Deterministic sandbox rail for BNA/BODIVA/CMC discussions — same reasoning as `cubeshackles-demo` |
 | `cubeshackles-angola-pilot` | Controlled pilot-corridor scope document/boundary, not a service |
@@ -142,6 +152,7 @@ These sit above or across the domains being consolidated; folding them in would 
 | `cubeshackles-infra` | Deployment/environment tooling; also confirmed to contain Docker build-context copies of `CubeWallet`'s backend (found during this pass) — worth a light cleanup pass independent of consolidation, since stale copies of another repo's `requirements.txt` inside infra tooling are exactly the kind of drift this whole plan is trying to reduce |
 | `cubeshackles-compute` | Scaffolded, private, future sovereign compute — no current consumers to disrupt |
 | `cubeshackles-hardware` | Scaffolded, private, silicon roadmap — same reasoning |
+| `cubeshackles-corporate-web` | Official corporate website (repository description, created 2026-08-18). Default branch is a Next.js tree with no Alembic or Prisma path. Distinct publishing surface, not a domain merge source. |
 
 ---
 
@@ -164,14 +175,15 @@ Matches the founder's proposed sequencing, annotated with the migration-risk evi
 
 ## 6. Summary count
 
-- **58 repositories total** (org API ground truth).
+- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`). **60 are classified here.** `vegemai-demo` is excluded.
 - **11 shared-platform / foundational singletons** — kept (§2, includes this repo).
 - **7 products** — kept (§3).
-- **10 kept for release/audience/security boundary reasons** — kept (§4).
+- **11 kept for release/audience/security boundary reasons** — kept (§4, including `cubeshackles-corporate-web`).
 - **1 (`cubeshackles-ledger`)** — kept as a deliberate sovereign boundary (§1.4).
 - **1 (`cubeshackles-retail-defi-api`)** — not itself consolidated (it's the product backend `cubeshackles-retail` depends on); its *RWA-relevant internals* are a merge source into `rwa-platform`/`market-core`, high risk, sequenced last.
-- **28 repos** — MERGE INTO one of the 8 proposed domains (`rwa-platform` ×3, `regulatory` ×5, `market-core` ×3, `security-platform` ×3 new plus `cubeshackles-security-framework` already counted in `regulatory`, `network` ×5, `platform` ×4, `ai` ×5). `cubeshackles-security-framework` is counted once. 11 + 7 + 10 + 1 + 1 + 28 = 58.
-- **Net result if fully executed**: 58 − 28 absorbed repositories + 8 new domain repositories = **38**. That is 11 shared-platform + 7 products + 10 boundary-kept + `cubeshackles-ledger` + `cubeshackles-retail-defi-api` + 8 domain repositories. The founder's "~8–12" figure is the domain tier, not the full org. §4 stays in this count because this plan keeps those repositories.
+- **1 (`cubeshackles-cubereg`)** — **REQUIRES AUDIT** before a domain assignment (§1.9). Not part of the 28.
+- **28 repos** — MERGE INTO one of the 8 proposed domains (`rwa-platform` ×3, `regulatory` ×5, `market-core` ×3, `security-platform` ×3 new plus `cubeshackles-security-framework` already counted in `regulatory`, `network` ×5, `platform` ×4, `ai` ×5). `cubeshackles-security-framework` is counted once. 11 + 7 + 11 + 1 + 1 + 1 + 28 = 60.
+- **Net result if fully executed**: 60 − 28 absorbed repositories + 8 new domain repositories = **40**, with `cubeshackles-cubereg` still independent until §1.9 is decided. That is 11 shared-platform + 7 products + 11 boundary-kept + `cubeshackles-ledger` + `cubeshackles-retail-defi-api` + `cubeshackles-cubereg` + 8 domain repositories. The founder's "~8–12" figure is the domain tier, not the full org. §4 stays in this count because this plan keeps those repositories. `vegemai-demo` is not in the 40.
 
 ---
 
@@ -181,3 +193,4 @@ Matches the founder's proposed sequencing, annotated with the migration-risk evi
 2. Where `cubeshackles-institutional-gateway` and `cubeshackles-security-framework` land — both are two-things-in-one-repo and need a scope split before either merges cleanly.
 3. Whether `cubeshackles-ledger` and the monolith's `LedgerEvent`/`LedgerSync` tables are two live ledgers or one dead one — unresolved from the prior audit, load-bearing for how confidently "keep ledger separate" can be stated as settled.
 4. Whether `cubeshackles-node-api` (111 commits, actively maintained) is deployed anywhere, which determines whether folding it into `network` is a real migration or a scaffold cleanup.
+5. Where `cubeshackles-cubereg` lands. Its own description calls it a platform service, and the default branch already uses SQLAlchemy. That is not enough to choose `platform` over `regulatory`.
