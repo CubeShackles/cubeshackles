@@ -1,6 +1,6 @@
 # Repository Consolidation Plan — CubeShackles
 
-**Status as of:** 2026-08-16 (classification evidence for the original 58). On 2026-10-09 the org API listed **61** repositories. This plan classifies **60**. `vegemai-demo` is in the org and is outside this plan.
+**Status as of:** 2026-08-16 (classification evidence for the original 58). On 2026-10-09 the org API listed **61** repositories. This plan classifies **60**. `vegemai-demo` is a private repository and is not classified here.
 **Method:** Cross-references three sources of truth: (1) `gh api orgs/CubeShackles/repos` — the org's authoritative live repo list; (2) `REPOSITORY_MAP.md` (this repo) — the founder's canonical documented architecture (roles, layers, status, consumers); (3) direct repository inspection (persistence layer checks, module structure) performed for this plan and in the prior `RWA_SYSTEM_MAP.md` audit (`cubeshackles-retail-defi-api`, PR #2). Every repository in scope below is accounted for — 60 in, 60 classified, none of those dropped. `vegemai-demo` is the one org repository not classified here.
 **Trigger:** founder-proposed consolidation into 8 authoritative domains, following the RWA lifecycle audit finding that the "clean" microservice decomposition is largely scaffold, while the real persisted system lives in `cubeshackles-retail-defi-api`. This plan keeps 30 repositories independent (11 shared-platform, 7 products, 11 boundary-kept, and `cubeshackles-ledger`) and leaves the retail API repository in place. `cubeshackles-cubereg` is not in that merge scope until the audit in §1.9. Whole-repo merge scope is 28 repositories.
 **Names:** classification tables use the slugs in `REPOSITORY_MAP.md`. GitHub and some local checkouts use a leading capital for the same repository (`Cubeshackles-core`, `Cubeshackles-control-plane`, `Cubeshackles-validator-node`, `Cubeshackles-network-orchestrator`, `Cubeshackles-node-api`, `Cubeshackles-phone-wedge`, `Cubeshackles-web`, `Cubeshackles-retail`, `Cubeshackles-Retail-DeFi-API`). `Cubeshackles-Enterprise-Brain`, `CubeWallet`, and `BualaBuitu` keep the casing already recorded in the map.
@@ -98,7 +98,7 @@ Legend: **KEEP** = stays independent as-is. **MERGE INTO** = folds into a named 
 
 ### 1.9 Repositories created after the 2026-08-16 pass
 
-`gh api orgs/CubeShackles/repos` on 2026-10-09 returned 61 repositories. Two of the three created after 2026-08-16 are in this plan. `vegemai-demo` is not.
+`gh api orgs/CubeShackles/repos` on 2026-10-09 returned 61 repositories. Two of the three created after 2026-08-16 are classified in this plan. `vegemai-demo` is a private repository and is not classified here.
 
 | Repo | Classification | Persistence evidence | Deployment boundary today | Key consumers | Migration risk |
 |---|---|---|---|---|---|
@@ -142,7 +142,7 @@ These sit above or across the domains being consolidated; folding them in would 
 
 | Repo | Note |
 |---|---|
-| `.github` | Org governance repo — confirmed present via GitHub org API; not counted in `REPOSITORY_MAP.md`'s role tables. The org list on 2026-10-09 is 61 repositories. This plan classifies 60 and leaves `vegemai-demo` out. |
+| `.github` | Org governance repo — confirmed present via GitHub org API; not counted in `REPOSITORY_MAP.md`'s role tables. The org list on 2026-10-09 is 61 repositories. This plan classifies 60. `vegemai-demo` is a private repository and is not classified here. |
 | `cubeshackles-demo` | Regulator/bank-grade demo environment, no real money movement — a distinct evidence-artifact product, not infrastructure |
 | `cubeshackles-sandbox-lab` | Deterministic sandbox rail for BNA/BODIVA/CMC discussions — same reasoning as `cubeshackles-demo` |
 | `cubeshackles-angola-pilot` | Controlled pilot-corridor scope document/boundary, not a service |
@@ -175,7 +175,7 @@ Matches the founder's proposed sequencing, annotated with the migration-risk evi
 
 ## 6. Summary count
 
-- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`). **60 are classified here.** `vegemai-demo` is excluded.
+- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`). **60 are classified here.** `vegemai-demo` is in `REPOSITORY_MAP.md` and is not one of those 60.
 - **11 shared-platform / foundational singletons** — kept (§2, includes this repo).
 - **7 products** — kept (§3).
 - **11 kept for release/audience/security boundary reasons** — kept (§4, including `cubeshackles-corporate-web`).

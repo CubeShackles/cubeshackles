@@ -175,6 +175,7 @@ Private or mixed infrastructure for AI execution, compute orchestration, and har
 | `cubeshackles-retail-defi-api` | Product backend for `cubeshackles-retail`. GitHub repository name: `Cubeshackles-Retail-DeFi-API`. The consolidation plan records a persisted schema and sequences extraction of RWA-relevant tables last. Maturity and visibility are not re-audited in this update. | inventory recorded; maturity not re-audited | not recorded in this update |
 | `cubeshackles-corporate-web` | Official corporate website, per the repository description. Recorded on 2026-10-09. The consolidation plan keeps it as an audience boundary. Maturity is not re-audited in this update. | inventory recorded; maturity not re-audited | private |
 | `cubeshackles-cubereg` | Fiscal rule registry described by the repository as a platform service. Recorded on 2026-10-09. Domain assignment is not decided. Maturity is not re-audited in this update. | inventory recorded; maturity not re-audited | private |
+| `vegemai-demo` | Private repository in the organization. Not part of the platform consolidation. | private repository | private |
 
 ---
 
@@ -388,6 +389,5 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Last updated: 2026-10-09. Total mapped repositories: 59 (the 55 counted on 2026-07-18, plus `cubeshackles-retail`, `cubeshackles-retail-defi-api`, `cubeshackles-corporate-web`, and `cubeshackles-cubereg`). The org's
-`.github` governance repository stays outside this map. Together those 60 are the consolidation plan's classified set. The org list on this date is 61; `vegemai-demo` is not in this map. See
-[`docs/repo-governance.md`](docs/repo-governance.md) and [`REPOSITORY_CONSOLIDATION_PLAN.md`](REPOSITORY_CONSOLIDATION_PLAN.md).*
+*Last updated: 2026-10-09. The GitHub organization contained 61 repositories on this date. This map lists 60. `.github` is the remaining repository and stays outside these role tables — see
+[`docs/repo-governance.md`](docs/repo-governance.md). `vegemai-demo` is in this map and outside [`REPOSITORY_CONSOLIDATION_PLAN.md`](REPOSITORY_CONSOLIDATION_PLAN.md).*

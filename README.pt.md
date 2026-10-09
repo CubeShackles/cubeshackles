@@ -14,8 +14,10 @@ autoras nem proprietárias da CubeShackles. Ver
 > Este repositório **não** é a implementação do protocolo. Não contém código
 > de protocolo, modelos de IA, lógica de fraude, ferramentas para reguladores
 > nem segredos de produção. É a descrição autorizada do que é a CubeShackles,
-> de como os seus 55 repositórios se encaixam, dos padrões a que cada
+> de como os repositórios da plataforma se encaixam, dos padrões a que cada
 > componente está sujeito e da governança que mantém o ecossistema honesto.
+> Em 2026-10-09 a organização no GitHub continha 61 repositórios. O inventário
+> está em [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md).
 
 ---
 
@@ -133,8 +135,10 @@ desenho:
   modelos de IA/fraude, as ferramentas para reguladores, a inteligência
   económica e a I&D futura de Cube Silicon / Shackle Silicon.
 
-O inventário completo está em [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 55
-repositórios em 14 camadas, mais uma entrada interna restrita.
+O inventário está em [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md). Em 2026-10-09
+a organização continha 61 repositórios: 60 nesse mapa, mais `.github`, que
+permanece nos documentos de governança. `vegemai-demo` é um repositório
+privado e fica fora do plano de consolidação.
 
 ---
 
@@ -198,6 +202,6 @@ localization:
   canonical_file: README.md
   locale: pt-AO
   translation_status: machine-assisted
-  canonical_commit: 14f730d
-  last_synchronized: 2026-07-18
+  canonical_commit: efbbabe
+  last_synchronized: 2026-10-09
 -->
