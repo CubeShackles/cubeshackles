@@ -3,9 +3,7 @@
 **Canonical inventory of all CubeShackles repositories — their roles, layer,
 authority, and visibility.**
 
-This map is authoritative. If a repository's purpose, status, or ownership
-boundary is unclear, this document settles it. Every repository in the ecosystem
-appears here; none are omitted.
+This map is authoritative for repository role, layer, and visibility. Proposed consolidation, which does not change those roles, is in [`REPOSITORY_CONSOLIDATION_PLAN.md`](REPOSITORY_CONSOLIDATION_PLAN.md).
 
 **Status vocabulary:**
 
@@ -173,6 +171,8 @@ Private or mixed infrastructure for AI execution, compute orchestration, and har
 | `cubeshackles-web` | **Explorer — institutional and public web surface.** Browser-based client for transactions, validator state, audit views, and account management over `node-api`. Institutional admin canonical authority. | active | public |
 | `BualaBuitu` | **Market intelligence terminal.** Angola market data and intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | **National transit infrastructure.** AOA-native transit platform for Angola: fare visibility, driver/passenger flows, QR/digital ticket flows, operator settlement support, and transit analytics on CubeShackles economic rails. | active | public |
+| `cubeshackles-retail` | Retail-facing frontend. Consumes `cubeshackles-retail-defi-api`. Present in the org inventory of 58 and absent from the 2026-07-18 count of 55. Maturity and visibility are not re-audited in this update. | inventory recorded; maturity not re-audited | not recorded in this update |
+| `cubeshackles-retail-defi-api` | Product backend for `cubeshackles-retail`. GitHub repository name: `Cubeshackles-Retail-DeFi-API`. The consolidation plan records a persisted schema and sequences extraction of RWA-relevant tables last. Maturity and visibility are not re-audited in this update. | inventory recorded; maturity not re-audited | not recorded in this update |
 
 ---
 
@@ -386,7 +386,6 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Last updated: 2026-07-18. Total mapped repositories: 55 (54 platform
-repositories + `Cubeshackles-Enterprise-Brain`, restricted). The org's
-`.github` governance repository is separate from this count — see
-[`docs/repo-governance.md`](docs/repo-governance.md).*
+*Last updated: 2026-10-09. Total mapped repositories: 57 (the 55 counted on 2026-07-18, plus `cubeshackles-retail` and `cubeshackles-retail-defi-api`). The org's
+`.github` governance repository is the remaining repository in the org inventory of 58 and stays outside this map — see
+[`docs/repo-governance.md`](docs/repo-governance.md) and [`REPOSITORY_CONSOLIDATION_PLAN.md`](REPOSITORY_CONSOLIDATION_PLAN.md).*

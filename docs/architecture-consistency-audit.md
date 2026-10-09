@@ -124,3 +124,7 @@ After remediation, the following should hold:
 - [`../SYSTEM_ARCHITECTURE.md`](../SYSTEM_ARCHITECTURE.md)
 - [`../governance/policies/`](../governance/policies/)
 - [`../../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md`](../../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md) (sibling repository)
+
+### F10 — Map inventory omitted two org repositories (2026-10-09)
+
+`REPOSITORY_MAP.md` counted 55 repositories on 2026-07-18 and stated that none were omitted. The org inventory used by `REPOSITORY_CONSOLIDATION_PLAN.md` is 58, including `.github` (already excluded from the map by convention), `cubeshackles-retail`, and `cubeshackles-retail-defi-api`. Those two product repositories are now listed in map §11 with maturity and visibility explicitly not re-audited. No existing repository role was changed. The consolidation plan's summary arithmetic was corrected in the same pass (11 + 7 + 10 + 1 + 1 + 28 = 58; full execution leaves 38 repositories).
