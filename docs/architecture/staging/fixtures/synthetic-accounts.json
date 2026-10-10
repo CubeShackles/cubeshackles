@@ -1,0 +1,23 @@
+{
+  "fixture_id": "staging-synthetic-2026-10-10",
+  "environment": "synthetic-staging",
+  "currency": "AOA",
+  "unit": "minor",
+  "accounts": [
+    {
+      "account_id": "stg_acct_payer_001",
+      "opening_balance_minor": 100000,
+      "provenance": "synthetic"
+    },
+    {
+      "account_id": "stg_acct_payee_001",
+      "opening_balance_minor": 25000,
+      "provenance": "synthetic"
+    },
+    {
+      "account_id": "stg_acct_fee_001",
+      "opening_balance_minor": 0,
+      "provenance": "synthetic"
+    }
+  ]
+}

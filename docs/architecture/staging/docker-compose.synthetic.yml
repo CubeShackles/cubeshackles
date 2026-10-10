@@ -1,0 +1,67 @@
+# Synthetic staging topology. DESIGN AND STATIC CHECK ONLY.
+# Deployment is not authorized. Every service is behind a profile so
+# `docker compose up` starts nothing. Do not remove the profile, do not
+# add an external network, and do not point these URLs at a live environment.
+# Credentials in the committed example are placeholders. Generate local
+# values with generate_synthetic_env.py. Never copy a production secret.
+
+name: cubeshackles-staging
+
+services:
+  ledger:
+    profiles: ["deployment-not-authorized"]
+    build:
+      context: ${CUBESHACKLES_LEDGER_CONTEXT:?local checkout pinned to 24680f4}
+    environment:
+      DATABASE_URL: sqlite:////data/ledger-staging.db
+      LEDGER_API_KEYS: ${LEDGER_API_KEYS:?synthetic local key required}
+    volumes:
+      - cubeshackles-staging-ledger:/data
+    networks:
+      - cubeshackles-staging
+    ports:
+      - "127.0.0.1:8086:8086"
+
+  settlement-engine:
+    profiles: ["deployment-not-authorized"]
+    build:
+      context: ${CUBESHACKLES_SETTLEMENT_CONTEXT:?local checkout pinned to c4f5e16}
+    environment:
+      SETTLEMENT_STORE_DB_PATH: /data/settlement-store.db
+      SETTLEMENT_SECURITY_DB_PATH: /data/settlement-security.db
+      SETTLEMENT_API_KEYS: ${SETTLEMENT_API_KEYS:?synthetic local key required}
+      LEDGER_BASE_URL: http://ledger:8086
+      LEDGER_POSTING_ENABLED: "true"
+      LEDGER_API_KEY: ${LEDGER_API_KEYS:?synthetic local key required}
+      CIEL_SIGNING_KEY_PATH: /data/ciel-staging.key
+    volumes:
+      - cubeshackles-staging-settlement:/data
+    networks:
+      - cubeshackles-staging
+    ports:
+      - "127.0.0.1:8087:8087"
+
+  node-api:
+    profiles: ["deployment-not-authorized"]
+    build:
+      context: ${CUBESHACKLES_NODE_API_CONTEXT:?local checkout pinned to 1425452}
+    environment:
+      CUBESHACKLES_CORE_DB: /data/node-api-staging.db
+      SETTLEMENT_ENGINE_URL: http://settlement-engine:8087
+      SETTLEMENT_API_KEY: ${SETTLEMENT_API_KEYS:?synthetic local key required}
+      PLATFORM_WRITE_TOKEN: ${PLATFORM_WRITE_TOKEN:?synthetic local token required}
+    volumes:
+      - cubeshackles-staging-node-api:/data
+    networks:
+      - cubeshackles-staging
+    ports:
+      - "127.0.0.1:8000:8000"
+
+networks:
+  cubeshackles-staging:
+    internal: true
+
+volumes:
+  cubeshackles-staging-ledger:
+  cubeshackles-staging-settlement:
+  cubeshackles-staging-node-api:

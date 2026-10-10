@@ -1,0 +1,92 @@
+{
+  "encoding_id": "cs-txid-v1-length-prefix",
+  "status": "RECOMMENDED \u2014 not founder-finalized and not implemented",
+  "wire": "tx1.<namespace>.<base32rfc4648-nopad-lower(sha256(preimage))[:32]>",
+  "preimage": "CS-TXID-v1 NUL, then u32be length and UTF-8 NFC bytes for namespace, principal, idempotency_key",
+  "truncation_bits": 160,
+  "birthday_approximation": {
+    "1e9": "1e-30.5",
+    "1e12": "1e-24.5"
+  },
+  "vectors": [
+    {
+      "name": "c1-canonical",
+      "namespace": "retail",
+      "principal": "citizen:stg_acct_payer_001",
+      "idempotency_key": "stg-idem-key-0001-aaaa",
+      "transaction_id": "tx1.retail.5dop35sphy2rlm4ohonfjrpaijkd23aa"
+    },
+    {
+      "name": "c2-domain-a",
+      "namespace": "ab",
+      "principal": "citizen:c",
+      "idempotency_key": "stg-idem-key-0002-bbbb",
+      "transaction_id": "tx1.ab.edbc7siejowj3oibwi6tzxhul2blpg64"
+    },
+    {
+      "name": "c2-domain-b",
+      "namespace": "a",
+      "principal": "citizen:bc",
+      "idempotency_key": "stg-idem-key-0002-bbbb",
+      "transaction_id": "tx1.a.ex4nngjce3fz46a2y43kwj4mibkk2nfv"
+    },
+    {
+      "name": "c3-institution",
+      "namespace": "institutional",
+      "principal": "institution:stg_inst_001",
+      "idempotency_key": "stg-idem-key-0003-cccc",
+      "transaction_id": "tx1.institutional.np23tttyrikf7azciswkly3bucgabmu4"
+    }
+  ],
+  "rejections": [
+    {
+      "name": "c3-display-name",
+      "namespace": "retail",
+      "principal": "citizen:Ada Lovelace",
+      "idempotency_key": "stg-idem-key-0001-aaaa",
+      "error": "principal_rejected"
+    },
+    {
+      "name": "c3-phone",
+      "namespace": "retail",
+      "principal": "citizen:+244923000000",
+      "idempotency_key": "stg-idem-key-0001-aaaa",
+      "error": "principal_rejected"
+    },
+    {
+      "name": "c4-low-entropy",
+      "namespace": "retail",
+      "principal": "citizen:stg_acct_payer_001",
+      "idempotency_key": "short-key",
+      "error": "idempotency_key_rejected"
+    },
+    {
+      "name": "c2-separator-in-field",
+      "namespace": "retail",
+      "principal": "citizen:a|b",
+      "idempotency_key": "stg-idem-key-0001-aaaa",
+      "error": "principal_rejected"
+    },
+    {
+      "name": "c3-non-ascii",
+      "namespace": "retail",
+      "principal": "citizen:acct\u00e9",
+      "idempotency_key": "stg-idem-key-0001-aaaa",
+      "error": "principal_rejected"
+    }
+  ],
+  "recognition": [
+    {
+      "id": "tx1.retail.5dop35sphy2rlm4ohonfjrpaijkd23aa",
+      "class": "tx1"
+    },
+    {
+      "id": "idem-rc2a-example-key-0001",
+      "class": "rc2a-v0"
+    },
+    {
+      "id": "tx2.retail.abcdefghijklmnopqrstuvwxyz234567",
+      "class": "future-version"
+    }
+  ]
+}
