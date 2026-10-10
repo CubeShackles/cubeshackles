@@ -207,6 +207,6 @@ localization:
   canonical_file: README.md
   locale: pt-AO
   translation_status: machine-assisted
-  canonical_commit: 6df1745
+  canonical_commit: 207e50d
   last_synchronized: 2026-10-09
 -->
