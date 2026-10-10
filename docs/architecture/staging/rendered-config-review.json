@@ -1,0 +1,82 @@
+{
+  "status": "RENDERED_CONFIG = PASS (REPORTED)",
+  "runtime_isolation": "NOT VERIFIED",
+  "containers_started": false,
+  "profile_is_a_safeguard_not_a_boundary": true,
+  "override_files_in_directory": [
+    "docker-compose.synthetic.yml"
+  ],
+  "default_config_services": [],
+  "network_internal": true,
+  "network_external": false,
+  "services": {
+    "ledger": {
+      "environment_keys": [
+        "DATABASE_URL",
+        "LEDGER_API_KEYS"
+      ],
+      "host_ip": "127.0.0.1",
+      "published_port": "8086",
+      "volume_type": "volume",
+      "volume_target": "/data",
+      "named_volume": true,
+      "network": [
+        "cubeshackles-staging"
+      ],
+      "profiles": [
+        "deployment-not-authorized"
+      ],
+      "inherited_dockerfile": "Dockerfile",
+      "build_context_published": false,
+      "problems": []
+    },
+    "settlement-engine": {
+      "environment_keys": [
+        "CIEL_SIGNING_KEY_PATH",
+        "LEDGER_API_KEY",
+        "LEDGER_BASE_URL",
+        "LEDGER_POSTING_ENABLED",
+        "SETTLEMENT_API_KEYS",
+        "SETTLEMENT_SECURITY_DB_PATH",
+        "SETTLEMENT_STORE_DB_PATH"
+      ],
+      "host_ip": "127.0.0.1",
+      "published_port": "8087",
+      "volume_type": "volume",
+      "volume_target": "/data",
+      "named_volume": true,
+      "network": [
+        "cubeshackles-staging"
+      ],
+      "profiles": [
+        "deployment-not-authorized"
+      ],
+      "inherited_dockerfile": "Dockerfile",
+      "build_context_published": false,
+      "problems": []
+    },
+    "node-api": {
+      "environment_keys": [
+        "CUBESHACKLES_CORE_DB",
+        "PLATFORM_WRITE_TOKEN",
+        "SETTLEMENT_API_KEY",
+        "SETTLEMENT_ENGINE_URL"
+      ],
+      "host_ip": "127.0.0.1",
+      "published_port": "8000",
+      "volume_type": "volume",
+      "volume_target": "/data",
+      "named_volume": true,
+      "network": [
+        "cubeshackles-staging"
+      ],
+      "profiles": [
+        "deployment-not-authorized"
+      ],
+      "inherited_dockerfile": "Dockerfile",
+      "build_context_published": false,
+      "problems": []
+    }
+  },
+  "problems": []
+}
