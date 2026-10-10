@@ -14,8 +14,10 @@ autoras nem proprietárias da CubeShackles. Ver
 > Este repositório **não** é a implementação do protocolo. Não contém código
 > de protocolo, modelos de IA, lógica de fraude, ferramentas para reguladores
 > nem segredos de produção. É a descrição autorizada do que é a CubeShackles,
-> de como os seus 55 repositórios se encaixam, dos padrões a que cada
+> de como os repositórios mapeados se encaixam, dos padrões a que cada
 > componente está sujeito e da governança que mantém o ecossistema honesto.
+> A data do inventário e a contagem posterior da organização estão em
+> "Visibilidade dos repositórios" abaixo.
 
 ---
 
@@ -59,7 +61,7 @@ contratos de interoperabilidade e semânticas de protocolo.
 
 ---
 
-## Estado da plataforma (julho de 2026)
+## Estado da plataforma (programa de registo, 2026-10-09)
 
 | Marco | Estado |
 |---|---|
@@ -67,8 +69,9 @@ contratos de interoperabilidade e semânticas de protocolo.
 | `AI_NATIVE_M5` — plataforma de IA com 11 agentes, fronteira apenas consultiva reforçada | **Completo** |
 | `PLATFORM_ALPHA_1` — base institucional, suite completa de gates a passar | **Completo** (2026-06-30) |
 | Candidato a Congelamento de Funcionalidades — modo de manutenção e garantia | **Ativo** |
-| `PLATFORM_BETA_1` — linguagem de design unificada do SO em todas as aplicações | **Alvo** |
-| Piloto Angola — corredor de implantação controlada | **Planeado** |
+| `Pilot Rail` — caminho único de transação de ponta a ponta (prioridade atual de engenharia; o critério ainda não foi atingido) | **Ativo** |
+| `PLATFORM_BETA_1` — linguagem de design unificada do SO em todas as aplicações | **Em pausa** (retoma na Fase D do Pilot Rail) |
+| Piloto Angola — corredor de implantação controlada | **Planeado** (depois da Fase C do Pilot Rail; não espera por `PLATFORM_BETA_1`) |
 
 ---
 
@@ -133,8 +136,12 @@ desenho:
   modelos de IA/fraude, as ferramentas para reguladores, a inteligência
   económica e a I&D futura de Cube Silicon / Shackle Silicon.
 
-O inventário completo está em [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 55
-repositórios em 14 camadas, mais uma entrada interna restrita.
+[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) regista 55 repositórios mapeados em
+14 camadas, mais uma entrada interna restrita, com última atualização em
+2026-07-18. Esta alteração não refresca esse mapa.
+[`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md)
+(2026-09-30) regista 61 repositórios da organização verificados em
+2026-09-19 e é um resultado de descoberta, não um inventário de substituição.
 
 ---
 
@@ -199,5 +206,5 @@ localization:
   locale: pt-AO
   translation_status: machine-assisted
   canonical_commit: 14f730d
-  last_synchronized: 2026-07-18
+  last_synchronized: 2026-10-09
 -->
