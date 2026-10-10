@@ -189,7 +189,10 @@ flowing through those services once running. Neither owns the other.
   advisory hooks, model-execution triggers, compute references, and inference
   receipts. These remain advisory and verifiable; the long-term intent is
   zk-verifiable AI outputs so that intelligence can be trusted without trusting
-  the executor.
+  the executor. SmartShackle is a decision object in `Cubeshackles-core`, the
+  same CubeShackles truth that CubeExplorer, ShacklesExplorer, and
+  CubeShacklesExplorer display. It is not a separate repository. Risk
+  evaluation remains planned.
 
 ---
 

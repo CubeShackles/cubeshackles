@@ -46,6 +46,7 @@ A programmable Shackle that may reference AI hooks, model-execution triggers, GP
 compute references, and inference receipts. SmartShackles are intended to remain
 advisory and verifiable, with a long-term path to **zk-verifiable AI outputs** so
 that an inference can be trusted without trusting the machine that produced it.
+SmartShackle is part of the one CubeShackles truth in `Cubeshackles-core`. It is not a separate product, not an explorer surface, and not a fourth name beside CubeExplorer, ShacklesExplorer, and CubeShacklesExplorer. Risk evaluation remains planned.
 
 ## 3. The settlement DAG
 

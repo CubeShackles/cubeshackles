@@ -106,7 +106,9 @@ CubeShackles is split across public and private repositories by design:
 - **Public** repositories present truthful, developer-facing architecture. They contain no sovereign orchestration logic, no AI/fraud models, no regulator tooling, no economic intelligence, and no production secrets.
 - **Private** repositories protect sovereign infrastructure, AI/fraud models, regulator tooling, economic intelligence, and future Cube Silicon / Shackle Silicon R&D.
 
-[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) records 56 mapped repositories across 14 layers plus a restricted internal-operations entry, last updated 2026-10-09. The mapped count changed from 55 because `cubeshackles-corporate-web` was added. [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md) (2026-09-30) records 61 organization repositories verified on 2026-09-19 and already listed this site. That census is discovery output, not a replacement inventory.
+[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) records 56 mapped repositories across 14 layers plus a restricted internal-operations entry, last updated 2026-10-09. The mapped count changed from 55 because `cubeshackles-corporate-web` was added. The organization has 61 repositories, re-verified on 2026-10-10 with `gh api orgs/CubeShackles/repos --paginate`. [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md) (2026-09-30) recorded that count on 2026-09-19. The 2026-10-10 check confirms the count. It does not repeat the maturity-row inspection. The census is discovery output, not a replacement inventory.
+
+CubeExplorer, ShacklesExplorer, and CubeShacklesExplorer are visibility names for one CubeShackles truth owned by `Cubeshackles-core`. SmartShackle is the decision object in that truth. It is not a fourth explorer and not a separate repository. Risk evaluation on SmartShackle remains planned (claims register, verified 2026-07-19). `cubeshackles-web` is the browser surface. It is not a separate ledger.
 
 ---
 
