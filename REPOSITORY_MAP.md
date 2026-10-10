@@ -173,7 +173,7 @@ Private or mixed infrastructure for AI execution, compute orchestration, and har
 | `cubeshackles-web` | **Explorer — institutional and public web surface.** Browser-based client for transactions, validator state, audit views, and account management over `node-api`. Institutional admin canonical authority. | active | public |
 | `BualaBuitu` | **Market intelligence terminal.** Angola market data and intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | **National transit infrastructure.** AOA-native transit platform for Angola: fare visibility, driver/passenger flows, QR/digital ticket flows, operator settlement support, and transit analytics on CubeShackles economic rails. | active | public |
-| `cubeshackles-corporate-web` | **Corporate marketing site.** Public institutional website: infrastructure narrative, capability taxonomy, and contact funnels. Not a transaction or product surface — no wallet, ledger, or account access. Implemented as a Next.js site; that repository has a capability-status test. This row does not record its V1 launch gate as passed. | active | public |
+| `cubeshackles-corporate-web` | **Corporate marketing site.** Public institutional website: infrastructure narrative, capability taxonomy, and contact funnels. Not a transaction or product surface — no wallet, ledger, or account access. Implemented and tested. This row does not record the V1 launch gate as passed. | active | public |
 
 ---
 
