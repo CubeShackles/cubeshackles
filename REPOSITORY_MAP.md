@@ -3,9 +3,7 @@
 **Canonical inventory of all CubeShackles repositories — their roles, layer,
 authority, and visibility.**
 
-This map is authoritative. If a repository's purpose, status, or ownership
-boundary is unclear, this document settles it. Every repository in the ecosystem
-appears here; none are omitted.
+This map is authoritative for repository role, layer, and visibility. Proposed consolidation, which does not change those roles, is in [`REPOSITORY_CONSOLIDATION_PLAN.md`](REPOSITORY_CONSOLIDATION_PLAN.md).
 
 **Status vocabulary:**
 
