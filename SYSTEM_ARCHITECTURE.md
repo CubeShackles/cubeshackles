@@ -430,6 +430,7 @@ they are implemented in active repositories.
 | `cubeshackles-web` | access | active |
 | `BualaBuitu` | access | active |
 | `national-transit-app-cubeshackles` | access | active |
+| `cubeshackles-corporate-web` | access | active |
 | `cubeshackles-design-system` | design & DX | active |
 | `cubeshackles-storybook` | design & DX | active |
 | `cubeshackles-demo` | design & DX | active |

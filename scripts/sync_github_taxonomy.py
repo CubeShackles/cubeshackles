@@ -46,7 +46,7 @@ LABELS: list[dict[str, str]] = [
     {"name": "layer:protocol", "color": "b60205", "description": "Consensus / settlement / runtime"},
     {"name": "layer:api", "color": "fbca04", "description": "Node API / orchestrator / integration"},
     {"name": "layer:institutional", "color": "e99695", "description": "Gateway / compliance / clearing / ledger / custody"},
-    {"name": "layer:access", "color": "0e8a16", "description": "Wallets / web / phone / transit apps"},
+    {"name": "layer:access", "color": "0e8a16", "description": "Wallets, web, phone, transit, and the corporate site"},
     {"name": "layer:intelligence", "color": "d93f0b", "description": "Advisory AI only — never consensus"},
     {"name": "layer:sovereign", "color": "6f42c1", "description": "Private sovereign compute / hardware"},
     {"name": "layer:ops", "color": "c2e0c6", "description": "Ops / security / chaos / observability"},

@@ -39,7 +39,7 @@ repository is prohibited.
 | **Contracts** | Versioned schemas, events, OpenAPI; no runtime traffic | `cubeshackles-contracts` |
 | **Protocol & execution** | Consensus-critical logic and validator execution | `cubeshackles-core`, `cubeshackles-validator-node`, `cubeshackles-runtime` |
 | **API & coordination** | External interface and network coordination | `cubeshackles-node-api`, `cubeshackles-network-orchestrator` |
-| **Access** | User/product surfaces (Angola-first wedges) | `CubeWallet`, `cubeshackles-web`, `cubeshackles-phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
+| **Access** | User/product surfaces and the public corporate site. The corporate site is not a transaction surface. | `CubeWallet`, `cubeshackles-web`, `cubeshackles-phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu`, `cubeshackles-corporate-web` |
 | **Intelligence (advisory)** | AI/analytics, isolated from consensus | `cubeshackles-adviser`, `kulifikila`, `cubeshackles-ai-runtime` |
 | **Sovereign infrastructure** | Private compute, hardware, and AI execution (non-consensus) | `cubeshackles-compute`, `cubeshackles-hardware`, `cubeshackles-ai-runtime` |
 | **Observability** | Telemetry contracts and audit instrumentation (scaffolded) | `cubeshackles-observability` |
