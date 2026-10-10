@@ -128,6 +128,9 @@ thematically coherent (mirrors `REPOSITORY_MAP.md` layers):
 - **Batch 4 (access/products, Tier 1–2 only — private repos excluded):**
   `Cubeshackles-web`, `CubeWallet`, `Cubeshackles-phone-wedge`, `BualaBuitu`,
   `national-transit-app-cubeshackles`, `cubeshackles-adviser`.
+  Added 2026-10-09, and not part of that original list:
+  `cubeshackles-corporate-web` (Tier 1, public marketing site). Its bilingual
+  pass is not recorded as done in Batch 4.
 - **Batch 5 (foundation + security):** `cubeshackles-ciel`,
   `cubeshackles-ontology`, `cubeshackles-tfe`, `cubeshackles-agent`,
   `cubeshackles-vault`, `cubeshackles-security-framework`,

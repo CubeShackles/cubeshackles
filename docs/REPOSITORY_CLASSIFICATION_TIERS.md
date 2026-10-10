@@ -51,6 +51,7 @@ repository is a distinct, founder-directed decision, tracked in
 | `cubeshackles-compliance-engine` | mixed | **1** | Institutionally sensitive — regulator/institutional audience |
 | `cubeshackles-regulatory-reporting` | mixed | **1** | Institutionally sensitive — regulator/institutional audience |
 | `Cubeshackles-web` | public | **1** | Public product surface (Explorer, Adviser UI) |
+| `cubeshackles-corporate-web` | public | **1** | Public institutional marketing site and entry point. Not a transaction surface. Bilingual documentation must not outrun the site's own Built, Pilot, Research, and Planned labels |
 | `CubeWallet` | public | **1** | Primary citizen-facing product |
 | `cubeshackles-ciel` | public | **2** | Foundation vocabulary layer; pre-freeze, developer-relevant |
 | `cubeshackles-ontology` | public | **2** | Foundation vocabulary layer; pre-freeze, developer-relevant |

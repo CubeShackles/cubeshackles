@@ -173,6 +173,7 @@ Private or mixed infrastructure for AI execution, compute orchestration, and har
 | `cubeshackles-web` | **Explorer — institutional and public web surface.** Browser-based client for transactions, validator state, audit views, and account management over `node-api`. Institutional admin canonical authority. | active | public |
 | `BualaBuitu` | **Market intelligence terminal.** Angola market data and intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | **National transit infrastructure.** AOA-native transit platform for Angola: fare visibility, driver/passenger flows, QR/digital ticket flows, operator settlement support, and transit analytics on CubeShackles economic rails. | active | public |
+| `cubeshackles-corporate-web` | **Corporate marketing site.** Public institutional website: infrastructure narrative, capability taxonomy, and contact funnels. Not a transaction or product surface — no wallet, ledger, or account access. Implemented and tested. This row does not record the V1 launch gate as passed. | active | public |
 
 ---
 
@@ -272,6 +273,7 @@ internal — beyond this inventory entry.
 | Institutional and public web surface | `cubeshackles-web` |
 | Market data terminal | `BualaBuitu` |
 | National transit infrastructure | `national-transit-app-cubeshackles` |
+| Corporate marketing site | `cubeshackles-corporate-web` |
 | Cross-repo gate orchestration | `cubeshackles-integration` |
 | Regulatory supervision views | `cubeshackles-supervision` |
 | Regulator-facing reporting | `cubeshackles-regulatory-reporting` |
@@ -358,6 +360,7 @@ parent/
 ├── cubeshackles-web/
 ├── BualaBuitu/
 ├── national-transit-app-cubeshackles/
+├── cubeshackles-corporate-web/
 │
 ├── # Design and developer experience
 ├── cubeshackles-design-system/
@@ -387,11 +390,12 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Inventory last updated: 2026-07-18. Mapped repositories in this file: 55
-(54 platform repositories + `Cubeshackles-Enterprise-Brain`, restricted).
-This file was not refreshed to a later organization count.
+*Inventory last updated: 2026-10-09. Mapped repositories in this file: 56
+(55 platform repositories + `Cubeshackles-Enterprise-Brain`, restricted).
+The count changed from 55 because this update adds `cubeshackles-corporate-web`.
+This file is still not the organization census.
 [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md)
 (2026-09-30) records 61 organization repositories verified on 2026-09-19
-and is discovery output, not a replacement for this map. The org's
-`.github` governance repository is separate from the 55 — see
-[`docs/repo-governance.md`](docs/repo-governance.md).*
+and already listed this site. That census is discovery output, not a
+replacement for this map. The org's `.github` governance repository is
+separate from the 56 — see [`docs/repo-governance.md`](docs/repo-governance.md).*
