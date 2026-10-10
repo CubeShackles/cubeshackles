@@ -136,12 +136,14 @@ desenho:
   modelos de IA/fraude, as ferramentas para reguladores, a inteligência
   económica e a I&D futura de Cube Silicon / Shackle Silicon.
 
-[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) regista 55 repositórios mapeados em
+[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) regista 56 repositórios mapeados em
 14 camadas, mais uma entrada interna restrita, com última atualização em
-2026-07-18. Esta alteração não refresca esse mapa.
+2026-10-09. A contagem mapeada mudou de 55 porque
+`cubeshackles-corporate-web` foi acrescentado.
 [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md)
 (2026-09-30) regista 61 repositórios da organização verificados em
-2026-09-19 e é um resultado de descoberta, não um inventário de substituição.
+2026-09-19 e já incluía este sítio. Esse censo é um resultado de descoberta,
+não um inventário de substituição.
 
 ---
 
@@ -158,7 +160,7 @@ desenho:
 | Finanças institucionais | gateway · compliance · clearing · market-infrastructure · ledger · asset-registry · tokenization · rwa-custody |
 | Infraestrutura soberana | ai-runtime · ai-sdk · compute · hardware |
 | Inteligência | adviser · kulifikila (crédito) |
-| Acesso | phone-wedge · CubeWallet · web (Explorer) · BualaBuitu · national-transit |
+| Acesso | phone-wedge · CubeWallet · web (Explorer) · BualaBuitu · national-transit · corporate-web |
 | Design e DX | design-system · storybook · demo · sandbox-lab |
 | Regulatório e supervisão | supervision · regulatory-reporting · security-framework |
 | Operações da plataforma | provincial-topology · vault · disaster-recovery · chaos · security · operations · angola-pilot · infra · observability |

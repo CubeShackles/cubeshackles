@@ -106,7 +106,7 @@ CubeShackles is split across public and private repositories by design:
 - **Public** repositories present truthful, developer-facing architecture. They contain no sovereign orchestration logic, no AI/fraud models, no regulator tooling, no economic intelligence, and no production secrets.
 - **Private** repositories protect sovereign infrastructure, AI/fraud models, regulator tooling, economic intelligence, and future Cube Silicon / Shackle Silicon R&D.
 
-[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) records 55 mapped repositories across 14 layers plus a restricted internal-operations entry, last updated 2026-07-18. This change does not refresh that map. [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md) (2026-09-30) records 61 organization repositories verified on 2026-09-19 and is discovery output, not a replacement inventory.
+[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) records 56 mapped repositories across 14 layers plus a restricted internal-operations entry, last updated 2026-10-09. The mapped count changed from 55 because `cubeshackles-corporate-web` was added. [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md) (2026-09-30) records 61 organization repositories verified on 2026-09-19 and already listed this site. That census is discovery output, not a replacement inventory.
 
 ---
 
@@ -123,7 +123,7 @@ CubeShackles is split across public and private repositories by design:
 | Institutional finance | gateway · compliance · clearing · market-infrastructure · ledger · asset-registry · tokenization · rwa-custody |
 | Sovereign infrastructure | ai-runtime · ai-sdk · compute · hardware |
 | Intelligence | adviser · kulifikila (credit) |
-| Access | phone-wedge · CubeWallet · web (Explorer) · BualaBuitu · national-transit |
+| Access | phone-wedge · CubeWallet · web (Explorer) · BualaBuitu · national-transit · corporate-web |
 | Design and DX | design-system · storybook · demo · sandbox-lab |
 | Regulatory and supervision | supervision · regulatory-reporting · security-framework |
 | Platform operations | provincial-topology · vault · disaster-recovery · chaos · security · operations · angola-pilot · infra · observability |

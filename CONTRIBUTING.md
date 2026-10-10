@@ -34,7 +34,7 @@ if they are well written.
 | API surface | `cubeshackles-node-api` |
 | Network coordination | `cubeshackles-network-orchestrator` |
 | Cross-repo tests / gates | `cubeshackles-integration` |
-| Access apps | `CubeWallet`, `cubeshackles-web`, `phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu` |
+| Access apps and the public corporate site | `CubeWallet`, `cubeshackles-web`, `phone-wedge`, `national-transit-app-cubeshackles`, `BualaBuitu`, `cubeshackles-corporate-web` |
 | Advisory services | `cubeshackles-adviser` (advisory only; never consensus-critical) |
 
 Sovereign infrastructure repositories (`ai-runtime`, `compute`, `hardware`) and
