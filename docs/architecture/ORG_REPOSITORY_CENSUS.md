@@ -3,7 +3,7 @@
 **Status:** Discovery output. Evidence-based, not doctrine. No repository name is treated as evidence of architectural authority.
 **Date:** 2026-09-30
 **Method:** Local clone inspection (code, manifests, tests run where feasible, CI workflows, contracts docs) across ~11 parallel evidence-collection passes, cross-checked and reconciled by the primary agent. Where a subagent's claim could not be independently verified, it is marked UNRESOLVED rather than asserted.
-**Scope note:** This census does not re-verify org repo count from `gh api orgs/CubeShackles/repos` at the moment of writing; prior verified count (2026-09-19) was 61 org repos / 62 local clone dirs (2 extras: an `Enterprise-Brain` local duplicate, and a non-org scratch dir). Repos below reflect what the 11 subagents actually inspected.
+**Scope note:** The maturity rows below are the 2026-09-30 discovery output. They were not inspected again on 2026-10-10. **Count re-verified 2026-10-10:** `gh api orgs/CubeShackles/repos --paginate` returned 61 repository names. The prior count on 2026-09-19 was also 61 org repos / 62 local clone dirs (2 extras: an `Enterprise-Brain` local duplicate, and a non-org scratch dir). Repos below reflect what the 11 subagents actually inspected.
 
 ## Legend
 - **Maturity**: PRODUCTION-BOUND / FUNCTIONAL / PARTIAL / SCAFFOLDED / DORMANT / UNKNOWN

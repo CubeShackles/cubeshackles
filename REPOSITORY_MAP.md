@@ -168,7 +168,7 @@ Private or mixed infrastructure for AI execution, compute orchestration, and har
 |---|---|---|---|
 | `cubeshackles-phone-wedge` | **Angola phone transaction wedge — device initiation authority.** Offline-first, low-connectivity entry point for phone-based transactions. Migrating to CubeShackles Design System (P4-1). | active | public |
 | `CubeWallet` | **Wallet — user initiation authority.** Identity-linked wallet infrastructure and transaction UX. Migrated to CubeShackles Design System (P4-2). | active | public |
-| `cubeshackles-web` | **Explorer — institutional and public web surface.** Browser-based client for transactions, validator state, audit views, and account management over `node-api`. Institutional admin canonical authority. | active | public |
+| `cubeshackles-web` | **Browser surface — institutional and public web.** CubeExplorer, ShacklesExplorer, and CubeShacklesExplorer are views of one CubeShackles truth in `Cubeshackles-core` over `node-api`. Not a separate ledger. Browser-based client for transactions, validator state, audit views, and account management. Institutional admin canonical authority. SmartShackle risk evaluation remains planned. | active | public |
 | `BualaBuitu` | **Market intelligence terminal.** Angola market data and intelligence access surface. | active | mixed |
 | `national-transit-app-cubeshackles` | **National transit infrastructure.** AOA-native transit platform for Angola: fare visibility, driver/passenger flows, QR/digital ticket flows, operator settlement support, and transit analytics on CubeShackles economic rails. | active | public |
 | `cubeshackles-corporate-web` | **Corporate marketing site.** Public institutional website: infrastructure narrative, capability taxonomy, and contact funnels. Not a transaction or product surface — no wallet, ledger, or account access. Implemented and tested. This row does not record the V1 launch gate as passed. | active | public |
@@ -388,12 +388,16 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Inventory last updated: 2026-10-09. Mapped repositories in this file: 56
-(55 platform repositories + `Cubeshackles-Enterprise-Brain`, restricted).
-The count changed from 55 because this update adds `cubeshackles-corporate-web`.
-This file is still not the organization census.
+*Organization repositories re-verified 2026-10-10: 61
+(`gh api orgs/CubeShackles/repos --paginate`).
+Mapped repositories in this file: 56
+(55 platform repositories + `Cubeshackles-Enterprise-Brain`, restricted),
+last updated 2026-10-09, when this file added `cubeshackles-corporate-web`.
+This file is not the organization census.
 [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md)
-(2026-09-30) records 61 organization repositories verified on 2026-09-19
-and already listed this site. That census is discovery output, not a
-replacement for this map. The org's `.github` governance repository is
-separate from the 56 — see [`docs/repo-governance.md`](docs/repo-governance.md).*
+(2026-09-30) recorded 61 organization repositories on 2026-09-19.
+The 2026-10-10 check confirms that count and does not repeat the maturity-row inspection.
+The org's `.github` governance repository is one of the 61 and is not one of the 56.
+See [`docs/repo-governance.md`](docs/repo-governance.md).*
+
+CubeExplorer, ShacklesExplorer, and CubeShacklesExplorer are visibility names for one CubeShackles truth owned by `Cubeshackles-core`. SmartShackle is the decision object in that truth. It is not a fourth explorer and not a repository in this map. Risk evaluation remains planned (claims register, verified 2026-07-19).

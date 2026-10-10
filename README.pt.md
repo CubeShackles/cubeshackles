@@ -139,11 +139,21 @@ desenho:
 [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) regista 56 repositórios mapeados em
 14 camadas, mais uma entrada interna restrita, com última atualização em
 2026-10-09. A contagem mapeada mudou de 55 porque
-`cubeshackles-corporate-web` foi acrescentado.
+`cubeshackles-corporate-web` foi acrescentado. A organização tem 61
+repositórios, reverificados em 2026-10-10 com
+`gh api orgs/CubeShackles/repos --paginate`.
 [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md)
-(2026-09-30) regista 61 repositórios da organização verificados em
-2026-09-19 e já incluía este sítio. Esse censo é um resultado de descoberta,
-não um inventário de substituição.
+(2026-09-30) registou essa contagem em 2026-09-19. A verificação de
+2026-10-10 confirma a contagem. Não repete a inspeção das linhas de maturidade. Esse
+censo é um resultado de descoberta, não um inventário de substituição.
+
+CubeExplorer, ShacklesExplorer e CubeShacklesExplorer são nomes de
+visibilidade de uma única verdade CubeShackles detida pela
+`Cubeshackles-core`. SmartShackle é o objeto de decisão nessa verdade. Não
+é um quarto explorador nem um repositório separado. A avaliação de risco
+SmartShackle permanece planeada (registo de alegações, verificado em
+2026-07-19). `cubeshackles-web` é a superfície de navegador. Não é um
+livro-razão separado.
 
 ---
 
