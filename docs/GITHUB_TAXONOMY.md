@@ -54,7 +54,7 @@ Colors are fixed so the org UI stays consistent.
 | `layer:protocol` | `#b60205` | core, validator, settlement, runtime, offline |
 | `layer:api` | `#fbca04` | node-api, network-orchestrator, integration |
 | `layer:institutional` | `#e99695` | gateway, compliance, clearing, ledger, custody, tokenization, … |
-| `layer:access` | `#0e8a16` | CubeWallet, web, phone-wedge, BualaBuitu, national-transit |
+| `layer:access` | `#0e8a16` | CubeWallet, web, phone-wedge, BualaBuitu, national-transit, corporate-web (public site, not a transaction surface) |
 | `layer:intelligence` | `#d93f0b` | adviser, AI runtime/sdk, kulifikila (advisory only) |
 | `layer:sovereign` | `#6f42c1` | compute, hardware, private sovereign infra |
 | `layer:ops` | `#c2e0c6` | ops, infra, security, chaos, disaster-recovery, observability |
