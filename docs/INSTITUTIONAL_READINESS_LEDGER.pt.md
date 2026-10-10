@@ -58,6 +58,6 @@ localization:
   canonical_file: INSTITUTIONAL_READINESS_LEDGER.md
   locale: pt-AO
   translation_status: machine-assisted
-  canonical_commit: pending
+  canonical_commit: 6df1745
   last_synchronized: 2026-10-09
 -->
