@@ -1,16 +1,20 @@
-# ADR-0003 D2 conformance evidence (investigation)
+# ADR-0003 D2 conformance evidence (proposed)
 
 **Date:** 2026-10-10
-**Authorization:** generate the frozen candidate encoding and test vectors. No production identity change. No `TransactionId` module in a service.
-**Status of the format:** **RECOMMENDED**, not founder-finalized, not implemented. Gate 3 remains **not authorized**.
+**Status:** `D2_FORMAT = PROPOSED`
+**Authorization:** investigation and test-vector generation only. No production identity change. No service module.
 
-The candidate wire shape is unchanged:
+This package is not an independent review and it does not finalize the format. Python and Node agreement shows that two implementations of this proposal match. It does not close conformance.
+
+## Proposed encoding
+
+Wire id:
 
 ```text
-tx1.<namespace>.<base32(sha256(preimage))[:32]>
+tx1.<namespace>.<base32(full 256-bit SHA-256 digest)[:32]>
 ```
 
-The hash input is revised. A raw `namespace|principal|key` join is ambiguous if any field can contain `|`. The recommended preimage is length-prefixed:
+Preimage, length-prefixed rather than joined on `|`:
 
 ```text
 CS-TXID-v1 NUL
@@ -19,29 +23,48 @@ u32be(length) || UTF-8 NFC(principal)
 u32be(length) || UTF-8 NFC(idempotency_key)
 ```
 
-Base32 is RFC 4648, no padding, lowercased. Truncation keeps the first 32 characters (160 bits).
+Base32 is RFC 4648, no padding, lowercased. The first 32 characters are 160 bits. The other characters of that base32 string are the rest of the same 256-bit digest. The wire id is not a second hash.
 
-`docs/architecture/txid/reference_txid.py` generated `vectors.json`. `verify_vectors.mjs` recomputed the same four ids in Node. Both are investigation tools. Neither is imported by a service.
+`reference_txid.py` writes `vectors.json`. `verify_vectors.mjs` recomputes every wire id, the full digest, and the truncation. Both tools stay outside node-api, settlement-engine, and the ledger.
 
-## C1–C10
+## Field rules
 
-| # | Evidence | Result |
+| Field | Canonical rule | Rejection |
 |---|---|---|
-| C1 | One encoding id, `cs-txid-v1-length-prefix`. Python and Node emit the same ids. | Met for this recommendation |
-| C2 | `c2-domain-a` (`namespace=ab`, `principal=citizen:c`) and `c2-domain-b` (`namespace=a`, `principal=citizen:bc`) produce different ids. A principal containing `\|` is rejected. | Met |
-| C3 | Principal is `citizen:` or `institution:` plus an ASCII stable id. Display names, phone-shaped values, and non-ASCII ids are rejected. Accepted inputs are ASCII, so NFC does not change them. | Met as a rejection rule |
-| C4 | The key alphabet is 66 characters (`A–Z`, `a–z`, `0–9`, `.`, `_`, `:`, `-`). The minimum length is 22, about 133 bits when every character is uniform. A shorter key is rejected. The same inputs always return the same id. A conflicting economic replay stays D7 and is not implemented here. | Met for the length floor |
-| C5 | 160-bit truncation. Approximate birthday bound `n(n-1)/2^161`: about `1e-30.5` at one billion ids and `1e-24.5` at one trillion. A second distinct preimage that truncates to an existing id must be rejected and not posted. The ledger UNIQUE constraint remains the backstop. That rejection path is specified, not built. | Quantified; enforcement not built |
-| C6 | 32 base32 characters keep 160 bits. That is above a 128-bit uniqueness target and keeps the wire id inside the existing 128-character bound. The full digest is not required for the margin these volumes imply. | Rationale recorded |
-| C7 | Four vectors reproduced byte-for-byte by Python and Node. No other language was checked, because this investigation did not find another identity implementation to bind. | Met for Python and Node |
-| C8 | The enforcement point stays the authoritative ledger UNIQUE constraint from ADR-0004. A conflict is a typed rejection (D7), not a second id. | Specified; not built |
-| C9 | `tx1.` classifies as canonical. `idem-rc2a-example-key-0001` classifies as `rc2a-v0` and is not rewritten. | Met on the example |
-| C10 | `tx2.` classifies as `future-version` and this encoder does not mint it. A later version needs its own preimage label. | Policy recorded |
+| Namespace | NFC, then `^[a-z][a-z0-9_-]{0,31}$` (1–32 characters). No case folding. | `namespace_rejected` |
+| Principal | NFC, then `citizen:` or `institution:` plus 1–128 ASCII characters from `[A-Za-z0-9._:-]`. Stable subject id only. | `principal_rejected` |
+| Idempotency key | NFC, then 22–128 characters from the 66-character alphabet `A–Z a–z 0–9 . _ : -`. | `idempotency_key_rejected` |
 
-## Recommendation
+Accepted values are ASCII, so NFC does not change them. A display name, a phone-shaped principal, and a non-ASCII principal are rejected rather than folded into an id.
 
-Adopt the length-prefixed preimage and the wire shape above as the D2 candidate. Do not treat this file as a finalized contract and do not implement it in a service until Gate 3 is separately authorized.
+The 66-character alphabet at 22 uniform characters is about 133 bits. A canonical UUID v4 is 36 characters, so it passes the length floor, and its own entropy is 122 bits. Those are different statements. A key shorter than 22 characters is rejected. This encoder does not mint a replacement id for a rejected key.
 
-## What did not change
+The same namespace, principal, and key always return the same full digest and the same wire id (`c1-canonical` and `c1-repeat`). A conflicting economic replay is D7: a typed conflict, no second id, no ledger mutation. This encoder has no economic fields, so it does not emit that conflict.
 
-No production identifier, journal, route, or credential was read or written.
+## Domain separation
+
+`c2-domain-a` (`namespace=ab`, `principal=citizen:c`) and `c2-domain-b` (`namespace=a`, `principal=citizen:bc`) differ in both the 256-bit digest and the 160-bit wire id.
+
+A raw `|` join of (`a|b`, `c`, `d`×22) is the same byte string as (`a`, `b|c`, `d`×22). The length-prefixed preimage of those two tuples hashes to two different digests. The accepted alphabet also rejects `|` inside a principal, so that ambiguous pair cannot be minted as a `tx1` id.
+
+## Collision properties
+
+| Object | Size | Approximate birthday bound at 1e9 ids | at 1e12 ids |
+|---|---|---|---|
+| Full SHA-256 digest | 256 bits | `1e-59.4` | `1e-53.4` |
+| Wire truncation | 160 bits | `1e-30.5` | `1e-24.5` |
+
+The bound is `n(n-1)/2^(bits+1)`. A collision of the wire id is a 160-bit event even when the digest is 256 bits. Detecting that case means storing the full digest beside the wire id and rejecting a second distinct digest that truncates to the same 32 base32 characters. That store is specified here and is not built. The ledger UNIQUE constraint remains the backstop from ADR-0004. It is not implemented by this pull request.
+
+## Legacy v0
+
+| Input | Class | Action |
+|---|---|---|
+| A `tx1.` id matching the wire pattern | `tx1` | Recognized. Not a reason to rewrite history. |
+| `idem-rc2a-example-key-0001` | `rc2a-v0` | Left unchanged. RC2-A identity stays the raw key. |
+| `tx2.`… | `future-version` | Recognized. This encoder does not mint it. |
+| `tx1.` that fails the wire pattern | `ambiguous` | Not treated as v0 and not rewritten. |
+
+## What this does not close
+
+Independent review of the proposal. Founder finalization. A `TransactionId` module. Gate 3. Any production identity write.

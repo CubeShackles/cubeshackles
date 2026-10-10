@@ -37,7 +37,7 @@ function field(value) {
   return Buffer.concat([header, raw]);
 }
 
-function derive(namespace, principal, idempotencyKey) {
+function deriveParts(namespace, principal, idempotencyKey) {
   const preimage = Buffer.concat([
     Buffer.from("CS-TXID-v1\u0000", "utf8"),
     field(namespace),
@@ -45,17 +45,33 @@ function derive(namespace, principal, idempotencyKey) {
     field(idempotencyKey),
   ]);
   const digest = createHash("sha256").update(preimage).digest();
-  return `tx1.${nfc(namespace)}.${base32Lower(digest).slice(0, 32)}`;
+  const encoded = base32Lower(digest);
+  return {
+    transaction_id: `tx1.${nfc(namespace)}.${encoded.slice(0, 32)}`,
+    digest_sha256: digest.toString("hex"),
+    digest_base32: encoded,
+    wire_truncated: encoded.slice(0, 32),
+  };
 }
 
 const document = JSON.parse(
   readFileSync(join(dirname(fileURLToPath(import.meta.url)), "vectors.json"), "utf8"),
 );
 for (const vector of document.vectors) {
-  const got = derive(vector.namespace, vector.principal, vector.idempotency_key);
-  if (got !== vector.transaction_id) {
-    console.error(`${vector.name}\n expected ${vector.transaction_id}\n got      ${got}`);
+  const got = deriveParts(vector.namespace, vector.principal, vector.idempotency_key);
+  for (const fieldName of ["transaction_id", "digest_sha256", "digest_base32", "wire_truncated"]) {
+    if (got[fieldName] !== vector[fieldName]) {
+      console.error(`${vector.name} ${fieldName}\n expected ${vector[fieldName]}\n got      ${got[fieldName]}`);
+      process.exit(1);
+    }
+  }
+  if (vector.digest_base32.slice(0, 32) !== vector.wire_truncated) {
+    console.error(`${vector.name} truncation is not a prefix of the full base32 digest`);
+    process.exit(1);
+  }
+  if (vector.digest_sha256.length !== 64) {
+    console.error(`${vector.name} digest is not 256 bits`);
     process.exit(1);
   }
 }
-console.log(`node verified ${document.vectors.length} vectors`);
+console.log(`node verified ${document.vectors.length} vectors, full digest and wire truncation`);

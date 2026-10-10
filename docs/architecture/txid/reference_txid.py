@@ -48,18 +48,31 @@ def base32_lower(digest: bytes) -> str:
     return base64.b32encode(digest).decode("ascii").rstrip("=").lower()
 
 
-def derive(namespace: str, principal: str, idempotency_key: str) -> str:
+def derive_parts(namespace: str, principal: str, idempotency_key: str) -> dict[str, str]:
     namespace = _nfc(namespace)
     principal = _nfc(principal)
     idempotency_key = _nfc(idempotency_key)
-    if not NAMESPACE_RE.fullmatch(namespace):
+    if namespace == "" or not NAMESPACE_RE.fullmatch(namespace):
         raise TxIdRejection("namespace_rejected")
     if not PRINCIPAL_RE.fullmatch(principal):
         raise TxIdRejection("principal_rejected")
     if not KEY_RE.fullmatch(idempotency_key):
         raise TxIdRejection("idempotency_key_rejected")
     digest = hashlib.sha256(preimage(namespace, principal, idempotency_key)).digest()
-    return f"tx1.{namespace}.{base32_lower(digest)[:32]}"
+    encoded = base32_lower(digest)
+    truncated = encoded[:32]
+    if truncated == encoded:
+        raise TxIdRejection("truncation_failed")
+    return {
+        "transaction_id": f"tx1.{namespace}.{truncated}",
+        "digest_sha256": digest.hex(),
+        "digest_base32": encoded,
+        "wire_truncated": truncated,
+    }
+
+
+def derive(namespace: str, principal: str, idempotency_key: str) -> str:
+    return derive_parts(namespace, principal, idempotency_key)["transaction_id"]
 
 
 def classify(value: str) -> str:
@@ -94,6 +107,36 @@ def vector_cases() -> list[dict[str, str]]:
             "namespace": "retail",
             "principal": "citizen:stg_acct_payer_001",
             "idempotency_key": key,
+        },
+        {
+            "name": "c1-repeat",
+            "namespace": "retail",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": key,
+        },
+        {
+            "name": "c1-namespace-min",
+            "namespace": "a",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": key,
+        },
+        {
+            "name": "c1-namespace-max",
+            "namespace": "a" + ("b" * 31),
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": key,
+        },
+        {
+            "name": "c4-key-min",
+            "namespace": "retail",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": "a" * 22,
+        },
+        {
+            "name": "c4-key-max",
+            "namespace": "retail",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": "b" * 128,
         },
         {
             "name": "c2-domain-a",
@@ -153,25 +196,77 @@ def rejection_cases() -> list[dict[str, str]]:
             "idempotency_key": "stg-idem-key-0001-aaaa",
             "error": "principal_rejected",
         },
+        {
+            "name": "c1-namespace-empty",
+            "namespace": "",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": "stg-idem-key-0001-aaaa",
+            "error": "namespace_rejected",
+        },
+        {
+            "name": "c1-namespace-uppercase",
+            "namespace": "Retail",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": "stg-idem-key-0001-aaaa",
+            "error": "namespace_rejected",
+        },
+        {
+            "name": "c4-key-too-long",
+            "namespace": "retail",
+            "principal": "citizen:stg_acct_payer_001",
+            "idempotency_key": "c" * 129,
+            "error": "idempotency_key_rejected",
+        },
     ]
 
 
 def build_document() -> dict:
     vectors = []
     for case in vector_cases():
-        vectors.append({**case, "transaction_id": derive(case["namespace"], case["principal"], case["idempotency_key"])})
-    domain = [item for item in vectors if item["name"].startswith("c2-domain")]
-    if domain[0]["transaction_id"] == domain[1]["transaction_id"]:
-        raise SystemExit("domain-separation pair collided")
+        parts = derive_parts(case["namespace"], case["principal"], case["idempotency_key"])
+        vectors.append({**case, **parts})
+    by_name = {item["name"]: item for item in vectors}
+    if by_name["c1-canonical"]["transaction_id"] != by_name["c1-repeat"]["transaction_id"]:
+        raise SystemExit("deterministic repeat diverged")
+    if by_name["c1-canonical"]["digest_sha256"] != by_name["c1-repeat"]["digest_sha256"]:
+        raise SystemExit("full digest repeat diverged")
+    domain = [by_name["c2-domain-a"], by_name["c2-domain-b"]]
+    if domain[0]["digest_sha256"] == domain[1]["digest_sha256"]:
+        raise SystemExit("domain-separation pair collided on the full digest")
+    if domain[0]["wire_truncated"] == domain[1]["wire_truncated"]:
+        raise SystemExit("domain-separation pair collided on the wire id")
+    ambiguous_left = ("a|b", "c", "d" * 22)
+    ambiguous_right = ("a", "b|c", "d" * 22)
+    pipe_left = "|".join(ambiguous_left).encode()
+    pipe_right = "|".join(ambiguous_right).encode()
+    prefixed_left = hashlib.sha256(preimage(*ambiguous_left)).hexdigest()
+    prefixed_right = hashlib.sha256(preimage(*ambiguous_right)).hexdigest()
+    if pipe_left != pipe_right or prefixed_left == prefixed_right:
+        raise SystemExit("delimiter demonstration failed")
     return {
         "encoding_id": ENCODING_ID,
-        "status": "RECOMMENDED — not founder-finalized and not implemented",
-        "wire": "tx1.<namespace>.<base32rfc4648-nopad-lower(sha256(preimage))[:32]>",
+        "status": "PROPOSED — not independently reviewed, not founder-finalized, not implemented",
+        "wire": "tx1.<namespace>.<base32rfc4648-nopad-lower(full 256-bit sha256)[:32]>",
         "preimage": "CS-TXID-v1 NUL, then u32be length and UTF-8 NFC bytes for namespace, principal, idempotency_key",
-        "truncation_bits": 160,
-        "birthday_approximation": {
-            "1e9": birthday_bound(10**9),
-            "1e12": birthday_bound(10**12),
+        "digest_bits": 256,
+        "wire_truncation_bits": 160,
+        "collision": {
+            "full_digest_birthday_1e9": birthday_bound(10**9, 256),
+            "full_digest_birthday_1e12": birthday_bound(10**12, 256),
+            "wire_birthday_1e9": birthday_bound(10**9, 160),
+            "wire_birthday_1e12": birthday_bound(10**12, 160),
+            "note": "The wire id is the first 160 bits of the base32 encoding of the 256-bit digest. It is not a second hash. A wire collision is a 160-bit event. Detecting it requires storing the full digest beside the wire id. That store is not built.",
+        },
+        "delimiter_ambiguity": {
+            "pipe_join_identical": True,
+            "length_prefix_sha256_left": prefixed_left,
+            "length_prefix_sha256_right": prefixed_right,
+        },
+        "entropy": {
+            "alphabet_size": 66,
+            "minimum_characters": 22,
+            "minimum_uniform_bits": round(22 * math.log2(66), 1),
+            "uuid_v4_bits_if_accepted_by_length": 122,
         },
         "vectors": vectors,
         "rejections": rejection_cases(),
