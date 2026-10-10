@@ -102,7 +102,7 @@ Legend: **KEEP** = stays independent as-is. **MERGE INTO** = folds into a named 
 
 | Repo | Classification | Persistence evidence | Deployment boundary today | Key consumers | Migration risk |
 |---|---|---|---|---|---|
-| `cubeshackles-cubereg` | **REQUIRES AUDIT** before assigning it to `regulatory` or `platform` | Repository description: fiscal rule registry, deterministic tax calculation, conformance testing, and a discrepancy/evidence engine, called a platform service. Default branch uses SQLAlchemy; `app/db/base.py` states that the v1 slice uses SQLite. No `alembic.ini` was present in the default-branch tree. Created 2026-09-28. | Not re-audited in this update | Not recorded in `REPOSITORY_MAP.md` before 2026-10-09 | **UNKNOWN** — do not fold it into a domain on the description alone |
+| `cubeshackles-cubereg` | **REQUIRES AUDIT** before assigning it to `regulatory` or `platform` | Repository description: fiscal rule registry, deterministic tax calculation, conformance testing, and a discrepancy/evidence engine, called a platform service. Default branch uses SQLAlchemy; `app/db/base.py` states that the v1 slice uses SQLite. No `alembic.ini` was present in the default-branch tree. Created 2026-09-28. | Not re-audited in this update | Not a row in the current `REPOSITORY_MAP.md` | **UNKNOWN** — do not fold it into a domain on the description alone |
 
 `cubeshackles-corporate-web` (created 2026-08-18) is kept in §4. Its repository description calls it the official corporate website. The default branch is a Next.js tree, and that tree had no Alembic or Prisma path.
 
@@ -175,7 +175,8 @@ Matches the founder's proposed sequencing, annotated with the migration-risk evi
 
 ## 6. Summary count
 
-- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`). **60 are classified here.** `vegemai-demo` is in `REPOSITORY_MAP.md` and is not one of those 60.
+- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`). **60 are classified here.** `vegemai-demo` is a private repository and is not one of those 60. No further description is recorded.
+- **`REPOSITORY_MAP.md` on this branch records 56 mapped repositories** (2026-10-09), including `cubeshackles-corporate-web`. That is the documented architecture map. It is not the organization list of 61, and it is not the 60 classified in this plan. `cubeshackles-cubereg` is classified here and is not a row in that map. `vegemai-demo` is not a row in that map.
 - **11 shared-platform / foundational singletons** — kept (§2, includes this repo).
 - **7 products** — kept (§3).
 - **11 kept for release/audience/security boundary reasons** — kept (§4, including `cubeshackles-corporate-web`).
