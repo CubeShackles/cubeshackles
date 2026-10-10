@@ -1,6 +1,6 @@
 # Repository Consolidation Plan — CubeShackles
 
-**Status as of:** 2026-08-16 (classification evidence for the original 58). On 2026-10-09 the org API listed **61** repositories. This plan classifies **60**. `vegemai-demo` is a private repository and is not classified here.
+**Status as of:** 2026-08-16 (classification evidence for the original 58). On 2026-10-09 the org API listed **61** repositories. Rechecked 2026-10-10: the org API still lists **61**. This plan classifies **60**. `vegemai-demo` is a private repository and is not classified here.
 **Method:** Cross-references three sources of truth: (1) `gh api orgs/CubeShackles/repos` — the org's authoritative live repo list; (2) `REPOSITORY_MAP.md` (this repo) — the founder's canonical documented architecture (roles, layers, status, consumers); (3) direct repository inspection (persistence layer checks, module structure) performed for this plan and in the prior `RWA_SYSTEM_MAP.md` audit (`cubeshackles-retail-defi-api`, PR #2). Every repository in scope below is accounted for — 60 in, 60 classified, none of those dropped. `vegemai-demo` is the one org repository not classified here.
 **Trigger:** founder-proposed consolidation into authoritative domains, following the RWA lifecycle audit finding that the "clean" microservice decomposition is largely scaffold, while the real persisted system lives in `cubeshackles-retail-defi-api`. This plan keeps 30 repositories independent (11 shared-platform, 7 products, 11 boundary-kept, and `cubeshackles-ledger`) and leaves the retail API repository in place. Founder decisions on 2026-10-09 (§7) also keep `cubeshackles-core`, `cubeshackles-institutional-gateway`, `cubeshackles-security-framework`, and `cubeshackles-node-api` outside the merge, keep `cubeshackles-disaster-recovery` independent, and keep `cubeshackles-cubereg` independent. The earlier whole-repo merge scope was 28. The remaining proposed full-absorption scope is 23. That does not produce the previously published 40-repository end state. This decision updates the plan only. It does not merge repositories, move data, or change runtime behavior.
 **Names:** classification tables use the slugs in `REPOSITORY_MAP.md`. GitHub and some local checkouts use a leading capital for the same repository (`Cubeshackles-core`, `Cubeshackles-control-plane`, `Cubeshackles-validator-node`, `Cubeshackles-network-orchestrator`, `Cubeshackles-node-api`, `Cubeshackles-phone-wedge`, `Cubeshackles-web`, `Cubeshackles-retail`, `Cubeshackles-Retail-DeFi-API`). `Cubeshackles-Enterprise-Brain`, `CubeWallet`, and `BualaBuitu` keep the casing already recorded in the map.
@@ -98,7 +98,7 @@ Legend: **KEEP** = stays independent as-is. **MERGE INTO** = folds into a named 
 
 ### 1.9 Repositories created after the 2026-08-16 pass
 
-`gh api orgs/CubeShackles/repos` on 2026-10-09 returned 61 repositories. Two of the three created after 2026-08-16 are classified in this plan. `vegemai-demo` is a private repository and is not classified here.
+`gh api orgs/CubeShackles/repos` on 2026-10-09 returned 61 repositories. Rechecked 2026-10-10: still 61. Two of the three created after 2026-08-16 are classified in this plan. `vegemai-demo` is a private repository and is not classified here.
 
 | Repo | Classification | Persistence evidence | Deployment boundary today | Key consumers | Migration risk |
 |---|---|---|---|---|---|
@@ -142,7 +142,7 @@ These sit above or across the domains being consolidated; folding them in would 
 
 | Repo | Note |
 |---|---|
-| `.github` | Org governance repo — confirmed present via GitHub org API; not counted in `REPOSITORY_MAP.md`'s role tables. The org list on 2026-10-09 is 61 repositories. This plan classifies 60. `vegemai-demo` is a private repository and is not classified here. |
+| `.github` | Org governance repo — confirmed present via GitHub org API; not counted in `REPOSITORY_MAP.md`'s role tables. The org list on 2026-10-09 is 61 repositories, rechecked 2026-10-10. This plan classifies 60. `vegemai-demo` is a private repository and is not classified here. |
 | `cubeshackles-demo` | Regulator/bank-grade demo environment, no real money movement — a distinct evidence-artifact product, not infrastructure |
 | `cubeshackles-sandbox-lab` | Deterministic sandbox rail for BNA/BODIVA/CMC discussions — same reasoning as `cubeshackles-demo` |
 | `cubeshackles-angola-pilot` | Controlled pilot-corridor scope document/boundary, not a service |
@@ -175,8 +175,8 @@ Matches the founder's proposed sequencing, annotated with the migration-risk evi
 
 ## 6. Summary count
 
-- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`). **60 are classified here.** `vegemai-demo` is a private repository and is not one of those 60. No further description is recorded.
-- **`REPOSITORY_MAP.md` on this branch records 56 mapped repositories** (2026-10-09), including `cubeshackles-corporate-web`. That is the documented architecture map. It is not the organization list of 61, and it is not the 60 classified in this plan. `cubeshackles-cubereg` is classified here and is not a row in that map. `vegemai-demo` is not a row in that map.
+- **61 repositories in the org** on 2026-10-09 (`gh api orgs/CubeShackles/repos`), rechecked 2026-10-10. The count is still **61**. **60 are classified here.** `vegemai-demo` is a private repository and is not one of those 60. No further description is recorded.
+- **`REPOSITORY_MAP.md` on this branch records 56 mapped repositories** (2026-10-09), including `cubeshackles-corporate-web`. That count was unchanged on 2026-10-10. It is the documented architecture map. It is not the organization list of 61, and it is not the 60 classified in this plan. `cubeshackles-cubereg` is classified here and is not a row in that map. `vegemai-demo` is not a row in that map.
 - **11 shared-platform / foundational singletons** — kept (§2, includes this repo).
 - **7 products** — kept (§3).
 - **11 kept for release/audience/security boundary reasons** — kept (§4, including `cubeshackles-corporate-web`).
@@ -192,7 +192,7 @@ Matches the founder's proposed sequencing, annotated with the migration-risk evi
 
 ## 7. Founder decisions (2026-10-09)
 
-These dispositions are decided. The audits they name are still open. This section authorizes planning and documentation only.
+These dispositions are decided. The audits they name are still open as of 2026-10-10. The Gate 2 staging record merged to `main` on that date does not close them. This section authorizes planning and documentation only.
 
 1. Keep `cubeshackles-core` independent pending the Wave 2 authority and ledger audit.
 2. Keep `cubeshackles-institutional-gateway` and `cubeshackles-security-framework` outside consolidation until the scope-split, persistence, and migration audit is completed.
