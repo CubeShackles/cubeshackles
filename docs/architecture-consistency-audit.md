@@ -124,3 +124,7 @@ After remediation, the following should hold:
 - [`../SYSTEM_ARCHITECTURE.md`](../SYSTEM_ARCHITECTURE.md)
 - [`../governance/policies/`](../governance/policies/)
 - [`../../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md`](../../cubeshackles-contracts/INTEROPERABILITY_STANDARD.md) (sibling repository)
+
+### F10 — Map inventory omitted two org repositories (2026-10-09)
+
+`REPOSITORY_MAP.md` counted 55 repositories on 2026-07-18 and stated that none were omitted. On 2026-10-09 `gh api orgs/CubeShackles/repos` returned 61 repositories. The map now lists 60. `.github` stays outside the map. `vegemai-demo` is recorded as a private repository outside the consolidation classification. `cubeshackles-retail`, `cubeshackles-retail-defi-api`, `cubeshackles-corporate-web`, and `cubeshackles-cubereg` are listed with maturity not re-audited. No existing repository role was changed. The consolidation plan still classifies 60 and leaves `vegemai-demo` out: 11 + 7 + 11 + 1 + 1 + 1 + 28 = 60. Full execution of the 28 merges leaves 40 repositories, with `cubeshackles-cubereg` still unassigned.
