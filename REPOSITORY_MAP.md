@@ -281,7 +281,7 @@ internal — beyond this inventory entry.
 
 ---
 
-## 16. Platform milestones (as of July 2026)
+## 16. Platform milestones (program of record, reviewed 2026-10-09)
 
 | Milestone | Status | Description |
 |---|---|---|
@@ -289,8 +289,9 @@ internal — beyond this inventory entry.
 | `AI_NATIVE_M5` | **Complete** | Native AI platform stabilized — 11 platform agents, advisory-only enforcement, `cubeshackles-ai-sdk` consumer kit |
 | `PLATFORM_ALPHA_1` | **Complete** (2026-06-30) | Convergence baseline: RC2 frozen, AI_NATIVE M5 stabilized, Phase 2 legacy migration complete, full gate suite passing, canonical contracts governing interoperability, zero duplicate financial authority |
 | Feature Freeze Candidate | **Active** | Engineering in maintenance and assurance mode: bug fixes, security, compliance evidence, reliability. No new product surface or contract mutations without exception process. |
-| `PLATFORM_BETA_1` | **Target** | One unified CubeShackles OS across all applications: shared design language, migrated product UX, explorer redesign, live demos, pilot deployment tooling. **Not yet achieved.** |
-| Angola Pilot | **Planned** | Controlled Angola deployment corridor following `PLATFORM_BETA_1`. |
+| `Pilot Rail` | **Active** | Current engineering priority. The bar for one end-to-end transaction path is real, wired, authenticated, tested, observable, and recoverable. That bar is not met as of 2026-10-09. Phases A and B stay inside the feature freeze. Phases C and D require a recorded formal exception. See [`ROADMAP.md`](ROADMAP.md). |
+| `PLATFORM_BETA_1` | **Paused** | One unified CubeShackles OS across all applications: shared design language, migrated product UX, explorer redesign, live demos, pilot deployment tooling. **Not yet achieved.** Resumes at Pilot Rail Phase D. Not a prerequisite for Pilot Rail Phase C. |
+| Angola Pilot | **Planned** | Controlled Angola deployment corridor after Pilot Rail Phase C. Does not wait on `PLATFORM_BETA_1`. |
 
 ---
 
@@ -389,7 +390,11 @@ Repositories that are absent are expected to skip gracefully where possible.
 
 ---
 
-*Last updated: 2026-07-18. Total mapped repositories: 55 (54 platform
-repositories + `Cubeshackles-Enterprise-Brain`, restricted). The org's
-`.github` governance repository is separate from this count — see
+*Inventory last updated: 2026-07-18. Mapped repositories in this file: 55
+(54 platform repositories + `Cubeshackles-Enterprise-Brain`, restricted).
+This file was not refreshed to a later organization count.
+[`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md)
+(2026-09-30) records 61 organization repositories verified on 2026-09-19
+and is discovery output, not a replacement for this map. The org's
+`.github` governance repository is separate from the 55 — see
 [`docs/repo-governance.md`](docs/repo-governance.md).*

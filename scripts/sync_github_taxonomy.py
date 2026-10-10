@@ -94,14 +94,19 @@ MILESTONES: list[dict[str, Any]] = [
         "description": "Maintenance/assurance mode — restricted product scope",
     },
     {
+        "title": "Pilot Rail",
+        "state": "open",
+        "description": "Single end-to-end transaction path — current engineering priority; the bar is not met (reviewed 2026-10-09). Phases A and B inside the feature freeze; Phases C and D need a recorded formal exception",
+    },
+    {
         "title": "PLATFORM_BETA_1",
         "state": "open",
-        "description": "Unified OS design language across applications (target)",
+        "description": "Unified OS design language across applications (paused until Pilot Rail Phase D)",
     },
     {
         "title": "Angola Pilot",
         "state": "open",
-        "description": "Controlled Angola deployment corridor (planned)",
+        "description": "Controlled Angola deployment corridor (planned after Pilot Rail Phase C; does not wait on PLATFORM_BETA_1)",
     },
 ]
 

@@ -12,9 +12,10 @@ authors or owners of CubeShackles. See
 
 > This repository is **not** the protocol implementation. It contains no protocol
 > code, no AI models, no fraud logic, no regulator tooling, and no production
-> secrets. It is the authoritative description of what CubeShackles is, how its
-> 55 repositories fit together, the standards every component is held to, and the
-> governance that keeps the ecosystem honest.
+> secrets. It is the authoritative description of what CubeShackles is, how the
+> mapped repositories fit together, the standards every component is held to,
+> and the governance that keeps the ecosystem honest. The inventory date and
+> the later organization count are in "Repository visibility" below.
 
 ---
 
@@ -52,7 +53,7 @@ contracts and protocol semantics.
 
 ---
 
-## Platform status (July 2026)
+## Platform status (program of record, 2026-10-09)
 
 | Milestone | Status |
 |---|---|
@@ -60,8 +61,9 @@ contracts and protocol semantics.
 | `AI_NATIVE_M5` — 11-agent AI platform, advisory-only boundary enforced | **Complete** |
 | `PLATFORM_ALPHA_1` — institutional baseline, full gate suite passing | **Complete** (2026-06-30) |
 | Feature Freeze Candidate — maintenance and assurance mode | **Active** |
-| `PLATFORM_BETA_1` — unified OS design language across all applications | **Target** |
-| Angola Pilot — controlled deployment corridor | **Planned** |
+| `Pilot Rail` — single end-to-end transaction path (current engineering priority; the bar is not met) | **Active** |
+| `PLATFORM_BETA_1` — unified OS design language across all applications | **Paused** (resumes at Pilot Rail Phase D) |
+| Angola Pilot — controlled deployment corridor | **Planned** (after Pilot Rail Phase C; does not wait on `PLATFORM_BETA_1`) |
 
 ---
 
@@ -104,7 +106,7 @@ CubeShackles is split across public and private repositories by design:
 - **Public** repositories present truthful, developer-facing architecture. They contain no sovereign orchestration logic, no AI/fraud models, no regulator tooling, no economic intelligence, and no production secrets.
 - **Private** repositories protect sovereign infrastructure, AI/fraud models, regulator tooling, economic intelligence, and future Cube Silicon / Shackle Silicon R&D.
 
-The complete inventory lives in [`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) — 55 repositories across 14 layers plus a restricted internal-operations entry.
+[`REPOSITORY_MAP.md`](REPOSITORY_MAP.md) records 55 mapped repositories across 14 layers plus a restricted internal-operations entry, last updated 2026-07-18. This change does not refresh that map. [`docs/architecture/ORG_REPOSITORY_CENSUS.md`](docs/architecture/ORG_REPOSITORY_CENSUS.md) (2026-09-30) records 61 organization repositories verified on 2026-09-19 and is discovery output, not a replacement inventory.
 
 ---
 
