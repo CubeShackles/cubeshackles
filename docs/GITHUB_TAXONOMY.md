@@ -130,8 +130,9 @@ Create these milestones on every active repository (closed where complete):
 | `AI_NATIVE_M5` | closed | Native AI platform stabilized — advisory-only enforcement |
 | `PLATFORM_ALPHA_1` | closed | Institutional baseline (2026-06-30) — gates green, contracts canonical |
 | `Feature Freeze Candidate` | open | Maintenance/assurance mode — restricted product scope |
-| `PLATFORM_BETA_1` | open | Unified OS design language across applications (target) |
-| `Angola Pilot` | open | Controlled Angola deployment corridor (planned) |
+| `Pilot Rail` | open | Single end-to-end transaction path — current engineering priority; the bar is not met (reviewed 2026-10-09). Phases A and B inside the feature freeze; Phases C and D need a recorded formal exception |
+| `PLATFORM_BETA_1` | open | Unified OS design language across applications (paused until Pilot Rail Phase D) |
+| `Angola Pilot` | open | Controlled Angola deployment corridor (planned after Pilot Rail Phase C; does not wait on `PLATFORM_BETA_1`) |
 
 Canonical narrative: [`ROADMAP.md`](../ROADMAP.md).
 
